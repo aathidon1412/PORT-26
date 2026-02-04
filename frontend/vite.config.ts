@@ -25,5 +25,27 @@ export default defineConfig(({ mode }) => {
           '@assets': path.resolve(__dirname, './src/assets'),
         }
       }
+      ,
+      build: {
+        // Raise the warning limit so you won't get noisy 500k warnings during normal dev builds.
+        // Adjust this value if you want stricter checks (e.g., 500) or looser (e.g., 1000).
+        chunkSizeWarningLimit: 700,
+        rollupOptions: {
+          output: {
+            // Manual chunk splitting for large vendor libraries.
+            // Keeps React-related code, Three.js, GSAP, icons, etc. in separate chunks.
+            manualChunks(id: string) {
+              if (id.includes('node_modules')) {
+                if (id.includes('react') || id.includes('react-dom')) return 'vendor_react';
+                if (id.includes('three')) return 'vendor_three';
+                if (id.includes('gsap')) return 'vendor_gsap';
+                if (id.includes('lucide-react') || id.includes('lucide')) return 'vendor_icons';
+                if (id.includes('date-fns') || id.includes('lodash')) return 'vendor_utils';
+                return 'vendor';
+              }
+            }
+          }
+        }
+      }
     };
 });
