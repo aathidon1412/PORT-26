@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
              <span className="text-white font-bold font-serif text-xl">L</span>
            </div>
            <span className="text-2xl font-serif font-bold text-white tracking-wide">
-             LUMINA<span className="text-amber-400">.</span>
+             PORT<span className="text-amber-400">.</span>
            </span>
         </Link>
 

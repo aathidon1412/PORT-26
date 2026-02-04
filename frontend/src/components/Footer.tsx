@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4">
             <span className="text-2xl font-serif font-bold text-white tracking-wide">
-             LUMINA<span className="text-amber-400">.</span>
+             PORT<span className="text-amber-400">.</span>
             </span>
             <p className="text-slate-400 text-sm leading-relaxed">
               Crafting extraordinary experiences where technology meets artistry. Join us for the grandest celebration of innovation.
@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-violet-500 shrink-0" />
-                <span>hello@lumina.edu</span>
+                <span>hello@PORT.edu</span>
               </li>
             </ul>
           </div>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-slate-500 text-sm">© 2024 Lumina Events. All rights reserved.</p>
+          <p className="text-slate-500 text-sm">© 2026 PORT Events. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-slate-400 hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
             <a href="#" className="text-slate-400 hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>

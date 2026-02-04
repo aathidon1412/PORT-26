@@ -26,12 +26,12 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-amber-400 font-medium tracking-[0.2em] uppercase mb-4 text-sm md:text-base">
-            March 15-17, 2024 • Tech City
+            March 15-17, 2026 • Tech City
           </h2>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-8 leading-tight">
-            LUMINA <br/>
+            PORT <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-300">
-              2024
+              2026
             </span>
           </h1>
           <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">

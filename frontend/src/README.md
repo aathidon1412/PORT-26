@@ -1,4 +1,4 @@
-# Lumina Events - Frontend Application
+# PORT Events - Frontend Application
 
 A modern, responsive event management platform built with React, TypeScript, and Vite.
 
@@ -160,4 +160,4 @@ import { Event } from '@types';
 
 ## 📄 License
 
-All rights reserved © 2024 Lumina Events
+All rights reserved © 2026 PORT Events

@@ -31,7 +31,7 @@ const AboutSection: React.FC = () => {
               We are the architects of the digital realm, fostering a culture where code meets creativity. Our mission is to bridge the gap between theoretical knowledge and real-world application, empowering the next generation of tech leaders.
             </p>
             <p className="text-slate-400 leading-relaxed font-light text-justify">
-              Through cutting-edge curriculum and industry-grade events like Lumina, we provide a platform for students to challenge the status quo, innovate fearlessly, and engineer solutions for tomorrow's complex problems.
+              Through cutting-edge curriculum and industry-grade events like PORT, we provide a platform for students to challenge the status quo, innovate fearlessly, and engineer solutions for tomorrow's complex problems.
             </p>
           </motion.div>
 
