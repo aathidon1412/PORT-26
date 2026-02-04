@@ -36,13 +36,14 @@ export default defineConfig(({ mode }) => {
             // Keeps React-related code, Three.js, GSAP, icons, etc. in separate chunks.
             manualChunks(id: string) {
               if (id.includes('node_modules')) {
-                if (id.includes('react') || id.includes('react-dom')) return 'vendor_react';
-                if (id.includes('three')) return 'vendor_three';
-                if (id.includes('gsap')) return 'vendor_gsap';
-                if (id.includes('lucide-react') || id.includes('lucide')) return 'vendor_icons';
-                if (id.includes('date-fns') || id.includes('lodash')) return 'vendor_utils';
-                return 'vendor';
-              }
+                  // Keep React/react-dom in the main vendor chunk to avoid runtime ordering issues
+                  // and let Rollup handle React-related dependencies together.
+                  if (id.includes('three')) return 'vendor_three';
+                  if (id.includes('gsap')) return 'vendor_gsap';
+                  if (id.includes('lucide-react') || id.includes('lucide')) return 'vendor_icons';
+                  if (id.includes('date-fns') || id.includes('lodash')) return 'vendor_utils';
+                  return 'vendor';
+                }
             }
           }
         }
