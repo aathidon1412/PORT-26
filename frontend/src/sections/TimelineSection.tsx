@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, Music, PenTool, MapPin } from 'lucide-react';
 
@@ -17,12 +17,16 @@ interface TrackColumnProps {
     border: string;
     glow: string;
     line: string;
+    dotGlow: string;
+    dotSolid: string;
   };
   events: TimelineItem[];
   delayBase: number;
 }
 
 const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, delayBase }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
     <div className="relative flex flex-col h-full pl-6 md:pl-0">
       {/* Header */}
@@ -35,6 +39,72 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
 
       {/* Track Line - Desktop & Mobile (Left Aligned on Mobile/Desktop for tightness) */}
       <div className={`absolute top-14 bottom-0 left-[2.25rem] md:left-8 lg:left-10 w-px bg-gradient-to-b ${theme.line} to-transparent opacity-40`} />
+      
+      {/* Timeline Dots - Positioned on top of the line */}
+      {events.map((_, idx) => (
+        <div
+          key={idx}
+          className="absolute left-[2.25rem] md:left-8 lg:left-10 -translate-x-1/2 z-20"
+          style={{ top: `calc(${14 * 4}px + ${idx * 100}px + 52px)` }}
+        >
+          {/* Outer pulsing ring */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ 
+              scale: hoveredIndex === idx ? [1, 1.8, 1.8] : 1,
+              opacity: hoveredIndex === idx ? [0.8, 0, 0] : 0
+            }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: hoveredIndex === idx ? Infinity : 0,
+              ease: "easeOut"
+            }}
+            className={`absolute inset-0 w-5 h-5 -m-0.5 rounded-full ${theme.bg} ${theme.border} border`}
+          />
+          
+          {/* Second pulsing ring (delayed) */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ 
+              scale: hoveredIndex === idx ? [1, 2, 2] : 1,
+              opacity: hoveredIndex === idx ? [0.5, 0, 0] : 0
+            }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: hoveredIndex === idx ? Infinity : 0,
+              ease: "easeOut",
+              delay: 0.3
+            }}
+            className={`absolute inset-0 w-5 h-5 -m-0.5 rounded-full ${theme.bg}`}
+          />
+          
+          {/* Main dot */}
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            animate={{ 
+              scale: hoveredIndex === idx ? 1.3 : 1,
+            }}
+            viewport={{ once: true }}
+            transition={{ delay: delayBase + (idx * 0.15), type: 'spring', stiffness: 300 }}
+            className={`relative w-4 h-4 rounded-full border-2 ${theme.border} transition-all duration-300 ${
+              hoveredIndex === idx ? theme.dotSolid : theme.bg
+            }`}
+            style={{ 
+              boxShadow: hoveredIndex === idx ? theme.dotGlow : 'none',
+            }}
+          >
+            {/* Inner glow core */}
+            <motion.div 
+              animate={{ 
+                opacity: hoveredIndex === idx ? 1 : 0,
+                scale: hoveredIndex === idx ? 1 : 0.5
+              }}
+              className="absolute inset-1 rounded-full bg-white/80"
+            />
+          </motion.div>
+        </div>
+      ))}
 
       {/* Events */}
       <div className="space-y-4 relative z-10 flex-grow pl-14 md:pl-16 lg:pl-20">
@@ -45,14 +115,13 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: delayBase + (idx * 0.15) }}
+            onMouseEnter={() => setHoveredIndex(idx)}
+            onMouseLeave={() => setHoveredIndex(null)}
             className={`relative bg-slate-900/80 backdrop-blur-md border border-white/5 p-4 rounded-xl hover:border-opacity-50 transition-all duration-500 group overflow-hidden ${theme.glow}`}
             style={{ borderColor: 'rgba(255,255,255,0.05)' }} 
           >
             {/* Hover Gradient Border Effect */}
             <div className={`absolute inset-0 rounded-xl border border-transparent ${theme.border} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-            
-            {/* Connector Dot */}
-            <div className={`absolute top-1/2 -left-[2.35rem] md:-left-[2.85rem] lg:-left-[3.85rem] w-3 h-3 rounded-full ${theme.bg.replace('/10', '')} border border-slate-950 shadow-[0_0_8px_currentColor] z-20`} />
             
             <div className="flex flex-col relative z-10">
               <span className={`text-[10px] font-bold ${theme.text} mb-1 tracking-widest uppercase`}>{evt.time}</span>
@@ -128,7 +197,9 @@ const TimelineSection: React.FC = () => {
                 bg: 'bg-cyan-500/10',
                 border: 'border-cyan-500/30',
                 glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
-                line: 'from-cyan-500/50'
+                line: 'from-cyan-500/50',
+                dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
+                dotSolid: 'bg-cyan-400'
               }}
               events={technicalTrack}
               delayBase={0}
@@ -141,7 +212,9 @@ const TimelineSection: React.FC = () => {
                 bg: 'bg-fuchsia-500/10',
                 border: 'border-fuchsia-500/30',
                 glow: 'hover:shadow-[0_0_30px_-5px_rgba(232,121,249,0.15)]',
-                line: 'from-fuchsia-500/50'
+                line: 'from-fuchsia-500/50',
+                dotGlow: '0 0 25px 8px rgba(232,121,249,0.7), 0 0 50px 15px rgba(232,121,249,0.3)',
+                dotSolid: 'bg-fuchsia-400'
               }}
               events={nonTechTrack}
               delayBase={0.2}
@@ -154,7 +227,9 @@ const TimelineSection: React.FC = () => {
                 bg: 'bg-emerald-500/10',
                 border: 'border-emerald-500/30',
                 glow: 'hover:shadow-[0_0_30px_-5px_rgba(52,211,153,0.15)]',
-                line: 'from-emerald-500/50'
+                line: 'from-emerald-500/50',
+                dotGlow: '0 0 25px 8px rgba(52,211,153,0.7), 0 0 50px 15px rgba(52,211,153,0.3)',
+                dotSolid: 'bg-emerald-400'
               }}
               events={workshopTrack}
               delayBase={0.4}
