@@ -28,14 +28,20 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="relative flex flex-col h-full pl-6 md:pl-0">
+    <div className="relative flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-start md:justify-center mb-8 z-10">
-        <div className={`p-3 rounded-xl border ${theme.border} ${theme.bg} backdrop-blur-md shadow-lg`}>
-          {React.cloneElement(icon as React.ReactElement, { className: `w-5 h-5 ${theme.text}` })}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: delayBase }}
+        className="flex items-center justify-center mb-6 md:mb-8 z-10"
+      >
+        <div className={`p-2.5 md:p-3 rounded-xl border ${theme.border} ${theme.bg} backdrop-blur-md shadow-lg`}>
+          {React.cloneElement(icon as React.ReactElement, { className: `w-4 h-4 md:w-5 md:h-5 ${theme.text}` })}
         </div>
-        <h3 className="ml-3 text-lg font-serif font-bold text-white tracking-wide">{title}</h3>
-      </div>
+        <h3 className="ml-2 md:ml-3 text-base md:text-lg font-serif font-bold text-white tracking-wide">{title}</h3>
+      </motion.div>
 
       {/* Track Line - Desktop & Mobile (Left Aligned on Mobile/Desktop for tightness) */}
       <div className={`absolute top-14 bottom-0 left-[2.25rem] md:left-8 lg:left-10 w-px bg-gradient-to-b ${theme.line} to-transparent opacity-40`} />
@@ -107,7 +113,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
       ))}
 
       {/* Events */}
-      <div className="space-y-4 relative z-10 flex-grow pl-14 md:pl-16 lg:pl-20">
+      <div className="space-y-3 md:space-y-4 relative z-10 flex-grow px-2 md:px-4">
         {events.map((evt, idx) => (
           <motion.div
             key={idx}
@@ -121,13 +127,13 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
             style={{ borderColor: 'rgba(255,255,255,0.05)' }} 
           >
             {/* Hover Gradient Border Effect */}
-            <div className={`absolute inset-0 rounded-xl border border-transparent ${theme.border} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+            <div className={`absolute inset-0 rounded-lg md:rounded-xl border border-transparent ${theme.border} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
             
             <div className="flex flex-col relative z-10">
-              <span className={`text-[10px] font-bold ${theme.text} mb-1 tracking-widest uppercase`}>{evt.time}</span>
-              <h4 className="text-white font-bold text-base mb-1 group-hover:text-white transition-colors leading-tight">{evt.title}</h4>
-              <div className="text-slate-500 text-xs flex items-center">
-                <MapPin className="w-3 h-3 mr-1 opacity-70" /> {evt.desc}
+              <span className={`text-[9px] md:text-[10px] font-bold ${theme.text} mb-1 tracking-widest uppercase`}>{evt.time}</span>
+              <h4 className="text-white font-bold text-sm md:text-base mb-1 group-hover:text-white transition-colors leading-tight">{evt.title}</h4>
+              <div className="text-slate-500 text-[10px] md:text-xs flex items-center">
+                <MapPin className="w-2.5 h-2.5 md:w-3 md:h-3 mr-1 opacity-70" /> {evt.desc}
               </div>
             </div>
           </motion.div>
@@ -188,7 +194,7 @@ const TimelineSection: React.FC = () => {
             </motion.p>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             <TrackColumn 
               title="Technical" 
               icon={<Cpu />} 
@@ -217,7 +223,7 @@ const TimelineSection: React.FC = () => {
                 dotSolid: 'bg-fuchsia-400'
               }}
               events={nonTechTrack}
-              delayBase={0.2}
+              delayBase={0.15}
             />
             <TrackColumn 
               title="Workshops" 
@@ -232,7 +238,7 @@ const TimelineSection: React.FC = () => {
                 dotSolid: 'bg-emerald-400'
               }}
               events={workshopTrack}
-              delayBase={0.4}
+              delayBase={0.3}
             />
          </div>
        </div>

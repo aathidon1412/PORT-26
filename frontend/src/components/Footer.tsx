@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-4">
             <span className="text-2xl font-serif font-bold text-white tracking-wide">
              PORT<span className="text-amber-400">.</span>
@@ -47,14 +47,6 @@ const Footer: React.FC = () => {
                 <span>hello@PORT.edu</span>
               </li>
             </ul>
-          </div>
-
-          <div>
-             <h4 className="text-white font-serif font-bold text-lg mb-6">Newsletter</h4>
-             <div className="flex flex-col space-y-3">
-               <input type="email" placeholder="Enter your email" className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors" />
-               <button className="bg-white text-slate-900 font-bold py-3 rounded-lg hover:bg-amber-400 transition-colors">Subscribe</button>
-             </div>
           </div>
         </div>
 
