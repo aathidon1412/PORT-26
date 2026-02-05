@@ -30,7 +30,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
   return (
     <div className="relative flex flex-col h-full">
       {/* Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -45,7 +45,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
 
       {/* Track Line - Desktop & Mobile (Left Aligned on Mobile/Desktop for tightness) */}
       <div className={`absolute top-14 bottom-0 left-6 md:left-8 lg:left-10 w-px bg-gradient-to-b ${theme.line} to-transparent opacity-40`} />
-      
+
       {/* Timeline Dots are rendered inside each card to keep alignment correct */}
 
       {/* Events */}
@@ -56,12 +56,12 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
             <div className="absolute left-6 md:left-8 lg:left-10 -translate-x-1/2 z-20 top-1/2 -translate-y-1/2 pointer-events-none">
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
+                animate={{
                   scale: hoveredIndex === idx ? [1, 1.8, 1.8] : 1,
                   opacity: hoveredIndex === idx ? [0.8, 0, 0] : 0
                 }}
-                transition={{ 
-                  duration: 1.5, 
+                transition={{
+                  duration: 1.5,
                   repeat: hoveredIndex === idx ? Infinity : 0,
                   ease: 'easeOut'
                 }}
@@ -69,12 +69,12 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
               />
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
+                animate={{
                   scale: hoveredIndex === idx ? [1, 2, 2] : 1,
                   opacity: hoveredIndex === idx ? [0.5, 0, 0] : 0
                 }}
-                transition={{ 
-                  duration: 1.5, 
+                transition={{
+                  duration: 1.5,
                   repeat: hoveredIndex === idx ? Infinity : 0,
                   ease: 'easeOut',
                   delay: 0.3
@@ -87,9 +87,8 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                 animate={{ scale: hoveredIndex === idx ? 1.3 : 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: delayBase + (idx * 0.15), type: 'spring', stiffness: 300 }}
-                className={`relative w-4 h-4 rounded-full border-2 ${theme.border} transition-all duration-300 ${
-                  hoveredIndex === idx ? theme.dotSolid : theme.bg
-                }`}
+                className={`relative w-4 h-4 rounded-full border-2 ${theme.border} transition-all duration-300 ${hoveredIndex === idx ? theme.dotSolid : theme.bg
+                  }`}
                 style={{ boxShadow: hoveredIndex === idx ? theme.dotGlow : 'none' }}
               >
                 <motion.div animate={{ opacity: hoveredIndex === idx ? 1 : 0, scale: hoveredIndex === idx ? 1 : 0.5 }} className="absolute inset-1 rounded-full bg-white/80" />
@@ -105,11 +104,11 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
               className={`relative bg-slate-900/80 backdrop-blur-md border border-white/5 p-4 rounded-xl hover:border-opacity-50 transition-all duration-500 group overflow-hidden ${theme.glow} ml-12 md:ml-16 lg:ml-20`}
-              style={{ borderColor: 'rgba(255,255,255,0.05)' }} 
+              style={{ borderColor: 'rgba(255,255,255,0.05)' }}
             >
               {/* Hover Gradient Border Effect */}
               <div className={`absolute inset-0 rounded-lg md:rounded-xl border border-transparent ${theme.border} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-              
+
               <div className="flex flex-col relative z-10">
                 <div className={`inline-flex items-center justify-center px-2.5 py-1 rounded-md ${theme.bg} ${theme.border} border mb-3 self-start`}>
                   <span className={`text-[10px] md:text-xs font-bold ${theme.text} tracking-wider`}>{evt.time}</span>
@@ -148,70 +147,54 @@ const TimelineSection: React.FC = () => {
 
   return (
     <section className="py-24 bg-slate-950 relative">
-       {/* Background noise texture */}
-       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
-       
-       <div className="w-full max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 relative z-10">
-         <div className="text-center mb-16">
-            <motion.h4 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-amber-400 font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-4"
-            >
-              The Journey
-            </motion.h4>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6"
-            >
-              Event Timeline
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-slate-400 text-lg max-w-2xl mx-auto"
-            >
-              Three distinct tracks running in parallel. Curate your own experience from dawn till dusk.
-            </motion.p>
-         </div>
+      {/* Background noise texture */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
 
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-            <TrackColumn 
-              title="Technical" 
-              icon={<Cpu />} 
-              theme={{
-                text: 'text-cyan-400',
-                bg: 'bg-cyan-500/10',
-                border: 'border-cyan-500/30',
-                glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
-                line: 'from-cyan-500/50',
-                dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
-                dotSolid: 'bg-cyan-400'
-              }}
-              events={technicalTrack}
-              delayBase={0}
-            />
-            <TrackColumn 
-              title="Non-Technical" 
-              icon={<Music />} 
-              theme={{
-                text: 'text-fuchsia-400',
-                bg: 'bg-fuchsia-500/10',
-                border: 'border-fuchsia-500/30',
-                glow: 'hover:shadow-[0_0_30px_-5px_rgba(232,121,249,0.15)]',
-                line: 'from-fuchsia-500/50',
-                dotGlow: '0 0 25px 8px rgba(232,121,249,0.7), 0 0 50px 15px rgba(232,121,249,0.3)',
-                dotSolid: 'bg-fuchsia-400'
-              }}
-              events={nonTechTrack}
-              delayBase={0.15}
-            />
-            <TrackColumn 
-              title="Workshops" 
-              icon={<PenTool />} 
+      <div className="w-full max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 relative z-10">
+        <div className="text-center mb-16">
+          <motion.h4
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-amber-400 font-bold tracking-[0.2em] uppercase text-xs md:text-sm mb-4"
+          >
+            The Journey
+          </motion.h4>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6"
+          >
+            Event Timeline
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-slate-400 text-lg max-w-2xl mx-auto"
+          >
+            Two action-packed days of learning and competition. Curate your own experience from dawn till dusk.
+          </motion.p>
+        </div>
+
+        {/* Day 1 - Workshops */}
+        <div className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center mb-8"
+          >
+            <div className="px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-full">
+              <span className="text-emerald-400 font-bold text-sm md:text-base tracking-wider">DAY 1</span>
+            </div>
+            <div className="ml-4 h-px flex-1 bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 max-w-2xl mx-auto">
+            <TrackColumn
+              title="Workshops"
+              icon={<PenTool />}
               theme={{
                 text: 'text-emerald-400',
                 bg: 'bg-emerald-500/10',
@@ -222,10 +205,59 @@ const TimelineSection: React.FC = () => {
                 dotSolid: 'bg-emerald-400'
               }}
               events={workshopTrack}
+              delayBase={0}
+            />
+          </div>
+        </div>
+
+        {/* Day 2 - Technical & Non-Technical */}
+        <div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center mb-8"
+          >
+            <div className="px-4 py-2 bg-amber-500/20 border border-amber-500/40 rounded-full">
+              <span className="text-amber-400 font-bold text-sm md:text-base tracking-wider">DAY 2</span>
+            </div>
+            <div className="ml-4 h-px flex-1 bg-gradient-to-r from-amber-500/50 to-transparent"></div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            <TrackColumn
+              title="Technical"
+              icon={<Cpu />}
+              theme={{
+                text: 'text-cyan-400',
+                bg: 'bg-cyan-500/10',
+                border: 'border-cyan-500/30',
+                glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
+                line: 'from-cyan-500/50',
+                dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
+                dotSolid: 'bg-cyan-400'
+              }}
+              events={technicalTrack}
+              delayBase={0.15}
+            />
+            <TrackColumn
+              title="Non-Technical"
+              icon={<Music />}
+              theme={{
+                text: 'text-fuchsia-400',
+                bg: 'bg-fuchsia-500/10',
+                border: 'border-fuchsia-500/30',
+                glow: 'hover:shadow-[0_0_30px_-5px_rgba(232,121,249,0.15)]',
+                line: 'from-fuchsia-500/50',
+                dotGlow: '0 0 25px 8px rgba(232,121,249,0.7), 0 0 50px 15px rgba(232,121,249,0.3)',
+                dotSolid: 'bg-fuchsia-400'
+              }}
+              events={nonTechTrack}
               delayBase={0.3}
             />
-         </div>
-       </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
