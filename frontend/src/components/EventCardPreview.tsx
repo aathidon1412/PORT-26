@@ -9,13 +9,13 @@ interface EventCardPreviewProps {
 }
 
 const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => (
-  <motion.div 
+  <motion.div
     whileHover={{ y: -10 }}
-    className="group relative overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer"
+    className="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer"
   >
     <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90" />
-    
+
     <div className="absolute bottom-0 left-0 right-0 p-6">
       <div className="inline-block px-3 py-1 bg-amber-500 text-slate-950 text-xs font-bold rounded-full mb-3 uppercase">
         {event.category}

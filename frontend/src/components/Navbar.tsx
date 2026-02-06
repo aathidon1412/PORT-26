@@ -33,20 +33,26 @@ const Navbar: React.FC = () => {
            </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.path}
-              className={`relative text-sm uppercase tracking-widest font-medium hover:text-amber-400 transition-colors duration-300 ${location.pathname === link.path ? 'text-amber-400' : 'text-slate-300'}`}
-            >
-              {link.name}
-              {location.pathname === link.path && (
-                <motion.div layoutId="underline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400" />
-              )}
-            </Link>
-          ))}
+        {/* Desktop Nav - Centered Links */}
+        <div className="hidden md:flex items-center justify-center flex-1">
+          <div className="flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                to={link.path}
+                className={`relative text-sm uppercase tracking-widest font-medium hover:text-amber-400 transition-colors duration-300 ${location.pathname === link.path ? 'text-amber-400' : 'text-slate-300'}`}
+              >
+                {link.name}
+                {location.pathname === link.path && (
+                  <motion.div layoutId="underline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400" />
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Get Tickets Button - Right */}
+        <div className="hidden md:block">
           <Link to="/register">
              <button className="px-6 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-medium rounded-full shadow-lg shadow-violet-900/50 hover:shadow-violet-900/80 hover:scale-105 transition-all duration-300 text-sm">
                Get Tickets

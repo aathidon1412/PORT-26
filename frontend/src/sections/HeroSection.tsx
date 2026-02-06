@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-amber-400 font-medium tracking-[0.2em] uppercase mb-4 text-sm md:text-base">
+          <h2 className="text-amber-400 font-medium tracking-[0.2em] uppercase mb-4 text-sm md:text-base underline underline-offset-4">
             March 15-17, 2026 • Tech City
           </h2>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-8 leading-tight">
