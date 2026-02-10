@@ -2,29 +2,15 @@ import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
-import Ballpit from '../components/Ballpit';
+import Particles from '../components/Particles';
 
 const HeroSection: React.FC = () => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Ballpit Animation Background */}
-      <div className="absolute top-20 left-0 right-0 bottom-0 z-0" style={{ minHeight: 'calc(100vh - 5rem)' }}>
-        <Ballpit
-          count={100}
-          gravity={0.01}
-          friction={0.99}
-          wallBounce={0.95}
-          followCursor={true}
-          maxVelocity={0.5}
-          colors={[0xf59e0b, 0x8b5cf6, 0x3b82f6, 0xec4899, 0x10b981]}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/50 to-slate-950 pointer-events-none" />
-      </div>
-
-      {/* Parallax Background */}
+    <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: 'calc(100vh - 80px)' }}>
+      {/* Parallax Background - lowest layer */}
       <motion.div style={{ y: y1 }} className="absolute inset-0 z-0 pointer-events-none">
         <img
           src="https://picsum.photos/seed/hero3/1920/1080"
@@ -33,6 +19,23 @@ const HeroSection: React.FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/70 to-slate-950" />
       </motion.div>
+
+      {/* Particles Animation - above background */}
+      <div className="absolute inset-0 z-[1]">
+        <Particles
+          particleCount={800}
+          particleSpread={10}
+          speed={0.1}
+          particleColors={['#ffffff', '#aa99ff']}
+          moveParticlesOnHover={true}
+          particleHoverFactor={1}
+          alphaParticles={true}
+          particleBaseSize={150}
+          sizeRandomness={1}
+          cameraDistance={20}
+          disableRotation={false}
+        />
+      </div>
 
       <div className="relative z-10 max-w-8xl mx-auto px-4 text-center">
         <motion.div

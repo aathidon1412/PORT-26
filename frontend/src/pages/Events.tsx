@@ -15,11 +15,11 @@ const Events: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen pt-24 pb-12">
+    <div className="min-h-screen pb-12">
       {/* Header */}
       <div className="bg-gradient-to-b from-slate-900 to-slate-950 py-16 border-b border-white/5">
         <div className="max-w-8xl mx-auto px-4 text-center">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl font-serif font-bold text-white mb-6"
@@ -51,9 +51,9 @@ const Events: React.FC = () => {
           {/* Search */}
           <div className="relative w-full md:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <input 
-              type="text" 
-              placeholder="Search events..." 
+            <input
+              type="text"
+              placeholder="Search events..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-slate-900 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 transition-colors"
@@ -62,7 +62,7 @@ const Events: React.FC = () => {
         </div>
 
         {/* Grid */}
-        <motion.div 
+        <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
@@ -95,8 +95,8 @@ const Events: React.FC = () => {
                 {/* Content */}
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="mb-4">
-                     <h3 className="text-xl font-serif font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{event.title}</h3>
-                     <p className="text-slate-400 text-sm line-clamp-2">{event.description}</p>
+                    <h3 className="text-xl font-serif font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{event.title}</h3>
+                    <p className="text-slate-400 text-sm line-clamp-2">{event.description}</p>
                   </div>
 
                   <div className="space-y-2 mb-6">
@@ -135,7 +135,7 @@ const Events: React.FC = () => {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">No events found</h3>
             <p className="text-slate-500">Try adjusting your filters or search query.</p>
-            <button 
+            <button
               onClick={() => { setFilter('all'); setSearch(''); }}
               className="mt-6 text-amber-400 hover:underline"
             >
