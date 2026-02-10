@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         <Link to="/" className="flex items-center space-x-2 group">
           <img src={logo} alt="Logo" className="w-14 h-14 object-contain" />
           <span className="text-2xl font-serif font-bold text-white tracking-wide">
-            PORT<span className="text-amber-400">.</span>
+            PORT <span className="text-amber-400">26'</span>
           </span>
         </Link>
 

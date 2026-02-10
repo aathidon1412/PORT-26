@@ -7,17 +7,19 @@ import { WORKSHOPS_TOWNSCRIPT_URL } from '../constants';
 const Workshops: React.FC = () => {
   return (
     <div className="min-h-screen pb-12">
-      {/* Hero */}
-      <div className="relative bg-slate-900 py-20 border-b border-white/5 overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-violet-900/20 to-transparent" />
-        <div className="max-w-8xl mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h4 className="text-amber-400 font-bold tracking-widest uppercase text-sm mb-4">Skill Development</h4>
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6">Master Class <br />Workshops</h1>
-            <p className="text-slate-400 text-lg">
-              Learn from industry experts. Hands-on sessions designed to elevate your technical prowess and creative thinking.
-            </p>
-          </div>
+      {/* Hero (match Events page header design) */}
+      <div className="bg-gradient-to-b from-slate-900 to-slate-950 py-16 border-b border-white/5">
+        <div className="max-w-8xl mx-auto px-4 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-6xl font-serif font-bold text-white mb-6"
+          >
+            Master Class <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-300">Workshops</span>
+          </motion.h1>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+            Learn from industry experts. Hands-on sessions designed to elevate your technical prowess and creative thinking.
+          </p>
         </div>
       </div>
 
