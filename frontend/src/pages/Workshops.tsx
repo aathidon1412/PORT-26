@@ -6,14 +6,14 @@ import { WORKSHOPS } from '../constants';
 
 const Workshops: React.FC = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12">
+    <div className="min-h-screen pb-12">
       {/* Hero */}
       <div className="relative bg-slate-900 py-20 border-b border-white/5 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-violet-900/20 to-transparent" />
         <div className="max-w-8xl mx-auto px-4 relative z-10">
           <div className="max-w-3xl">
             <h4 className="text-amber-400 font-bold tracking-widest uppercase text-sm mb-4">Skill Development</h4>
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6">Master Class <br/>Workshops</h1>
+            <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-6">Master Class <br />Workshops</h1>
             <p className="text-slate-400 text-lg">
               Learn from industry experts. Hands-on sessions designed to elevate your technical prowess and creative thinking.
             </p>
@@ -23,7 +23,7 @@ const Workshops: React.FC = () => {
 
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 mt-16 space-y-12">
         {WORKSHOPS.map((workshop, idx) => (
-          <motion.div 
+          <motion.div
             key={workshop.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -86,9 +86,9 @@ const Workshops: React.FC = () => {
                       <span>{workshop.spotsFilled} / {workshop.spotsTotal}</span>
                     </div>
                     <div className="w-full sm:w-48 h-2 bg-slate-800 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-violet-600 to-amber-500" 
-                        style={{ width: `${(workshop.spotsFilled / workshop.spotsTotal) * 100}%` }} 
+                      <div
+                        className="h-full bg-gradient-to-r from-violet-600 to-amber-500"
+                        style={{ width: `${(workshop.spotsFilled / workshop.spotsTotal) * 100}%` }}
                       />
                     </div>
                   </div>
