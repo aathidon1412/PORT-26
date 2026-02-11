@@ -14,7 +14,6 @@ const FeaturedEventsSection: React.FC = () => {
               <h2 className="text-4xl md:text-5xl font-serif font-bold bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-lg">
                 Featured Events
               </h2>
-              <div className="absolute -bottom-1 left-0 w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full animate-pulse"></div>
             </div>
             <p className="text-slate-400 max-w-xl">Discover our flagship competitions designed to test your limits.</p>
           </div>

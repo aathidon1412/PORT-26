@@ -10,13 +10,13 @@ const CoordinatorsSection: React.FC = () => {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
-      
+
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -37,7 +37,7 @@ const CoordinatorsSection: React.FC = () => {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {COORDINATORS.map((coordinator, idx) => (
-            <motion.div 
+            <motion.div
               key={coordinator.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ const CoordinatorsSection: React.FC = () => {
             >
               {/* Card Glow Effect */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-600 to-amber-500 rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500" />
-              
+
               {/* Card */}
               <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 h-full group-hover:border-white/20 transition-all duration-500">
                 {/* Icon */}
@@ -101,8 +101,8 @@ const CoordinatorsSection: React.FC = () => {
           className="text-center mt-16"
         >
           <p className="text-slate-500 text-sm">
-            Can't find what you're looking for? 
-            <a href="mailto:contact@port2026.com" className="text-amber-400 hover:text-amber-300 ml-2 underline underline-offset-4">
+            Can't find what you're looking for? <br className="md:hidden" />
+            <a href="mailto:contact@port2026.com" className="text-amber-400 hover:text-amber-300 md:ml-2 underline underline-offset-4">
               Send us an email
             </a>
           </p>

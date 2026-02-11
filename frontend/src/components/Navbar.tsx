@@ -16,6 +16,11 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Events', path: '/events' },
@@ -24,11 +29,7 @@ const Navbar: React.FC = () => {
   ];
 
   const scrollToTop = () => {
-    try {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (e) {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (
@@ -81,24 +82,33 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-950 border-b border-white/10"
+            initial={{ opacity: 0, height: 0, y: -20 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="md:hidden bg-slate-950 border-b border-white/10 overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-6 space-y-1">
-              {navLinks.map((link) => (
-                <Link
+            <div className="px-4 pt-2 pb-3 space-y-1">
+              {navLinks.map((link, index) => (
+                <motion.div
                   key={link.name}
-                  to={link.path}
-                  onClick={() => {
-                    setIsOpen(false);
-                    scrollToTop();
-                  }}
-                  className={`block px-3 py-4 text-base font-medium border-b border-white/5 ${location.pathname === link.path ? 'text-amber-400' : 'text-slate-300'}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    to={link.path}
+                    onClick={() => {
+                      setIsOpen(false);
+                      scrollToTop();
+                    }}
+                    className={`block px-3 py-4 text-base font-medium hover:text-amber-400 transition-colors duration-300 ${index !== navLinks.length - 1 ? 'border-b border-white/5' : ''
+                      } ${location.pathname === link.path ? 'text-amber-400' : 'text-slate-300'}`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>

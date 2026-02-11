@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { ChevronDown } from 'lucide-react';
 import Particles from '../components/Particles';
+import logo from '../images/Logo 3.png';
 
 const HeroSection: React.FC = () => {
   const { scrollY } = useScroll();
@@ -38,16 +39,20 @@ const HeroSection: React.FC = () => {
       </div>
 
       <div className="relative z-10 max-w-8xl mx-auto px-4 text-center">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <h2 className="text-amber-400 font-medium tracking-[0.2em] uppercase mb-4 text-sm md:text-base underline underline-offset-4">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="pb-20">
+          <h2 className="text-amber-400 font-medium tracking-[0.2em] uppercase text-sm md:text-base underline underline-offset-4">
             March 5-6, 2026 • Tech City
           </h2>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white mb-8 leading-tight">
-            PORT <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-300">
-              2026
-            </span>
-          </h1>
+          <div className="flex justify-center -my-8">
+            <motion.img
+              src={logo}
+              alt="PORT 26' Logo"
+              className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            />
+          </div>
           <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed">
             Where innovation meets excellence. Join us for the most prestigious technical and cultural symposium of the year.
           </p>

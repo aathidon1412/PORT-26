@@ -18,7 +18,7 @@ function AnimatedCounter({ from, to, duration = 2 }: { from: number; to: number;
   useEffect(() => {
     const controls = animate(count, to, { duration, ease: "easeOut" });
     const unsubscribe = rounded.on("change", (latest) => setDisplayValue(latest));
-    
+
     return () => {
       controls.stop();
       unsubscribe();
@@ -58,33 +58,33 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       onViewportEnter={() => setIsInView(true)}
-      transition={{ 
-        delay, 
+      transition={{
+        delay,
         duration: 0.7,
         type: "spring",
         stiffness: 100,
         damping: 12
       }}
-      whileHover={{ 
-        scale: 1.05, 
+      whileHover={{
+        scale: 1.05,
         y: -5,
         transition: { duration: 0.3 }
       }}
       className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/50 transition-all duration-300 overflow-hidden"
     >
       {/* Animated gradient background */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
         className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-transparent rounded-2xl"
       />
-      
+
       {/* Shimmer effect on hover */}
       <motion.div
         initial={{ x: '-100%' }}
@@ -94,18 +94,18 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
       />
 
       <div className="relative z-10 flex flex-col items-center text-center">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0, rotate: -180 }}
           whileInView={{ scale: 1, rotate: 0 }}
           viewport={{ once: true }}
-          transition={{ 
-            delay: delay + 0.2, 
+          transition={{
+            delay: delay + 0.2,
             type: "spring",
             stiffness: 200,
             damping: 15
           }}
-          whileHover={{ 
-            scale: 1.15, 
+          whileHover={{
+            scale: 1.15,
             rotate: 5,
             transition: { duration: 0.3 }
           }}
@@ -113,58 +113,58 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
         >
           {icon}
         </motion.div>
-        
+
         {isCountdown && targetDate ? (
           <div className="flex flex-col gap-2 mb-2">
             <div className="flex gap-2 text-center justify-center">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: delay + 0.3 }}
                 className="flex flex-col"
               >
-                <motion.span 
+                <motion.span
                   key={timeLeft.days}
                   initial={{ scale: 1.2, color: '#a78bfa' }}
                   animate={{ scale: 1, color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className="text-3xl font-serif font-bold text-white"
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.days}
                 </motion.span>
                 <span className="text-[10px] text-slate-400 uppercase tracking-wider">Days</span>
               </motion.div>
               <span className="text-3xl font-bold text-slate-600">:</span>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: delay + 0.4 }}
                 className="flex flex-col"
               >
-                <motion.span 
+                <motion.span
                   key={timeLeft.hours}
                   initial={{ scale: 1.2, color: '#a78bfa' }}
                   animate={{ scale: 1, color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className="text-3xl font-serif font-bold text-white"
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.hours.toString().padStart(2, '0')}
                 </motion.span>
                 <span className="text-[10px] text-slate-400 uppercase tracking-wider">Hrs</span>
               </motion.div>
               <span className="text-3xl font-bold text-slate-600">:</span>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: delay + 0.5 }}
                 className="flex flex-col"
               >
-                <motion.span 
+                <motion.span
                   key={timeLeft.minutes}
                   initial={{ scale: 1.2, color: '#a78bfa' }}
                   animate={{ scale: 1, color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className="text-3xl font-serif font-bold text-white"
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.minutes.toString().padStart(2, '0')}
                 </motion.span>
@@ -173,8 +173,8 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
             </div>
           </div>
         ) : (
-          <motion.h3 
-            className="text-4xl font-serif font-bold text-white mb-2"
+          <motion.h3
+            className="text-3xl md:text-4xl font-serif font-bold text-white mb-2"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -190,8 +190,8 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
             )}
           </motion.h3>
         )}
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
