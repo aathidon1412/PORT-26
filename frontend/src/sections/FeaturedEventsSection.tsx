@@ -1,5 +1,4 @@
 import React from 'react';
-import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { ArrowRight } from 'lucide-react';
 import EventCardPreview from '../components/EventCardPreview';
 import { EVENTS } from '../constants';
@@ -17,7 +16,7 @@ const FeaturedEventsSection: React.FC = () => {
             </div>
             <p className="text-slate-400 max-w-xl">Discover our flagship competitions designed to test your limits.</p>
           </div>
-          <a href={EVENTS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer" className="hidden md:flex items-center text-amber-400 hover:text-amber-300 font-medium transition-colors">
+          <a href="/#/events" className="hidden md:flex items-center text-amber-400 hover:text-amber-300 font-medium transition-colors">
             View All Events <ArrowRight className="w-5 h-5 ml-2" />
           </a>
         </div>
@@ -29,7 +28,7 @@ const FeaturedEventsSection: React.FC = () => {
         </div>
 
         <div className="mt-12 text-center md:hidden">
-          <a href={EVENTS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-amber-400 hover:text-amber-300 font-medium">
+          <a href="/#/events" className="inline-flex items-center text-amber-400 hover:text-amber-300 font-medium">
             View All Events <ArrowRight className="w-5 h-5 ml-2" />
           </a>
         </div>
