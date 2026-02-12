@@ -40,7 +40,7 @@ const HeroSection: React.FC = () => {
         />
       </div>
 
-      <div className="relative z-10 max-w-8xl mx-auto px-4 text-center">
+      <div className="relative z-10 max-w-8xl mx-auto px-4 text-center mt-8">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="pb-20">
           <h2 className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-medium tracking-[0.2em] uppercase text-sm md:text-base underline underline-offset-4`}>
             March 5-6, 2026

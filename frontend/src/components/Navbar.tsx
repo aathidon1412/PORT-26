@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import logo from '../assets/imgs/logo.png';
@@ -27,7 +26,6 @@ const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Events', path: '/events' },
     { name: 'Workshops', path: '/workshops' },
-    { name: 'Register', path: '/register' },
   ];
 
   const scrollToTop = () => {
@@ -52,11 +50,10 @@ const Navbar: React.FC = () => {
                 key={link.name}
                 to={link.path}
                 onClick={scrollToTop}
-                className={`relative text-sm uppercase tracking-widest font-medium transition-colors duration-300 ${
-                  location.pathname === link.path 
-                    ? theme === 'light' ? 'text-amber-600' : 'text-amber-400' 
-                    : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
-                }`}
+                className={`relative text-sm uppercase tracking-widest font-medium transition-colors duration-300 ${location.pathname === link.path
+                  ? theme === 'light' ? 'text-amber-600' : 'text-amber-400'
+                  : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
+                  }`}
               >
                 {link.name}
                 {location.pathname === link.path && (
@@ -76,11 +73,11 @@ const Navbar: React.FC = () => {
           >
             {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </button>
-          <a href={EVENTS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer">
+          <Link to="/tickets" onClick={scrollToTop}>
             <button className={`px-6 py-2 bg-gradient-to-r ${colors.gradientFrom} ${colors.gradientTo} text-white font-medium rounded-full shadow-lg ${theme === 'light' ? 'shadow-violet-500/50 hover:shadow-violet-500/80' : 'shadow-violet-900/50 hover:shadow-violet-900/80'} hover:scale-105 transition-all duration-300 text-sm`}>
               Get Tickets
             </button>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Toggle & Theme */}
@@ -123,18 +120,33 @@ const Navbar: React.FC = () => {
                       setIsOpen(false);
                       scrollToTop();
                     }}
-                    className={`block px-3 py-4 text-base font-medium transition-colors duration-300 ${
-                      index !== navLinks.length - 1 ? `border-b ${colors.border}` : ''
-                    } ${
-                      location.pathname === link.path 
-                        ? theme === 'light' ? 'text-amber-600' : 'text-amber-400'
-                        : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
-                    }`}
+                    className={`block px-3 py-4 text-base font-medium transition-colors duration-300 border-b ${colors.border} ${location.pathname === link.path
+                      ? theme === 'light' ? 'text-amber-600' : 'text-amber-400'
+                      : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
+                      }`}
                   >
                     {link.name}
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ delay: navLinks.length * 0.1, duration: 0.3 }}
+                className="pt-2"
+              >
+                <Link
+                  to="/tickets"
+                  onClick={() => {
+                    setIsOpen(false);
+                    scrollToTop();
+                  }}
+                  className={`block w-full text-center px-3 py-3 rounded-xl font-bold text-sm bg-gradient-to-r ${colors.gradientFrom} ${colors.gradientTo} text-white shadow-lg`}
+                >
+                  Get Tickets
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const AboutSection: React.FC = () => {
   const { theme, colors } = useTheme();
-  
+
   return (
     <section className={`relative max-w-8xl lg:px-10 py-24 ${colors.bgPrimary} overflow-hidden transition-colors duration-300`}>
       {/* Abstract Background Elements */}
@@ -31,11 +31,9 @@ const AboutSection: React.FC = () => {
               </span>
             </h2>
             <p className={`${colors.textSecondary} text-lg leading-relaxed mb-6 text-justify transition-colors duration-300`}>
-              We are the architects of the digital realm, fostering a culture where code meets creativity. Our mission is to bridge the gap between theoretical knowledge and real-world application, empowering the next generation of tech leaders.
-            </p>
+Since its inception in 1998, our department has stood as a beacon of technical excellence, driven by a highly specialized faculty dedicated to shaping world-class engineers. With expertise spanning critical domains like Cyber Security, AI, and Cloud Computing, we empower students to master the complexities of the digital revolution and lead with confidence in a rapidly evolving tech landscape.            </p>
             <p className={`${colors.textTertiary} leading-relaxed font-light text-justify transition-colors duration-300`}>
-              Through cutting-edge curriculum and industry-grade events like PORT, we provide a platform for students to challenge the status quo, innovate fearlessly, and engineer solutions for tomorrow's complex problems.
-            </p>
+We are proud to be a nationally recognized hub of innovation, having earned the prestigious AICTE-CII Award for the Best Industry-Linked Department. Our curriculum is precision-engineered to balance advanced research with practical application, ensuring every graduate is "industry-ready" and prepared to deliver professional impact from day one.            </p>
           </motion.div>
 
           {/* Abstract Visual - The "Core" */}
@@ -48,7 +46,7 @@ const AboutSection: React.FC = () => {
           >
             {/* Grid Background */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
-            
+
             {/* Glowing Core */}
             <div className="absolute w-40 h-40 bg-cyan-500/30 rounded-full blur-[60px] animate-pulse" />
             <div className="absolute w-64 h-64 bg-violet-500/20 rounded-full blur-[80px] animate-pulse delay-75" />
@@ -65,10 +63,10 @@ const AboutSection: React.FC = () => {
 
             {/* Floating Orbits */}
             <div className="absolute w-full h-full animate-[spin_20s_linear_infinite] opacity-30">
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border border-cyan-500/30 rounded-full border-dashed" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border border-cyan-500/30 rounded-full border-dashed" />
             </div>
             <div className="absolute w-full h-full animate-[spin_15s_linear_infinite_reverse] opacity-20">
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-violet-500/30 rounded-full" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-violet-500/30 rounded-full" />
             </div>
 
             {/* Floating Icons */}

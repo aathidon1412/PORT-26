@@ -70,7 +70,7 @@ const Workshops: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right hidden sm:block">
-                    <div className={`text-3xl font-bold ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>${workshop.price}</div>
+                    <div className={`text-3xl font-bold ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>₹{workshop.price}</div>
                     <div className={`${colors.textTertiary} text-xs uppercase tracking-wide`}>Registration Fee</div>
                   </div>
                 </div>
@@ -98,17 +98,9 @@ const Workshops: React.FC = () => {
                 </div>
 
                 <div className={`mt-auto flex flex-col sm:flex-row items-center justify-between gap-6 border-t ${colors.border} pt-8`}>
-                  <div className="w-full sm:w-auto">
-                    <div className={`flex justify-between text-xs ${colors.textTertiary} mb-2`}>
-                      <span>Seats Filled</span>
-                      <span>{workshop.spotsFilled} / {workshop.spotsTotal}</span>
-                    </div>
-                    <div className={`w-full sm:w-48 h-2 ${theme === 'light' ? 'bg-slate-300' : 'bg-slate-800'} rounded-full overflow-hidden`}>
-                      <div
-                        className="h-full bg-gradient-to-r from-violet-600 to-amber-500"
-                        style={{ width: `${(workshop.spotsFilled / workshop.spotsTotal) * 100}%` }}
-                      />
-                    </div>
+                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${theme === 'light' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`}>
+                    <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
+                    Spots Available
                   </div>
                   <a href={WORKSHOPS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer" className={`w-full sm:w-auto px-8 py-3 ${theme === 'light' ? 'bg-slate-900 hover:bg-amber-700' : 'bg-white hover:bg-amber-400'} ${theme === 'light' ? 'text-white' : 'text-slate-900'} font-bold rounded-lg transition-colors text-center`}>
                     Register Now

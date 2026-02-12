@@ -4,6 +4,8 @@ export interface Event {
   category: 'technical' | 'non-technical';
   type: string; // e.g., 'Hackathon', 'Cultural', 'Sports'
   description: string;
+  detailedDescription?: string;
+  teamCount?: string;
   date: string;
   time: string;
   venue: string;
@@ -37,6 +39,6 @@ export interface Coordinator {
   name: string;
   role: string;
   type: 'faculty' | 'student' | 'college';
-  contact: string;
-  email: string;
+  contact?: string;
+  email?: string;
 }

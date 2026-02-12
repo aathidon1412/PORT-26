@@ -70,7 +70,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
       )}
 
       {/* Track Line - Desktop & Mobile (Left Aligned on Mobile/Desktop for tightness) */}
-      <div className={`absolute top-14 bottom-0 left-6 md:left-8 lg:left-10 w-px bg-gradient-to-b ${theme.line} to-transparent opacity-40`} />
+      <div className={`absolute top-28 bottom-0 left-6 md:left-8 lg:left-10 w-px bg-gradient-to-b ${theme.line} to-transparent opacity-40`} />
 
       {/* Timeline Dots are rendered inside each card to keep alignment correct */}
 
@@ -189,7 +189,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
 
 const TimelineSection: React.FC = () => {
   const { theme, colors } = useTheme();
-  
+
   const technicalTrack: TimelineItem[] = [
     { time: '', title: 'Think it. Link it', desc: '' },
     { time: '', title: 'AI FORGE', desc: '' },
@@ -203,9 +203,10 @@ const TimelineSection: React.FC = () => {
     { time: '', title: 'Gen-Aurora', desc: '' },
   ];
   const workshopTrack: TimelineItem[] = [
-    { time: '', title: 'Gen AI Masterclass', desc: '' },
-    { time: '', title: 'UI/UX Design Systems', desc: '' },
-    { time: '', title: 'Cloud Architecture', desc: '' },
+    { time: '', title: 'HACKPROOFING THE FUTURE', desc: '' },
+    { time: '', title: 'PROMPT TO PRODUCT', desc: '' },
+    { time: '', title: 'FULL STACK FUSION', desc: '' },
+    { time: '', title: 'LEARN HOW TO THINK, NOT TO CODE', desc: '' },
   ];
 
   return (
@@ -238,7 +239,7 @@ const TimelineSection: React.FC = () => {
           >
             Two action-packed days of learning and competition. Curate your own experience from dawn till dusk.
           </motion.p>
-          
+
         </div>
 
         {/* Desktop: Single-row layout with labels on top */}
@@ -270,7 +271,7 @@ const TimelineSection: React.FC = () => {
           <div className="grid grid-cols-3 gap-8 lg:gap-10 relative">
             {/* Vertical divider between Day 1 and Day 2 */}
             <div className="absolute left-1/3 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-      
+
             <TrackColumn
               title="Workshops"
               icon={<PenTool />}
