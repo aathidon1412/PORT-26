@@ -7,6 +7,16 @@ import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 const Events: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'technical' | 'non-technical'>('all');
   const [search, setSearch] = useState('');
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (id: string) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   const filteredEvents = EVENTS.filter(event => {
     const matchesFilter = filter === 'all' || event.category === filter;
@@ -67,70 +77,81 @@ const Events: React.FC = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence>
-            {filteredEvents.map((event) => (
-              <motion.div id={event.id}
-                key={event.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="bg-slate-900 rounded-2xl border border-white/5 overflow-hidden hover:border-violet-500/30 transition-colors group flex flex-col h-full"
-              >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img src={event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${event.category === 'technical' ? 'bg-blue-600/90 text-white' : 'bg-pink-600/90 text-white'}`}>
-                      {event.type}
-                    </span>
-                  </div>
-                  {event.status === 'filling-fast' && (
-                    <div className="absolute top-4 right-4 bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-full animate-pulse">
-                      Filling Fast
+            {filteredEvents.map((event) => {
+              const isExpanded = expandedCards.has(event.id);
+              return (
+                <motion.div id={event.id}
+                  key={event.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-slate-900 rounded-2xl border border-white/5 overflow-hidden hover:border-violet-500/30 transition-colors group flex flex-col h-full"
+                >
+                  {/* Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img src={event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div className="absolute top-4 left-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${event.category === 'technical' ? 'bg-blue-600/90 text-white' : 'bg-pink-600/90 text-white'}`}>
+                        {event.type}
+                      </span>
                     </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-serif font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{event.title}</h3>
-                    <p className="text-slate-400 text-sm line-clamp-2">{event.description}</p>
-                  </div>
-
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center text-slate-400 text-sm">
-                      <Calendar className="w-4 h-4 mr-2 text-violet-500" />
-                      {event.date} • {event.time}
-                    </div>
-                    <div className="flex items-center text-slate-400 text-sm">
-                      <MapPin className="w-4 h-4 mr-2 text-violet-500" />
-                      {event.venue}
-                    </div>
-                    {event.price ? (
-                      <div className="text-amber-400 font-bold text-lg mt-2">
-                        ${event.price} <span className="text-slate-500 text-xs font-normal">/ person</span>
+                    {event.status === 'filling-fast' && (
+                      <div className="absolute top-4 right-4 bg-amber-500 text-slate-900 text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+                        Filling Fast
                       </div>
-                    ) : (
-                      <div className="text-green-400 font-bold text-lg mt-2">Free</div>
                     )}
                   </div>
 
-                  <div className="mt-auto">
-                    {event.status === 'closed' ? (
-                      <div className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 bg-slate-800 text-slate-500 cursor-not-allowed`}>
-                        Registration Closed
+                  {/* Content */}
+                  <div className="p-6 flex-grow flex flex-col">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-serif font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{event.title}</h3>
+                      <p className={`text-slate-400 text-sm leading-relaxed ${isExpanded ? '' : 'line-clamp-2'}`}>
+                        {event.description}
+                      </p>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); toggleExpand(event.id); }}
+                        className="mt-2 text-xs font-semibold tracking-wide text-violet-500 hover:text-amber-300 group-hover:text-amber-300 transition-colors"
+                      >
+                        {isExpanded ? '— Show less' : '+ Read more'}
+                      </button>
+                    </div>
+
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center text-slate-400 text-sm">
+                        <Calendar className="w-4 h-4 mr-2 text-violet-500" />
+                        {event.date} • {event.time}
                       </div>
-                    ) : (
-                      <a href={EVENTS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer" className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 bg-white/5 hover:bg-violet-600 text-white hover:shadow-lg hover:shadow-violet-900/40`}>
-                        Register Now
-                      </a>
-                    )}
+                      <div className="flex items-center text-slate-400 text-sm">
+                        <MapPin className="w-4 h-4 mr-2 text-violet-500" />
+                        {event.venue}
+                      </div>
+                      {event.price ? (
+                        <div className="text-amber-400 font-bold text-lg mt-2">
+                          ${event.price} <span className="text-slate-500 text-xs font-normal">/ person</span>
+                        </div>
+                      ) : (
+                        <div className="text-green-400 font-bold text-lg mt-2">Free</div>
+                      )}
+                    </div>
+
+                    <div className="mt-auto">
+                      {event.status === 'closed' ? (
+                        <div className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 bg-slate-800 text-slate-500 cursor-not-allowed`}>
+                          Registration Closed
+                        </div>
+                      ) : (
+                        <a href={EVENTS_TOWNSCRIPT_URL} target="_blank" rel="noopener noreferrer" className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 bg-white/5 hover:bg-violet-600 text-white hover:shadow-lg hover:shadow-violet-900/40`}>
+                          Register Now
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
