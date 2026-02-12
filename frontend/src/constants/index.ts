@@ -1,4 +1,7 @@
 import { Event, Workshop, Coordinator } from '../types';
+import ws1Img from '../assets/workshops/workshop_1.png';
+import ws2Img from '../assets/workshops/workshop_2.png';
+import ws3Img from '../assets/workshops/workshop_3.png';
 
 export const EVENTS: Event[] = [
   {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
-import logo from '../images/Logo 3.png';
+import logo from '../assets/imgs/logo.png';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Navbar: React.FC = () => {

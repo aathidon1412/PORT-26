@@ -1,22 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Filter, Search, X, Users } from 'lucide-react';
 import { EVENTS } from '../constants';
 import { Event } from '../types';
+import { useLocation } from 'react-router-dom';
 import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 
+// Load local images from src/assets/events if present (named by event id)
+const localEventImages: Record<string, string> = (() => {
+  const modules = import.meta.glob('../assets/events/*.{jpg,png,webp}', { eager: true, import: 'default' }) as Record<string, string>;
+  const map: Record<string, string> = {};
+  Object.entries(modules).forEach(([path, url]) => {
+    const file = path.split('/').pop() || path;
+    const name = file.split('.').slice(0, -1).join('.');
+    map[name] = url;
+  });
+  return map;
+})();
+
 const Events: React.FC = () => {
   const { theme, colors } = useTheme();
+  const location = useLocation();
+
+  useEffect(() => {
+    // location.hash for HashRouter can look like "#/events#eventId" or similar.
+    const raw = window.location.hash || location.hash || '';
+    const parts = String(raw).split('#');
+    const anchor = parts.length > 1 ? parts[parts.length - 1] : null;
+    if (!anchor) return;
+    setTimeout(() => {
+      const el = document.getElementById(anchor);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }, [location.key, location.pathname, location.hash]);
   const [filter, setFilter] = useState<'all' | 'technical' | 'non-technical'>('all');
   const [search, setSearch] = useState('');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
-  const filteredEvents = EVENTS.filter(event => {
+  let filteredEvents = EVENTS.filter(event => {
     const matchesFilter = filter === 'all' || event.category === filter;
     const matchesSearch = event.title.toLowerCase().includes(search.toLowerCase()) || event.type.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  // When viewing "All" ensure events are shown in alphabetical order
+  if (filter === 'all') {
+    filteredEvents = filteredEvents.slice().sort((a, b) => a.title.localeCompare(b.title));
+  }
 
   return (
     <div className="min-h-screen pb-12">
@@ -84,7 +115,7 @@ const Events: React.FC = () => {
                 >
                   {/* Image */}
                   <div className="relative h-48 overflow-hidden">
-                    <img src={event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={localEventImages[event.id] ?? event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                     <div className="absolute top-4 left-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${event.category === 'technical' ? 'bg-blue-600/90 text-white' : 'bg-pink-600/90 text-white'}`}>
                         {event.type}

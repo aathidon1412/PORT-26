@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, Music, PenTool } from 'lucide-react';
 import { EVENTS, WORKSHOPS } from '../constants';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 interface TimelineItem {
@@ -79,11 +80,29 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
           let href = actionUrl ?? '#';
           const titleLower = evt.title.toLowerCase();
           const workshopMatch = WORKSHOPS.find(w => w.title.toLowerCase() === titleLower || w.title.toLowerCase().includes(titleLower) || titleLower.includes(w.title.toLowerCase()));
-          if (workshopMatch) {
-            href = `/#/workshops#${workshopMatch.id}`;
+          // Fallback fuzzy/token overlap matcher
+          const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+          const getBestMatchByTokens = <T extends { title: string }>(items: T[], q: string): T | undefined => {
+            const qTokens = normalize(q);
+            if (qTokens.length === 0) return undefined;
+            let best: { item?: T; score: number } = { item: undefined, score: 0 };
+            for (const it of items) {
+              const itTokens = normalize(it.title);
+              const common = itTokens.filter(t => qTokens.includes(t));
+              const score = common.length / Math.min(itTokens.length, qTokens.length);
+              if (score > best.score) best = { item: it, score };
+            }
+            return best.score >= 0.5 ? best.item : undefined;
+          };
+          let workshopMatchFinal = workshopMatch;
+          if (!workshopMatchFinal) workshopMatchFinal = getBestMatchByTokens(WORKSHOPS, evt.title);
+          if (workshopMatchFinal) {
+            href = `/workshops#${workshopMatchFinal.id}`;
           } else {
             const eventMatch = EVENTS.find(e => e.title.toLowerCase() === titleLower || e.title.toLowerCase().includes(titleLower) || titleLower.includes(e.title.toLowerCase()));
-            if (eventMatch) href = `/#/events#${eventMatch.id}`;
+            let eventMatchFinal = eventMatch;
+            if (!eventMatchFinal) eventMatchFinal = getBestMatchByTokens(EVENTS, evt.title as any);
+            if (eventMatchFinal) href = `/events#${eventMatchFinal.id}`;
           }
 
           return (
@@ -131,7 +150,16 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                 </motion.div>
               </div>
 
-              <a href={href} className="block">
+              <Link to={href} className="block" onClick={() => {
+                    const parts = String(href).split('#');
+                    const anchor = parts.length > 1 ? parts[1] : null;
+                    if (!anchor) return;
+                    // Try to scroll to anchor after a short delay to allow route change
+                    setTimeout(() => {
+                      const el = document.getElementById(anchor);
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 250);
+                  }}>
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
@@ -150,7 +178,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                     <h4 className={`${colors.textPrimary} font-bold text-sm md:text-base transition-colors leading-tight`}>{evt.title}</h4>
                   </div>
                 </motion.div>
-              </a>
+                </Link>
             </div>
           );
         })}

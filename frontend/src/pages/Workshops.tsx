@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { WORKSHOPS } from '../constants';
+import { useLocation } from 'react-router-dom';
 import { WORKSHOPS_TOWNSCRIPT_URL } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Workshops: React.FC = () => {
   const { theme, colors } = useTheme();
+  const location = useLocation();
 
+  useEffect(() => {
+    const raw = window.location.hash || location.hash || '';
+    const parts = String(raw).split('#');
+    const anchor = parts.length > 1 ? parts[parts.length - 1] : null;
+    if (!anchor) return;
+    setTimeout(() => {
+      const el = document.getElementById(anchor);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }, [location.key, location.pathname, location.hash]);
+  
   return (
     <div className="min-h-screen pb-12">
       {/* Hero (match Events page header design) */}
@@ -64,7 +77,7 @@ const Workshops: React.FC = () => {
 
                 {/* Instructor */}
                 <div className={`flex items-center mb-8 p-4 ${theme === 'light' ? 'bg-slate-100 border-slate-200' : 'bg-white/5 border-white/5'} rounded-xl border transition-colors duration-300`}>
-                  <img src={workshop.instructor.image} alt={workshop.instructor.name} className="w-12 h-12 rounded-full border-2 border-violet-500 mr-4" />
+                  <img src={workshop.instructor.image} alt={workshop.instructor.name} className="w-12 h-12 rounded-full border-2 border-violet-500 mr-4 object-cover" />
                   <div>
                     <div className={`${colors.textPrimary} font-bold transition-colors duration-300`}>{workshop.instructor.name}</div>
                     <div className={`${theme === 'light' ? 'text-violet-600' : 'text-violet-400'} text-sm`}>{workshop.instructor.role}</div>

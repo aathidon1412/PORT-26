@@ -5,6 +5,18 @@ import { Calendar, ArrowRight } from 'lucide-react';
 import type { Event } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 
+// Load any local images placed in src/assets/events named like <id>.jpg/png/webp
+const localEventImages: Record<string, string> = (() => {
+  const modules = import.meta.glob('../assets/events/*.{jpg,png,webp}', { eager: true, import: 'default' }) as Record<string, string>;
+  const map: Record<string, string> = {};
+  Object.entries(modules).forEach(([path, url]) => {
+    const file = path.split('/').pop() || path;
+    const name = file.split('.').slice(0, -1).join('.');
+    map[name] = url;
+  });
+  return map;
+})();
+
 interface EventCardPreviewProps {
   event: Event;
 }
@@ -17,7 +29,7 @@ const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => {
       whileHover={{ y: -10 }}
       className="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer"
     >
-      <img src={event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      <img src={localEventImages[event.id] ?? event.image} alt={event.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
       <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'light' ? 'from-white via-white/40' : 'from-slate-950 via-slate-950/40'} to-transparent opacity-90`} />
 
       <div className="absolute bottom-0 left-0 right-0 p-6">

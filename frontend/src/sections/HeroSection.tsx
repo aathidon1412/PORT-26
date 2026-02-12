@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { ChevronDown } from 'lucide-react';
 import Particles from '../components/Particles';
-import logo from '../images/Logo 3.png';
+import logo from '../assets/imgs/logo.png';
 import { useTheme } from '../contexts/ThemeContext';
 
 const HeroSection: React.FC = () => {
