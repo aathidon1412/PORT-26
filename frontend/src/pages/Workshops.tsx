@@ -77,7 +77,9 @@ const Workshops: React.FC = () => {
 
                 {/* Instructor */}
                 <div className={`flex items-center mb-8 p-4 ${theme === 'light' ? 'bg-slate-100 border-slate-200' : 'bg-white/5 border-white/5'} rounded-xl border transition-colors duration-300`}>
-                  <img src={workshop.instructor.image} alt={workshop.instructor.name} className="w-12 h-12 rounded-full border-2 border-violet-500 mr-4 object-cover" />
+                  <div className="w-12 h-12 rounded-full border-2 border-violet-500 mr-4 bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {workshop.instructor.name.split(' ').map(n => n[0]).join('').slice(0,2)}
+                  </div>
                   <div>
                     <div className={`${colors.textPrimary} font-bold transition-colors duration-300`}>{workshop.instructor.name}</div>
                     <div className={`${theme === 'light' ? 'text-violet-600' : 'text-violet-400'} text-sm`}>{workshop.instructor.role}</div>

@@ -23,6 +23,7 @@ export interface Workshop {
   instructor: {
     name: string;
     role: string;
+    image: string;
   };
   date: string;
   duration: string;

@@ -2,6 +2,7 @@ import { Event, Workshop, Coordinator } from '../types';
 import ws1Img from '../assets/workshops/workshop_1.png';
 import ws2Img from '../assets/workshops/workshop_2.png';
 import ws3Img from '../assets/workshops/workshop_3.png';
+import ws4Img from '../assets/workshops/workshop_4.png';
 
 export const EVENTS: Event[] = [
   {
@@ -153,7 +154,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 0,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/hackproof/800/600'
+    image: ws1Img
   },
   {
     id: 'ws-2',
@@ -171,7 +172,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 0,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/promptproduct/800/600'
+    image: ws2Img
   },
   {
     id: 'ws-3',
@@ -189,7 +190,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 0,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/fullstack/800/600'
+    image: ws3Img
   },
   {
     id: 'ws-4',
@@ -207,7 +208,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 0,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/thinknotcode/800/600'
+    image: ws4Img
   }
 ];
 
