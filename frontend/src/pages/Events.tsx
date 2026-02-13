@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, Filter, Search, X, Users } from 'lucide-react';
+import { Calendar, MapPin, Filter, Search, X, Users, Sparkles, Ticket } from 'lucide-react';
 import { EVENTS } from '../constants';
 import { Event } from '../types';
 import { useLocation } from 'react-router-dom';
-import { EVENTS_TOWNSCRIPT_URL } from '../constants';
 import { useTheme } from '../contexts/ThemeContext';
 import RegistrationModal from '../components/RegistrationModal';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
@@ -55,8 +54,47 @@ const Events: React.FC = () => {
   return (
     <div className="min-h-screen pb-12">
       {/* Header */}
-      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} py-16 border-b ${colors.border} transition-colors duration-300`}>
-        <div className="max-w-8xl mx-auto px-4 text-center">
+      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} pb-16 pt-24 border-b ${colors.border} transition-colors duration-300 relative overflow-hidden`}>
+        {/* Animated Pricing Banner */}
+        <div className="absolute top-0 left-0 right-0 z-10">
+          <div className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-amber-500 text-white py-2">
+            <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2 overflow-hidden">
+              <motion.div
+                animate={{ x: ['0%', '-50%'] }}
+                transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+                className="flex items-center gap-8 whitespace-nowrap font-bold text-sm md:text-base tracking-wider"
+              >
+                {/* Content Block 1 */}
+                <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
+                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+                <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
+                <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
+                <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
+                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+
+                {/* Content Block 2 (Duplicate for seamless loop) */}
+                <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
+                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+                <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
+                <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
+                <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
+                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-8xl mx-auto px-4 text-center mt-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 ${theme === 'light' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'} border animate-pulse`}
+          >
+            <Ticket className="w-4 h-4" />
+            <span className="font-bold text-sm">All Access Pass: ₹350</span>
+          </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -65,7 +103,8 @@ const Events: React.FC = () => {
             Event <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-300">Schedule</span>
           </motion.h1>
           <p className={`${colors.textTertiary} max-w-2xl mx-auto text-lg transition-colors duration-300`}>
-            Explore a diverse range of technical challenges and cultural spectacles aimed at bringing out the best in you.
+            Explore a diverse range of technical challenges and cultural spectacles. <br />
+            <span className={`font-semibold ${theme === 'light' ? 'text-violet-700' : 'text-violet-400'}`}>Pay ₹350 and attend any event on the day!</span>
           </p>
         </div>
       </div>
@@ -168,13 +207,7 @@ const Events: React.FC = () => {
                           {event.teamSize}
                         </div>
                       )}
-                      {event.price ? (
-                        <div className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-bold text-lg mt-2`}>
-                          ₹{event.price} <span className={`${colors.textTertiary} text-xs font-normal`}>/ person</span>
-                        </div>
-                      ) : (
-                        <div className="text-green-400 font-bold text-lg mt-2">Free</div>
-                      )}
+                      {/* Price removed as per request - Global Pass implemented */}
                     </div>
 
                     <div className="mt-auto">
@@ -350,15 +383,7 @@ const Events: React.FC = () => {
                         </div>
                       </div>
                     )}
-                    <div className="flex items-center gap-2">
-                      <div className={`w-4 h-4 rounded-full ${selectedEvent.price ? (theme === 'light' ? 'bg-amber-600' : 'bg-amber-400') : 'bg-green-400'}`} />
-                      <div>
-                        <p className={`text-xs ${colors.textTertiary}`}>Price</p>
-                        <p className={`text-sm font-bold ${selectedEvent.price ? (theme === 'light' ? 'text-amber-700' : 'text-amber-400') : 'text-green-400'}`}>
-                          {selectedEvent.price ? `₹${selectedEvent.price}` : 'Free'}
-                        </p>
-                      </div>
-                    </div>
+                    {/* Price removed from modal */}
                   </div>
 
                   {/* Register Button - matches card style */}

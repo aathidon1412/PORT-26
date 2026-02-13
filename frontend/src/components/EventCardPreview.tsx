@@ -39,7 +39,10 @@ const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => {
       <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'light' ? 'from-white via-white/40' : 'from-slate-950 via-slate-950/40'} to-transparent opacity-90`} />
 
       <div className="absolute bottom-0 left-0 right-0 p-6">
-        <div className={`inline-block px-3 py-1 ${theme === 'light' ? 'bg-amber-600 text-white' : 'bg-amber-500 text-slate-950'} text-xs font-bold rounded-full mb-3 uppercase`}>
+        <div className={`inline-block px-3 py-1 ${event.category === 'technical'
+            ? (theme === 'light' ? 'bg-blue-600 text-white' : 'bg-blue-500 text-slate-950')
+            : (theme === 'light' ? 'bg-pink-600 text-white' : 'bg-pink-500 text-white')
+          } text-xs font-bold rounded-full mb-3 uppercase`}>
           {event.category}
         </div>
         <h3 className={`text-2xl font-serif font-bold ${theme === 'light' ? 'text-slate-900 group-hover:text-amber-700' : 'text-white group-hover:text-amber-400'} mb-2 leading-tight transition-colors`}>
