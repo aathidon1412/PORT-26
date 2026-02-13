@@ -52,7 +52,7 @@ const CoordinatorsSection: React.FC = () => {
             </div>
             <h3 className={`text-2xl font-serif font-bold ${colors.textPrimary} transition-colors duration-300`}>Faculty Coordinators</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {faculty.map((member, idx) => (
               <motion.div
                 key={member.id}
@@ -114,7 +114,7 @@ const CoordinatorsSection: React.FC = () => {
                     </div>
                   </div>
                   {member.contact && (
-                    <a href={`tel:${member.contact}`} className={`flex items-center gap-3 mt-4 pt-4 border-t ${colors.border} ${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-white'} transition-colors group/link`}>
+                    <a href={`tel:${member.contact.replace(/\s+/g, '')}`} className={`flex items-center gap-3 mt-4 pt-4 border-t ${colors.border} ${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-white'} transition-colors group/link`}>
                       <div className={`w-9 h-9 ${theme === 'light' ? 'bg-slate-100 group-hover/link:bg-violet-100' : 'bg-white/5 group-hover/link:bg-violet-600/20'} rounded-lg flex items-center justify-center transition-colors`}>
                         <Phone className="w-4 h-4" />
                       </div>
