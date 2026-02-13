@@ -80,7 +80,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                                 </li>
                                 <li className="flex gap-2">
                                     <span className={`font-semibold ${colors.textPrimary} shrink-0`}>2.</span>
-                                    <span>Registration: <strong className={colors.textPrimary}>350 INR per person</strong>.</span>
+                                    <span>Registration fee is <strong className={colors.textPrimary}>₹350 per person</strong> for each day (Workshop & Events are charged separately).</span>
                                 </li>
                                 <li className="flex gap-2">
                                     <span className={`font-semibold ${colors.textPrimary} shrink-0`}>3.</span>
@@ -91,8 +91,8 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                                     <span>Day 1: <strong className={colors.textPrimary}>One workshop per person</strong>.</span>
                                 </li>
                                 <li className="flex gap-2">
-                                    <span className={`font-semibold shrink-0 text-red-500`}>5.</span>
-                                    <span className="text-red-500 font-medium">No lunch will be provided for workshops</span>
+                                    <span className={`font-semibold shrink-0`}>5.</span>
+                                    <span className="font-medium">lunch and refreshment will be provided</span>
                                 </li>
                                 <li className="flex gap-2">
                                     <span className={`font-semibold ${colors.textPrimary} shrink-0`}>6.</span>
