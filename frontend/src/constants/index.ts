@@ -216,69 +216,70 @@ export const COORDINATORS: Coordinator[] = [
   // Faculty Coordinators
   {
     id: 'f-1',
-    name: 'Dr. R. Suresh Kumar',
-    role: 'HOD - IT Department',
+    name: 'Mr. B. Mohanraj',
+    role: 'Faculty Coordinator',
     type: 'faculty',
   },
   {
     id: 'f-2',
-    name: 'Dr. V. Jayakumar',
+    name: 'Mr. P. Dineshkumar',
     role: 'Faculty Coordinator',
     type: 'faculty',
   },
   {
     id: 'f-3',
-    name: 'Prof. S. Meenakshi',
+    name: 'Dr. P. Sakthivel',
     role: 'Faculty Coordinator',
     type: 'faculty',
   },
   {
     id: 'f-4',
-    name: 'Prof. K. Anand',
+    name: 'Mr. R. Krishna Prakash',
     role: 'Faculty Coordinator',
     type: 'faculty',
   },
   {
     id: 'f-5',
-    name: 'Prof. M. Divya',
+    name: 'Ms. P. Kruthika',
     role: 'Faculty Coordinator',
     type: 'faculty',
   },
   {
     id: 'f-6',
-    name: 'Prof. T. Ramesh',
+    name: 'Ms. L. Sindhu',
     role: 'Faculty Coordinator',
     type: 'faculty',
   },
   // Student Coordinators
+
   {
     id: 's-1',
-    name: 'Sanjay Kumar',
+    name: 'Rahul N',
     role: 'Student Coordinator',
     type: 'student',
-    contact: '+91 98765 43210',
+    contact: '+91 81489 61455',
   },
   {
     id: 's-2',
-    name: 'Priya Lakshmi',
+    name: 'Viswath Kumar A',
     role: 'Student Coordinator',
     type: 'student',
-    contact: '+91 98765 43211',
+    contact: '+91 93614 28711',
   },
   {
     id: 's-3',
-    name: 'Arun Prakash',
+    name: 'Deepak Kumar V',
     role: 'Student Coordinator',
     type: 'student',
-    contact: '+91 98765 43212',
+    contact: '+91 82481 59309',
   },
   {
     id: 's-4',
-    name: 'Deepika S',
+    name: 'Thirumalai R',
     role: 'Student Coordinator',
     type: 'student',
-    contact: '+91 98765 43213',
-  },
+    contact: '+91 90421 70454',
+  }
 ];
 
 // External booking links (Townscript)
