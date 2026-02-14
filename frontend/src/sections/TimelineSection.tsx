@@ -252,7 +252,7 @@ const TimelineSection: React.FC = () => {
               className="flex flex-col items-center justify-center w-full mb-6"
             >
               <div className="inline-flex px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-full">
-                <span className="text-emerald-400 font-bold text-sm md:text-base tracking-wider">DAY 1</span>
+                <span className="text-emerald-400 font-bold text-sm md:text-base tracking-wider">DAY 1 (05 March 2026) </span>
               </div>
             </motion.div>
 
@@ -263,7 +263,7 @@ const TimelineSection: React.FC = () => {
               className="col-span-2 flex flex-col items-center justify-center w-full mb-6"
             >
               <div className="inline-flex px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30 mx-auto">
-                <span className="font-bold text-sm md:text-base tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2</span>
+                <span className="font-bold text-sm md:text-base tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2 (06 March 2026)</span>
               </div>
             </motion.div>
           </div>
@@ -332,7 +332,7 @@ const TimelineSection: React.FC = () => {
             className="flex flex-col items-center justify-center mb-6"
           >
             <div className="inline-flex px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-full">
-              <span className="text-emerald-400 font-bold text-sm tracking-wider">DAY 1</span>
+              <span className="text-emerald-400 font-bold text-sm tracking-wider">DAY 1 (05 March 2026) </span>
             </div>
           </motion.div>
 
@@ -361,7 +361,7 @@ const TimelineSection: React.FC = () => {
             className="flex flex-col items-center justify-center mb-6"
           >
             <div className="inline-flex px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30">
-              <span className="font-bold text-sm tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2</span>
+              <span className="font-bold text-sm tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2 (06 March 2026)</span>
             </div>
           </motion.div>
 
