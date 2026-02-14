@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 import { useSearchParams } from 'react-router-dom';
-import qrImg from '../assets/imgs/qr_img.jpg';
+import qrImg from '../assets/imgs/krishnaprakash sir.jpeg';
 
 const tabs = [
     {
@@ -31,7 +31,7 @@ const Tickets: React.FC = () => {
     }, [tabParam]);
 
     return (
-        <section className={`relative min-h-screen ${colors.bgPrimary} pt-14 pb-24 px-4 overflow-hidden transition-colors duration-300`}>
+        <section className={`relative min-h-screen ${colors.bgPrimary} pt-32 pb-24 px-4 overflow-hidden transition-colors duration-300`}>
             <link
                 rel="stylesheet"
                 href="https://www.townscript.com/static/Bookingflow/css/ts-iframe.style.css"

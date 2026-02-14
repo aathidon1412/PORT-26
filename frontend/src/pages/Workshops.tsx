@@ -53,7 +53,7 @@ const Workshops: React.FC = () => {
             className={`group relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-slate-900 border-white/10 hover:border-violet-500/50'} rounded-3xl border overflow-hidden transition-all duration-300`}
           >
             <div className="flex flex-col lg:flex-row">
-              <div className="lg:w-2/5 relative min-h-[300px] lg:min-h-full overflow-hidden">
+              <div className="relative w-full h-72 lg:w-2/5 lg:h-auto overflow-hidden">
                 <ImageWithSkeleton
                   src={workshop.image}
                   alt={workshop.title}

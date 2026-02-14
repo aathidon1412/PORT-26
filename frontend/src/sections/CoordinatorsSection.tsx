@@ -60,9 +60,13 @@ const CoordinatorsSection: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="max-w-md mx-auto mb-6"
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="group relative max-w-md mx-auto mb-6"
             >
-              <div className={`relative ${theme === 'light' ? 'bg-white/95 border-slate-200' : 'bg-white/6 border-white/10'} backdrop-blur-sm border rounded-3xl p-6 text-center transition-all duration-300`}>
+              {/* Card Glow */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-3xl opacity-0 group-hover:opacity-15 blur-xl transition-all duration-500" />
+
+              <div className={`relative ${theme === 'light' ? 'bg-white/95 border-slate-200 hover:border-violet-300' : 'bg-white/6 border-white/10 hover:border-violet-500/30'} backdrop-blur-sm border rounded-3xl p-6 text-center transition-all duration-300`}>
                 <div className="flex items-center justify-center mb-3">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold ${theme === 'light' ? 'bg-violet-100 text-violet-700' : 'bg-violet-500/15 text-violet-400'} transition-colors duration-300`}>
                     {lead.name.charAt(0)}
@@ -109,7 +113,7 @@ const CoordinatorsSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div id="contact" className="flex items-center gap-3 mb-8 scroll-mt-36 md:scroll-mt-40">
             <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/30">
               <Users className="w-5 h-5 text-white" />
             </div>
