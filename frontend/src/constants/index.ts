@@ -7,7 +7,7 @@ import ws4Img from '../assets/workshops/workshop_4.png';
 export const EVENTS: Event[] = [
   {
     id: 'evt-1',
-    title: 'Think it. Link it',
+    title: 'THINK IT. LINK IT',
     category: 'technical',
     type: 'Technical Event',
     description: 'Transform traditional research presentations into an interactive challenge with creativity-driven constraints like "One-Slide Madness" and emoji summaries.',
@@ -46,7 +46,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-3',
-    title: 'Two Minds, One Code',
+    title: 'TWO MINDS, ONE CODE',
     category: 'technical',
     type: 'Technical Event',
     description: 'A blind coding challenge where one partner sees the code but can\'t type, and the other types but can\'t see the screen.',
@@ -62,7 +62,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-4',
-    title: 'MINDSPRINT – CrossMath & Speed Logic Challenge',
+    title: 'MINDSPRINT – CROSSMATH & SPEED LOGIC CHALLENGE',
     category: 'technical',
     type: 'Technical Event',
     description: 'A fast-paced contest combining crossword-style math puzzles with a rapid-fire arithmetic rush.',
@@ -93,11 +93,11 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-6',
-    title: 'Search for Shades',
+    title: 'SEARCH FOR SHADES',
     category: 'non-technical',
     type: 'Non-Technical Event',
     description: 'An interactive scavenger hunt where teams race against time to capture real-world objects matching specific assigned colors.',
-    detailedDescription: 'An engaging activity enhancing observation and teamwork skills.\n\n• The Mission: Teams have 45 minutes to find and photograph unique objects matching their assigned color (Red, Yellow, Green, or Blue).\n\n• Rules: Only live photos taken during the event count; no gallery uploads or edits allowed. The team with the most valid, unique photos wins.',
+    detailedDescription: 'An engaging activity enhancing observation and teamwork skills.\n\n• The Mission: Teams have 45 minutes to find and photograph unique objects matching their assigned color (Red, Yellow, Green, or Blue.\n\n• Rules: Only live photos taken during the event count; no gallery uploads or edits allowed. The team with the most valid, unique photos wins.',
     teamCount: '4',
     date: '06-03-2026',
     time: 'TBA',
@@ -108,7 +108,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-7',
-    title: 'Fun Fiesta',
+    title: 'FUN FIESTA',
     category: 'non-technical',
     type: 'Non-Technical Event',
     description: 'A race against the clock where duos must complete six mini-games in under five minutes.',
@@ -123,7 +123,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-8',
-    title: 'Gen-Aurora',
+    title: 'GEN-AURORA',
     category: 'non-technical',
     type: 'Non-Technical Event',
     description: 'A creative challenge where participants use text prompts to generate unique AI visuals and digital art.',

@@ -15,7 +15,7 @@ const HeroSection: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <section className="relative flex items-center justify-center overflow-hidden mt-26" style={{ minHeight: 'calc(100vh - 80px)' }}>
+    <section className="relative flex items-center justify-center overflow-hidden pt-20" style={{ minHeight: 'calc(100vh - 80px)' }}>
       {/* Parallax Background - lowest layer */}
       <motion.div style={{ y: y1 }} className="absolute inset-0 z-0 pointer-events-none">
         <ImageWithSkeleton
@@ -45,19 +45,19 @@ const HeroSection: React.FC = () => {
       </div>
 
       <div className="relative z-10 max-w-8xl mx-auto px-4 text-center mt-8">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="pb-20">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="pb-10">
           <h2 className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-bold tracking-[0.2em] uppercase text-sm md:text-base underline underline-offset-4`}>
             March 5-6, 2026
           </h2>
           <h3 className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-bold tracking-[0.15em] uppercase text-sm md:text-base mt-2 underline underline-offset-4`}>
             Sona College of Technology
           </h3>
-          <div className="flex justify-center -my-20">
+          <div className="flex justify-center -my-8">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-96 h-96 md:w-[34rem] md:h-[34rem] lg:w-[40rem] lg:h-[40rem]"
+              className="w-56 h-56 md:w-80 md:h-80 lg:w-[28rem] lg:h-[28rem]"
             >
               <ImageWithSkeleton
                 src={logo}
@@ -67,15 +67,15 @@ const HeroSection: React.FC = () => {
               />
             </motion.div>
           </div>
-          <p className={`${theme === 'light' ? 'text-slate-700' : 'text-slate-300'} text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light leading-relaxed`}>
+          <p className={`${theme === 'light' ? 'text-slate-700' : 'text-slate-300'} text-base md:text-lg max-w-2xl mx-auto mb-6 font-light leading-relaxed`}>
             Where innovation meets excellence. Join us for the most prestigious technical and cultural symposium of the year.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={() => setShowModal(true)} className={`w-full sm:w-auto px-8 py-4 ${theme === 'light' ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-amber-500 hover:bg-amber-400 text-slate-900'} text-lg font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transform hover:-translate-y-1`}>
+            <button onClick={() => setShowModal(true)} className={`w-full sm:w-auto px-6 py-3 ${theme === 'light' ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-amber-500 hover:bg-amber-400 text-slate-900'} text-lg font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transform hover:-translate-y-1`}>
               Register Now
             </button>
-            <a href="/#/events" className={`w-full sm:w-auto px-8 py-4 bg-transparent border ${theme === 'light' ? 'border-slate-300 hover:border-slate-400 text-slate-900 hover:bg-slate-100' : 'border-white/20 hover:border-white/50 text-white hover:bg-white/5'} text-lg font-medium rounded-full transition-all duration-300 backdrop-blur-sm`}>
+            <a href="/#/events" className={`w-full sm:w-auto px-6 py-3 bg-transparent border ${theme === 'light' ? 'border-slate-300 hover:border-slate-400 text-slate-900 hover:bg-slate-100' : 'border-white/20 hover:border-white/50 text-white hover:bg-white/5'} text-lg font-medium rounded-full transition-all duration-300 backdrop-blur-sm`}>
               Explore Events
             </a>
           </div>

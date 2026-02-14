@@ -151,15 +151,15 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
               </div>
 
               <Link to={href} className="block" onClick={() => {
-                    const parts = String(href).split('#');
-                    const anchor = parts.length > 1 ? parts[1] : null;
-                    if (!anchor) return;
-                    // Try to scroll to anchor after a short delay to allow route change
-                    setTimeout(() => {
-                      const el = document.getElementById(anchor);
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 250);
-                  }}>
+                const parts = String(href).split('#');
+                const anchor = parts.length > 1 ? parts[1] : null;
+                if (!anchor) return;
+                // Try to scroll to anchor after a short delay to allow route change
+                setTimeout(() => {
+                  const el = document.getElementById(anchor);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 250);
+              }}>
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
@@ -178,7 +178,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                     <h4 className={`${colors.textPrimary} font-bold text-sm md:text-base transition-colors leading-tight`}>{evt.title}</h4>
                   </div>
                 </motion.div>
-                </Link>
+              </Link>
             </div>
           );
         })}
@@ -191,16 +191,16 @@ const TimelineSection: React.FC = () => {
   const { theme, colors } = useTheme();
 
   const technicalTrack: TimelineItem[] = [
-    { time: '', title: 'Think it. Link it', desc: '' },
+    { time: '', title: 'THINK IT. LINK IT', desc: '' },
     { time: '', title: 'AI FORGE', desc: '' },
-    { time: '', title: 'Two Minds, One Code', desc: '' },
+    { time: '', title: 'TWO MINDS, ONE CODE', desc: '' },
     { time: '', title: 'MINDSPRINT', desc: '' },
   ];
   const nonTechTrack: TimelineItem[] = [
     { time: '', title: 'GAME ON: FIFA SHOWDOWN', desc: '' },
-    { time: '', title: 'Search for Shades', desc: '' },
-    { time: '', title: 'Fun Fiesta', desc: '' },
-    { time: '', title: 'Gen-Aurora', desc: '' },
+    { time: '', title: 'SEARCH FOR SHADES', desc: '' },
+    { time: '', title: 'FUN FIESTA', desc: '' },
+    { time: '', title: 'GEN-AURORA', desc: '' },
   ];
   const workshopTrack: TimelineItem[] = [
     { time: '', title: 'HACKPROOFING THE FUTURE', desc: '' },
