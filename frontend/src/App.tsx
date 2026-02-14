@@ -14,7 +14,7 @@ const AppContent: React.FC = () => {
   const { colors } = useTheme();
 
   return (
-    <div className={`min-h-screen overflow-x-hidden ${colors.bgPrimary} ${colors.textPrimary} font-sans selection:bg-amber-500/30 selection:text-amber-200 transition-colors duration-300`}>
+    <div className={`min-h-screen ${colors.bgPrimary} ${colors.textPrimary} font-sans selection:bg-amber-500/30 selection:text-amber-200 transition-colors duration-300`}>
       <Navbar />
       <main className="flex-grow">
         <Routes>

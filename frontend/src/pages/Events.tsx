@@ -52,37 +52,37 @@ const Events: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen pb-12 mt-10">
-      {/* Header */}
-      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} pb-16 pt-24 border-b ${colors.border} transition-colors duration-300 relative overflow-hidden`}>
-        {/* Animated Pricing Banner */}
-        <div className="absolute top-16 left-0 right-0 z-10">
-          <div className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-amber-500 text-white py-2">
-            <div className="w-full flex items-center justify-start overflow-hidden">
-              <motion.div
-                animate={{ x: ['0%', '-50%'] }}
-                transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-                className="flex items-center gap-8 whitespace-nowrap font-bold text-sm md:text-base tracking-wider"
-              >
-                {/* Content Block 1 */}
-                <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
-                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
-                <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
-                <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
-                <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
-                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+    <div className="min-h-screen pb-12 pt-24">
+      {/* Animated Pricing Banner - Sticky */}
+      <div className="sticky top-[4.5rem] lg:top-[5.5rem] z-40 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-amber-500 text-white py-2 shadow-lg">
+        <div className="w-full flex items-center justify-start overflow-hidden">
+          <motion.div
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+            className="flex items-center gap-8 whitespace-nowrap font-bold text-sm md:text-base tracking-wider"
+          >
+            {/* Content Block 1 */}
+            <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
+            <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+            <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
+            <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
+            <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
+            <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
 
-                {/* Content Block 2 (Duplicate for seamless loop) */}
-                <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
-                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
-                <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
-                <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
-                <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
-                <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
-              </motion.div>
-            </div>
-          </div>
+            {/* Content Block 2 (Duplicate for seamless loop) */}
+            <span className="flex items-center gap-2"><Ticket className="w-4 h-4" /> ALL ACCESS PASS: ₹350 ONLY</span>
+            <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+            <span className="flex items-center gap-2">• ONE TICKET, LIMITLESS POSSIBILITIES</span>
+            <span className="flex items-center gap-2"><Sparkles className="w-4 h-4" /> REGISTER ONCE, ACCESS ALL</span>
+            <span className="flex items-center gap-2">• ALL ACCESS PASS: ₹350 ONLY</span>
+            <span className="flex items-center gap-2">• ATTEND EVERY EVENT</span>
+          </motion.div>
         </div>
+      </div>
+
+      {/* Header */}
+      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} pb-16 pt-12 border-b ${colors.border} transition-colors duration-300 relative overflow-hidden`}>
+
 
         <div className="max-w-8xl mx-auto px-4 text-center mt-8">
           <motion.div
@@ -106,6 +106,20 @@ const Events: React.FC = () => {
             Explore a diverse range of technical challenges and cultural spectacles. <br />
             <span className={`font-semibold ${theme === 'light' ? 'text-violet-700' : 'text-violet-400'}`}>Pay ₹350 and attend any event on the day!</span>
           </p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mt-8"
+          >
+            <button
+              onClick={() => setShowRegModal(true)}
+              className={`px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ${theme === 'light' ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-violet-500/30' : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-violet-900/40'}`}
+            >
+              Register Now
+            </button>
+          </motion.div>
         </div>
       </div>
 
@@ -184,12 +198,12 @@ const Events: React.FC = () => {
                         {event.description}
                       </p>
                       {event.detailedDescription && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); setSelectedEvent({ ...event, image: localEventImages[event.id] ?? event.image }); }}
-                            className={`mt-2 text-xs font-semibold tracking-wide ${theme === 'light' ? 'text-violet-600 hover:text-amber-700' : 'text-violet-500 hover:text-amber-300'} transition-colors`}
-                          >
-                            + Read more
-                          </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setSelectedEvent({ ...event, image: localEventImages[event.id] ?? event.image }); }}
+                          className={`mt-2 text-xs font-semibold tracking-wide ${theme === 'light' ? 'text-violet-600 hover:text-amber-700' : 'text-violet-500 hover:text-amber-300'} transition-colors`}
+                        >
+                          + Read more
+                        </button>
                       )}
                     </div>
 
@@ -208,17 +222,7 @@ const Events: React.FC = () => {
                       {/* Price removed as per request - Global Pass implemented */}
                     </div>
 
-                    <div className="mt-auto">
-                      {event.status === 'closed' ? (
-                        <div className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 ${theme === 'light' ? 'bg-slate-200 text-slate-500' : 'bg-slate-800 text-slate-500'} cursor-not-allowed`}>
-                          Registration Closed
-                        </div>
-                      ) : (
-                        <button onClick={() => setShowRegModal(true)} className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 ${theme === 'light' ? 'bg-slate-100 hover:bg-violet-500 hover:text-white' : 'bg-white/5 hover:bg-violet-600 text-white'} hover:shadow-lg hover:shadow-violet-900/40`}>
-                          Register Now
-                        </button>
-                      )}
-                    </div>
+                    <div className="mt-auto"></div>
                   </div>
                 </motion.div>
               );
@@ -378,20 +382,7 @@ const Events: React.FC = () => {
                     {/* Price removed from modal */}
                   </div>
 
-                  {/* Register Button - matches card style */}
-                  {selectedEvent.status === 'closed' ? (
-                    <div className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 ${theme === 'light' ? 'bg-slate-200 text-slate-500' : 'bg-slate-800 text-slate-500'} cursor-not-allowed`}>
-                      Registration Closed
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setShowRegModal(true)}
-                      className={`block w-full py-3 text-center rounded-xl font-medium transition-all duration-300 ${theme === 'light' ? 'bg-slate-100 hover:bg-violet-500 hover:text-white' : 'bg-white/5 hover:bg-violet-600 text-white'
-                        } hover:shadow-lg hover:shadow-violet-900/40`}
-                    >
-                      Register Now
-                    </button>
-                  )}
+
                 </div>
               </div>
             </motion.div>

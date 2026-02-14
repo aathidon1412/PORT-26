@@ -29,13 +29,13 @@ const Footer: React.FC = () => {
             <h4 className={`${colors.textPrimary} font-serif font-bold text-lg mb-6 transition-colors duration-300`}>Quick Links</h4>
             <ul className={`space-y-3 ${colors.textTertiary} text-sm`}>
               <li>
-                <Link to="/events" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors`}>All Events</Link>
+                <Link to="/events" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}>All Events</Link>
               </li>
               <li>
-                <Link to="/workshops" className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors`}>Workshops</Link>
+                <Link to="/workshops" className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}>Workshops</Link>
               </li>
               <li>
-                <Link to="/tickets" className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors`}>Tickets</Link>
+                <Link to="/tickets" className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}>Tickets</Link>
               </li>
             </ul>
           </div>
@@ -43,19 +43,19 @@ const Footer: React.FC = () => {
           <div>
             <h4 className={`${colors.textPrimary} font-serif font-bold text-lg mb-6 transition-colors duration-300`}>Contact</h4>
             <ul className={`space-y-4 ${colors.textTertiary} text-sm`}>
-              <li className="flex items-start space-x-3">
+              <a className={`flex items-start space-x-3 ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`} href="https://maps.app.goo.gl/PtBgsfmxoSJzoBa76?g_st=aw" target="_blank" rel="noopener noreferrer">
                 <MapPin className={`w-5 h-5 ${theme === 'light' ? 'text-violet-600' : 'text-violet-500'} shrink-0`} />
-                <span>Department of Information Technology,<br/>Sona College of Technology,<br/>Salem</span>
-              </li>
+                <span>Department of Information Technology,<br />Sona College of Technology,<br />Salem</span>
+              </a>
               <li className="flex items-center space-x-3">
-                <a href="https://www.instagram.com/sona_it_ads_page/" target="_blank" rel="noopener noreferrer" className={`flex items-center space-x-3 ${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-white'} transition-colors`}>
+                <a href="https://www.instagram.com/sona_it_ads_page/" target="_blank" rel="noopener noreferrer" className={`flex items-center space-x-3 ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}>
                   <Instagram className={`w-5 h-5 ${theme === 'light' ? 'text-violet-600' : 'text-violet-500'} shrink-0`} />
                   <span>@sona_it_ads_page</span>
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className={`w-5 h-5 ${theme === 'light' ? 'text-violet-600' : 'text-violet-500'} shrink-0`} />
-                <a href="mailto:port.it@sonatech.ac.in" className={`${colors.textTertiary} hover:underline`}>port.it@sonatech.ac.in</a>
+                <a href="mailto:port.it@sonatech.ac.in" className={`${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}>port.it@sonatech.ac.in</a>
               </li>
             </ul>
           </div>
