@@ -262,8 +262,8 @@ const TimelineSection: React.FC = () => {
               viewport={{ once: true }}
               className="col-span-2 flex flex-col items-center justify-center w-full mb-6"
             >
-              <div className="inline-flex px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30 mx-auto">
-                <span className="font-bold text-sm md:text-base tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2 (06 March 2026)</span>
+              <div className="inline-flex px-4 py-2 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40 mx-auto">
+                <span className="font-bold text-sm md:text-base tracking-wider bg-clip-text text-fuchsia-400 ">DAY 2 (06 March 2026)</span>
               </div>
             </motion.div>
           </div>
@@ -294,7 +294,7 @@ const TimelineSection: React.FC = () => {
               theme={{
                 text: 'text-cyan-400',
                 bg: 'bg-cyan-500/10',
-                border: 'border-cyan-500/30',
+                border: 'border-fuchsia-500/40',
                 glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
                 line: 'from-cyan-500/50',
                 dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
@@ -360,8 +360,8 @@ const TimelineSection: React.FC = () => {
             viewport={{ once: true }}
             className="flex flex-col items-center justify-center mb-6"
           >
-            <div className="inline-flex px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-fuchsia-500/10 border border-cyan-500/30">
-              <span className="font-bold text-sm tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-400">DAY 2 (06 March 2026)</span>
+            <div className="inline-flex px-4 py-2 rounded-full bg-fuchsia-500/20 border border-fuchsia-500/40">
+              <span className="font-bold text-sm tracking-wider bg-clip-text text-fuchsia-400 bg-gradient-to-r from-cyan-400 to-purple-400">DAY 2 (06 March 2026)</span>
             </div>
           </motion.div>
 
@@ -372,7 +372,7 @@ const TimelineSection: React.FC = () => {
             theme={{
               text: 'text-cyan-400',
               bg: 'bg-cyan-500/10',
-              border: 'border-cyan-500/30',
+              border: 'border-fuchsia-500/40',
               glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
               line: 'from-cyan-500/50',
               dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',

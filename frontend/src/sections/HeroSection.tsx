@@ -15,7 +15,7 @@ const HeroSection: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: 'calc(100vh - 80px)' }}>
+    <section className="relative flex items-center justify-center overflow-hidden mt-26" style={{ minHeight: 'calc(100vh - 80px)' }}>
       {/* Parallax Background - lowest layer */}
       <motion.div style={{ y: y1 }} className="absolute inset-0 z-0 pointer-events-none">
         <ImageWithSkeleton
