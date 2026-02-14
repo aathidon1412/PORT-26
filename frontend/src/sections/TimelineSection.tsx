@@ -294,7 +294,7 @@ const TimelineSection: React.FC = () => {
               theme={{
                 text: 'text-cyan-400',
                 bg: 'bg-cyan-500/10',
-                border: 'border-fuchsia-500/40',
+                border: 'border-cyan-500/40',
                 glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
                 line: 'from-cyan-500/50',
                 dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
@@ -372,7 +372,7 @@ const TimelineSection: React.FC = () => {
             theme={{
               text: 'text-cyan-400',
               bg: 'bg-cyan-500/10',
-              border: 'border-fuchsia-500/40',
+              border: 'border-cyan-500/40',
               glow: 'hover:shadow-[0_0_30px_-5px_rgba(34,211,238,0.15)]',
               line: 'from-cyan-500/50',
               dotGlow: '0 0 25px 8px rgba(34,211,238,0.7), 0 0 50px 15px rgba(34,211,238,0.3)',
