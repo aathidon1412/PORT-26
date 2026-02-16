@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Cpu, Award, Zap, Users, Wrench, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import logo1 from '../assets/imgs/logo1.jpeg';
-import brochure from '../assets/imgs/brouchure.jpeg';
+import brochure from '../assets/imgs/brouchure_port.png';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
 
 const CATEGORY_BADGES = [
