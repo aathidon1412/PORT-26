@@ -8,7 +8,7 @@ const tabs = [
     {
         id: 'workshop',
         label: 'Workshop — Day 1',
-        src: 'https://www.townscript.com/v2/widget/workshop-of-port-2026/booking',
+        src: 'https://www.townscript.com/v2/widget/workshop-of-port-2k26/booking',
     },
     {
         id: 'events',
