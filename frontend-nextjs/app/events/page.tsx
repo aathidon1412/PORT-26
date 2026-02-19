@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Filter, Search, X, Users, Sparkles, Ticket } from 'lucide-react';
 import { EVENTS } from '@/constants';
@@ -369,7 +369,7 @@ const Events: React.FC = () => {
       <RegistrationModal
         isOpen={showRegModal}
         onClose={() => setShowRegModal(false)}
-        ticketTab="events"
+        ticketTab="port-pass"
       />
     </div>
   );

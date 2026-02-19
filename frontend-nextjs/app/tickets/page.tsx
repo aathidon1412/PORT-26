@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import RegistrationForm from '@/components/RegistrationForm';
+import { useSearchParams } from 'next/navigation';
 
 const qrImg = '/assets/imgs/kpSir350qr.jpeg';
 import { WORKSHOPS, PORT_PASS } from '@/constants';
@@ -11,11 +12,22 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 type TabType = 'workshops' | 'port-pass';
 
-export default function Tickets() {
+function TicketsContent() {
   const { theme, colors } = useTheme();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabType>('workshops');
   const [selectedWorkshop, setSelectedWorkshop] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+
+  // Handle URL parameters to set initial tab
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam === 'port-pass') {
+      setActiveTab('port-pass');
+    } else if (tabParam === 'workshops') {
+      setActiveTab('workshops');
+    }
+  }, [searchParams]);
 
   const handleWorkshopClick = (workshopId: string) => {
     setSelectedWorkshop(workshopId);
@@ -84,42 +96,44 @@ export default function Tickets() {
         </motion.div>
       </motion.div>
 
-      {/* Tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="relative flex justify-center gap-3 mb-12"
-      >
-        <div className={`flex ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900/80 border-white/10'} backdrop-blur-sm p-1.5 rounded-full border transition-colors duration-300`}>
-          {[
-            { id: 'workshops', label: 'Workshops — Day 1' },
-            { id: 'port-pass', label: 'Event Pass — Day 2' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as TabType)}
-              className="relative px-7 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 z-10"
-            >
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="tab-bg"
-                  className="absolute inset-0 bg-linear-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg shadow-violet-900/50"
-                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                />
-              )}
-              <span
-                className={`relative z-10 ${activeTab === tab.id
-                  ? 'text-white'
-                  : `${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-slate-200'}`
-                  }`}
+      {/* Tabs - Hidden when form is displayed */}
+      {!showForm && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="relative flex justify-center gap-3 mb-12"
+        >
+          <div className={`flex ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900/80 border-white/10'} backdrop-blur-sm p-1.5 rounded-full border transition-colors duration-300`}>
+            {[
+              { id: 'workshops', label: 'Workshops — Day 1' },
+              { id: 'port-pass', label: 'Event Pass — Day 2' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as TabType)}
+                className="relative px-7 py-2.5 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 z-10"
               >
-                {tab.label}
-              </span>
-            </button>
-          ))}
-        </div>
-      </motion.div>
+                {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="tab-bg"
+                    className="absolute inset-0 bg-linear-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg shadow-violet-900/50"
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <span
+                  className={`relative z-10 ${activeTab === tab.id
+                    ? 'text-white'
+                    : `${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-slate-200'}`
+                    }`}
+                >
+                  {tab.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Content Container */}
       <motion.div
@@ -129,8 +143,39 @@ export default function Tickets() {
         transition={{ duration: 0.5 }}
         className="relative max-w-4xl mx-auto"
       >
-        {/* Workshops Tab */}
-        {activeTab === 'workshops' && (
+        {showForm && selectedWorkshop ? (
+          <div className="space-y-6">
+            {/* Back Button */}
+            <button
+              onClick={() => {
+                setShowForm(false);
+                setSelectedWorkshop(null);
+              }}
+              className={`flex items-center gap-2 ${colors.textSecondary} hover:${colors.textPrimary} transition-colors mb-4`}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Selection
+            </button>
+            
+            <RegistrationForm
+              workshopId={selectedWorkshop}
+              workshopName={getFormTitle()}
+              onSuccess={() => {
+                setShowForm(false);
+                setSelectedWorkshop(null);
+              }}
+              onClose={() => {
+                setShowForm(false);
+                setSelectedWorkshop(null);
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            {/* Workshops Tab */}
+            {activeTab === 'workshops' && (
           <div className="space-y-6">
             <motion.div
               initial={{ opacity: 0 }}
@@ -256,23 +301,19 @@ export default function Tickets() {
             </motion.div>
           </motion.div>
         )}
+          </>
+        )}
       </motion.div>
-
-      {/* Registration Form Modal */}
-      {showForm && selectedWorkshop && (
-        <RegistrationForm
-          workshopId={selectedWorkshop}
-          workshopName={getFormTitle()}
-          onSuccess={() => {
-            setShowForm(false);
-            setSelectedWorkshop(null);
-          }}
-          onClose={() => {
-            setShowForm(false);
-            setSelectedWorkshop(null);
-          }}
-        />
-      )}
     </div>
+  );
+}
+
+export default function Tickets() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
+    </div>}>
+      <TicketsContent />
+    </Suspense>
   );
 }

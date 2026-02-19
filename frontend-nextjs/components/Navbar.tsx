@@ -240,7 +240,7 @@ const Navbar: React.FC = () => {
       <RegistrationModal
         isOpen={showRegistrationModal}
         onClose={() => setShowRegistrationModal(false)}
-        ticketTab="events"
+        ticketTab="workshops"
       />
     </nav>
   );

@@ -7,11 +7,15 @@ import {
   PortPassRegistration,
 } from '@/models/Registration';
 
-const ALL_COLLECTIONS = [
+const WORKSHOP_COLLECTIONS = [
   { model: HackproofingRegistration,     eventName: 'Hackproofing the Future' },
   { model: PromptToProductRegistration,  eventName: 'Prompt to Product' },
   { model: FullStackFusionRegistration,  eventName: 'Full Stack Fusion' },
   { model: LearnHowToThinkRegistration,  eventName: 'Learn How to Think' },
+];
+
+const ALL_COLLECTIONS = [
+  ...WORKSHOP_COLLECTIONS,
   { model: PortPassRegistration,         eventName: 'Port Pass' },
 ];
 
@@ -23,9 +27,31 @@ export async function checkDuplicateRegistration(
   try {
     await connectToDatabase();
 
-    // Check across ALL collections so user knows which event they already registered for
-    for (const { model: m, eventName } of ALL_COLLECTIONS) {
-      const existing = await m.findOne({
+    // Determine if this is a workshop or PortPass registration
+    const isWorkshopRegistration = WORKSHOP_COLLECTIONS.some(c => c.model === model);
+    
+    if (isWorkshopRegistration) {
+      // For workshops: Check only OTHER workshop collections (not the current one, not PortPass)
+      for (const { model: m, eventName } of WORKSHOP_COLLECTIONS) {
+        if (m === model) continue; // Skip the current workshop
+        
+        const existing = await m.findOne({
+          $or: [{ email }, { contactNumber }],
+        });
+
+        if (existing) {
+          const duplicateField = existing.email === email ? 'email' : 'contactNumber';
+          const fieldLabel = duplicateField === 'email' ? 'Email' : 'Contact number';
+          return {
+            isDuplicate: true,
+            field: duplicateField,
+            message: `${fieldLabel} is already registered for "${eventName}". You can only register for one workshop.`,
+          };
+        }
+      }
+    } else {
+      // For PortPass: Only check within PortPass collection
+      const existing = await PortPassRegistration.findOne({
         $or: [{ email }, { contactNumber }],
       });
 
@@ -35,7 +61,7 @@ export async function checkDuplicateRegistration(
         return {
           isDuplicate: true,
           field: duplicateField,
-          message: `${fieldLabel} is already registered for "${eventName}". Please contact support if this is an error.`,
+          message: `${fieldLabel} is already registered for "Port Pass". Please contact support if this is an error.`,
         };
       }
     }
@@ -47,9 +73,43 @@ export async function checkDuplicateRegistration(
   }
 }
 
+/**
+ * Check if a transaction ID already exists in ANY of the 5 collections
+ * Transaction ID must be strictly unique across all collections
+ */
+export async function checkTransactionIdAcrossAllCollections(
+  transactionId: string
+): Promise<{ isUsed: boolean; eventName?: string }> {
+  try {
+    await connectToDatabase();
+
+    for (const { model, eventName } of ALL_COLLECTIONS) {
+      const existing = await model.findOne({ transactionId });
+      if (existing) {
+        return { isUsed: true, eventName };
+      }
+    }
+
+    return { isUsed: false };
+  } catch (error) {
+    console.error('Error checking transaction ID:', error);
+    throw error;
+  }
+}
+
 export async function saveRegistration(data: any, model: any) {
   try {
     await connectToDatabase();
+
+    // Check if transaction ID already exists across ALL collections
+    const transactionCheck = await checkTransactionIdAcrossAllCollections(data.transactionId);
+    if (transactionCheck.isUsed) {
+      return {
+        success: false,
+        message: `Transaction ID is already used for "${transactionCheck.eventName}". Each transaction ID can only be used once.`,
+        error: 'transactionId',
+      };
+    }
 
     const registration = new model(data);
     await registration.save();
@@ -64,9 +124,20 @@ export async function saveRegistration(data: any, model: any) {
 
     if (error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
+      let message = `${field} already registered for this event`;
+      
+      // Provide more specific error messages
+      if (field === 'email') {
+        message = 'Email is already registered for this event';
+      } else if (field === 'contactNumber') {
+        message = 'Contact number is already registered for this event';
+      } else if (field === 'transactionId') {
+        message = 'Transaction ID is already used. Each transaction ID can only be used once.';
+      }
+      
       return {
         success: false,
-        message: `\ already registered for this event`,
+        message,
         error: field,
       };
     }

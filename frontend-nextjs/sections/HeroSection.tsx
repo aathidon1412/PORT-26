@@ -91,7 +91,7 @@ const HeroSection: React.FC = () => {
       <RegistrationModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        ticketTab="workshop"
+        ticketTab="workshops"
       />
     </section>
   );

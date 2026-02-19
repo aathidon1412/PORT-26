@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 interface RegistrationFormProps {
   workshopId: string;
@@ -65,10 +66,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [screenshotPreview, setScreenshotPreview] = useState<string>('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -130,10 +127,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
       const data = await res.json();
       if (data.isDuplicate) {
-        setSubmitStatus({
-          type: 'error',
-          message: `This ${data.field} is already registered for this event.`,
-        });
+        const fieldName = data.field === 'email' ? 'email address' : 'phone number';
+        toast.error(data.message || `This ${fieldName} is already registered.`);
         return false;
       }
       return true;
@@ -147,8 +142,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     e.preventDefault();
     if (!validateForm()) return;
 
+    const toastId = toast.loading('Processing your registration...');
     setLoading(true);
-    setSubmitStatus({ type: null, message: '' });
 
     try {
       const noDuplicate = await checkDuplicateRegistration(
@@ -190,22 +185,34 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitStatus({
-          type: 'success',
-          message: `Successfully registered for ${workshopName}!`,
-        });
+        toast.success(`Successfully registered for ${workshopName}!`, { id: toastId, duration: 4000 });
         setFormData(EMPTY_FORM);
         setScreenshotPreview('');
         setTimeout(() => { onSuccess?.(); }, 2000);
       } else {
-        setSubmitStatus({
-          type: 'error',
-          message: data.message || 'Registration failed. Please try again.',
-        });
+        // Handle specific error messages from backend
+        let errorMessage = 'Registration failed. Please try again.';
+        
+        if (data.message) {
+          const msg = data.message.toLowerCase();
+          if (msg.includes('email') && msg.includes('already')) {
+            errorMessage = 'This email is already registered.';
+          } else if (msg.includes('contact') || msg.includes('phone')) {
+            errorMessage = 'This phone number is already registered.';
+          } else if (msg.includes('transaction')) {
+            errorMessage = 'This transaction ID has already been used.';
+          } else if (msg.includes('workshop')) {
+            errorMessage = 'You can only register for one workshop.';
+          } else {
+            errorMessage = data.message;
+          }
+        }
+        
+        toast.error(errorMessage, { id: toastId });
       }
     } catch (error) {
       console.error('Registration error:', error);
-      setSubmitStatus({ type: 'error', message: 'An error occurred. Please try again.' });
+      toast.error('An error occurred. Please try again.', { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -251,44 +258,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
-      onClick={onClose}
-    >
-      <motion.div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl my-8 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]"
-      >
-        {/* Header */}
-        <div className="sticky top-0 bg-linear-to-r from-violet-600 to-indigo-600 px-6 py-6 text-white flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{workshopName}</h2>
-          <button
-            onClick={onClose}
-            className="text-white hover:bg-white/20 rounded-full p-2 transition"
-          >
-            ✕
-          </button>
-        </div>
+    <div className="w-full max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="bg-linear-to-r from-violet-600 to-indigo-600 px-6 py-6 text-white rounded-t-2xl">
+        <h2 className="text-2xl font-bold">{workshopName}</h2>
+      </div>
 
+      <div className="bg-white dark:bg-slate-900 rounded-b-2xl shadow-xl">
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {submitStatus.type && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-lg font-medium ${
-                submitStatus.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-300'
-                  : 'bg-red-100 text-red-800 border border-red-300'
-              }`}
-            >
-              {submitStatus.message}
-            </motion.div>
-          )}
-
           {/* Row 1: First Name & Last Name */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -492,17 +470,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             >
               {loading ? 'Registering...' : 'Register Now'}
             </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-300 dark:bg-slate-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-600 transition"
-            >
-              Cancel
-            </button>
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-300 dark:bg-slate-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-600 transition"
+              >
+                Back
+              </button>
+            )}
           </div>
         </form>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 

@@ -9,10 +9,10 @@ import { useRouter } from 'next/navigation';
 interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  ticketTab?: 'events' | 'workshop';
+  ticketTab?: 'port-pass' | 'workshops';
 }
 
-const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, ticketTab = 'events' }) => {
+const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, ticketTab = 'workshops' }) => {
   const { theme, colors } = useTheme();
   const [accepted, setAccepted] = useState(false);
   const router = useRouter();
