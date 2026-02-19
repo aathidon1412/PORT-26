@@ -1,4 +1,19 @@
 import connectToDatabase from '@/lib/mongodb';
+import {
+  HackproofingRegistration,
+  PromptToProductRegistration,
+  FullStackFusionRegistration,
+  LearnHowToThinkRegistration,
+  PortPassRegistration,
+} from '@/models/Registration';
+
+const ALL_COLLECTIONS = [
+  { model: HackproofingRegistration,     eventName: 'Hackproofing the Future' },
+  { model: PromptToProductRegistration,  eventName: 'Prompt to Product' },
+  { model: FullStackFusionRegistration,  eventName: 'Full Stack Fusion' },
+  { model: LearnHowToThinkRegistration,  eventName: 'Learn How to Think' },
+  { model: PortPassRegistration,         eventName: 'Port Pass' },
+];
 
 export async function checkDuplicateRegistration(
   email: string,
@@ -8,18 +23,21 @@ export async function checkDuplicateRegistration(
   try {
     await connectToDatabase();
 
-    const existing = await model.findOne({
-      $or: [{ email }, { contactNumber }],
-    });
+    // Check across ALL collections so user knows which event they already registered for
+    for (const { model: m, eventName } of ALL_COLLECTIONS) {
+      const existing = await m.findOne({
+        $or: [{ email }, { contactNumber }],
+      });
 
-    if (existing) {
-      const duplicateField =
-        existing.email === email ? 'email' : 'contactNumber';
-      return {
-        isDuplicate: true,
-        field: duplicateField,
-        message: `\ already registered`,
-      };
+      if (existing) {
+        const duplicateField = existing.email === email ? 'email' : 'contactNumber';
+        const fieldLabel = duplicateField === 'email' ? 'Email' : 'Contact number';
+        return {
+          isDuplicate: true,
+          field: duplicateField,
+          message: `${fieldLabel} is already registered for "${eventName}". Please contact support if this is an error.`,
+        };
+      }
     }
 
     return { isDuplicate: false };

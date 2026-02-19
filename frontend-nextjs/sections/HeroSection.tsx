@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Particles from '../components/Particles';
 import RegistrationModal from '../components/RegistrationModal';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
+import Image from 'next/image';
 import { useTheme } from '../contexts/ThemeContext';
 
 const HeroSection: React.FC = () => {
@@ -55,11 +56,13 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="w-84 h-84 md:w-96 md:h-96 lg:w-[32rem] lg:h-[32rem]"
             >
-              <ImageWithSkeleton
+              <Image
                 src="/assets/imgs/logo.png"
                 alt="PORT 26' Logo"
+                width={512}
+                height={512}
+                priority
                 className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]"
-                containerClassName="w-full h-full"
               />
             </motion.div>
           </div>
