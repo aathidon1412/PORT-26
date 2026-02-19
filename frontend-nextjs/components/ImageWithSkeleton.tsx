@@ -15,6 +15,13 @@ const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const { theme } = useTheme();
+    const imgRef = React.useRef<HTMLImageElement>(null);
+
+    React.useEffect(() => {
+        if (imgRef.current?.complete) {
+            setIsLoaded(true);
+        }
+    }, []);
 
     return (
         <div className={`relative overflow-hidden ${containerClassName}`}>
@@ -25,6 +32,7 @@ const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
                 />
             )}
             <img
+                ref={imgRef}
                 {...props}
                 alt={alt}
                 className={`${className} transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'

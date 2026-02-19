@@ -2,7 +2,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import RegistrationForm from '@/components/RegistrationForm';
+
+const qrImg = '/assets/imgs/kpSir350qr.jpeg';
 import { WORKSHOPS, PORT_PASS } from '@/constants';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -45,22 +48,39 @@ export default function Tickets() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative text-center mb-12"
+        className="relative flex flex-col md:flex-row items-center justify-center gap-8 mb-12"
       >
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-xs uppercase tracking-[0.3em] text-violet-400 mb-3"
+        <div className="text-center md:text-right">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-xs uppercase tracking-[0.3em] text-violet-400 mb-3"
+          >
+            🎫 Secure Your Spot
+          </motion.p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-3">
+            Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Tickets</span>
+          </h1>
+          <p className="text-slate-400 text-sm max-w-md transition-colors duration-300">
+            Choose workshops or the PORT Pass to access Day 2 events
+          </p>
+        </div>
+
+        {/* QR Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="relative w-40 h-40 md:w-48 md:h-48 rounded-2xl border overflow-hidden border-white/10 shadow-xl shadow-violet-900/20"
         >
-          🎫 Secure Your Spot
-        </motion.p>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-3">
-          Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Tickets</span>
-        </h1>
-        <p className="text-slate-400 text-sm max-w-md mx-auto">
-          Choose workshops or the PORT Pass to access Day 2 events
-        </p>
+          <Image
+            src={qrImg}
+            alt="Registration QR Code"
+            fill
+            className="object-contain p-2"
+          />
+        </motion.div>
       </motion.div>
 
       {/* Tabs */}
@@ -88,11 +108,10 @@ export default function Tickets() {
                 />
               )}
               <span
-                className={`relative z-10 ${
-                  activeTab === tab.id
-                    ? 'text-white'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
+                className={`relative z-10 ${activeTab === tab.id
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+                  }`}
               >
                 {tab.label}
               </span>

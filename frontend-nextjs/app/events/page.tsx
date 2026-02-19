@@ -144,7 +144,7 @@ const Events: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => setSelectedEvent(event)}
-                  className={`${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-slate-900 border-white/5 hover:border-violet-500/30'} rounded-2xl border overflow-hidden transition-colors group flex flex-col h-full cursor-pointer`}
+                  className={`${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-slate-900 border-white/5 hover:border-violet-500/30'} rounded-2xl border overflow-hidden transition-colors group flex flex-col h-full cursor-pointer scroll-mt-32`}
                 >
                   {/* Image */}
                   <div className="relative h-48 overflow-hidden">

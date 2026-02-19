@@ -30,14 +30,16 @@ const HeroSection: React.FC = () => {
       {/* Particles Animation - above background */}
       <div className="absolute inset-0 z-[1]">
         <Particles
-          particleCount={150}
-          speed={0.3}
-          particleColors={['#ffffff', '#e2e8f0']}
-          moveParticlesOnHover={false}
-          alphaParticles={true}
-          particleBaseSize={1.5}
+          particleCount={200}
+          speed={0.1}
+          particleColors={theme === 'light' ? ['#000000', '#333333'] : ['#ffffff', '#ffffff']}
+          moveParticlesOnHover={true}
+          particleHoverFactor={1}
+          alphaParticles={false}
+          particleBaseSize={100}
           sizeRandomness={1}
-          showConnections={false}
+          cameraDistance={20}
+          disableRotation={false}
         />
       </div>
 

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Cpu, Music, PenTool } from 'lucide-react';
 import { EVENTS, WORKSHOPS } from '@/constants';
 import { useTheme } from '@/contexts/ThemeContext';
+import Link from 'next/link';
 
 interface TimelineItem {
   time: string;
@@ -153,16 +154,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                 </motion.div>
               </div>
 
-              <div onClick={() => {
-                const parts = String(href).split('#');
-                const anchor = parts.length > 1 ? parts[1] : null;
-                if (!anchor) return;
-                // Try to scroll to anchor after a short delay
-                setTimeout(() => {
-                  const el = document.getElementById(anchor);
-                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 250);
-              }} className="block cursor-pointer">
+              <Link href={href} className="block cursor-pointer">
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
@@ -181,7 +173,7 @@ const TrackColumn: React.FC<TrackColumnProps> = ({ title, icon, theme, events, d
                     <h4 className={`${colors.textPrimary} font-bold text-sm md:text-base transition-colors leading-tight`}>{evt.title}</h4>
                   </div>
                 </motion.div>
-              </div>
+              </Link>
             </div>
           );
         })}

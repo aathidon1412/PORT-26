@@ -11,7 +11,7 @@ export const EVENTS: Event[] = [
     teamCount: '1',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/thinklink/800/600',
+    image: '/assets/events/evt-1.jpg',
     status: 'open',
     difficulty: 'Intermediate',
     price: 0,
@@ -34,7 +34,7 @@ export const EVENTS: Event[] = [
     teamCount: '2',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/aiforge/800/600',
+    image: '/assets/events/evt-2.jpg',
     status: 'open',
     difficulty: 'Advanced',
     teamSize: '2 members',
@@ -50,7 +50,7 @@ export const EVENTS: Event[] = [
     teamCount: '2',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/twominds/800/600',
+    image: '/assets/events/evt-3.jpg',
     status: 'open',
     difficulty: 'Intermediate',
     teamSize: '2 members',
@@ -66,7 +66,7 @@ export const EVENTS: Event[] = [
     teamCount: '2',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/mindsprint/800/600',
+    image: '/assets/events/evt-4.jpg',
     status: 'open',
     difficulty: 'Intermediate',
     teamSize: '2 members',
@@ -82,7 +82,7 @@ export const EVENTS: Event[] = [
     teamCount: '1 or 2',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/fifashowdown/800/600',
+    image: '/assets/events/evt-5.jpg',
     status: 'open',
     price: 0,
     teamSize: '1-2 members'
@@ -97,7 +97,7 @@ export const EVENTS: Event[] = [
     teamCount: '4',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/searchshades/800/600',
+    image: '/assets/events/evt-6.jpg',
     status: 'open',
     price: 0,
     teamSize: '4 members'
@@ -112,7 +112,7 @@ export const EVENTS: Event[] = [
     teamCount: '2',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/funfiesta/800/600',
+    image: '/assets/events/evt-7.jpg',
     status: 'open',
     price: 0,
     teamSize: '2 members'
@@ -127,7 +127,7 @@ export const EVENTS: Event[] = [
     teamCount: '1',
     date: '06-03-2026',
     time: 'TBA',
-    image: 'https://picsum.photos/seed/genaurora/800/600',
+    image: '/assets/events/evt-8.jpg',
     status: 'open',
     price: 0
   }
@@ -150,7 +150,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 350,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/hackproofing/400/300'
+    image: '/assets/workshops/workshop_1.jpg'
   },
   {
     id: 'ws-2',
@@ -168,7 +168,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 350,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/promptproduct/400/300'
+    image: '/assets/workshops/workshop_2.jpg'
   },
   {
     id: 'ws-3',
@@ -186,7 +186,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 350,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/fullstack/400/300'
+    image: '/assets/workshops/workshop_3.jpg'
   },
   {
     id: 'ws-4',
@@ -204,7 +204,7 @@ export const WORKSHOPS: Workshop[] = [
     price: 350,
     spotsTotal: 50,
     spotsFilled: 0,
-    image: 'https://picsum.photos/seed/learnththink/400/300'
+    image: '/assets/workshops/workshop_4.jpg'
   }
 ];
 

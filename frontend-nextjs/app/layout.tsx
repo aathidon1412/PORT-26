@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import logo from "@/public/assets/imgs/logo.png";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description: "Register for PORT 2026 events, workshops, and get your tickets",
   keywords: "events, workshops, registration, PORT 2026",
   icons: {
-    icon: '/favicon.svg',
+    icon: logo.src,
   },
 };
 

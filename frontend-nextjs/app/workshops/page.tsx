@@ -39,7 +39,7 @@ const Workshops: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.1 }}
-            className={`group relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-slate-900 border-white/10 hover:border-violet-500/50'} rounded-3xl border overflow-hidden transition-all duration-300`}
+            className={`group relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-slate-900 border-white/10 hover:border-violet-500/50'} rounded-3xl border overflow-hidden transition-all duration-300 scroll-mt-32`}
           >
             <div className="flex flex-col lg:flex-row">
               <div className="relative w-full h-72 lg:w-2/5 lg:h-auto overflow-hidden">
