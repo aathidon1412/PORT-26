@@ -46,15 +46,23 @@ function TicketsContent() {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
-      const bc = new BroadcastChannel('registrations');
-      bc.onmessage = () => { fetchCounts(); };
-      return () => bc.close();
+    // Prefer BroadcastChannel when available (client environments).
+    if (typeof globalThis !== 'undefined' && (globalThis as any).BroadcastChannel) {
+      try {
+        const bc = new (globalThis as any).BroadcastChannel('registrations');
+        bc.onmessage = () => { fetchCounts(); };
+        return () => bc.close();
+      } catch (e) {
+        // ignore and fall back to storage events
+      }
     }
+
     // fallback: listen to storage events
     const onStorage = (e: StorageEvent) => { if (e.key === 'registration:updated') fetchCounts(); };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    if (typeof globalThis !== 'undefined' && typeof (globalThis as any).addEventListener === 'function') {
+      (globalThis as any).addEventListener('storage', onStorage);
+      return () => (globalThis as any).removeEventListener('storage', onStorage);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

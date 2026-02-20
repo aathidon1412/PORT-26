@@ -48,12 +48,14 @@ const Workshops: React.FC = () => {
       return () => bc.close();
     }
     const onStorage = (e: StorageEvent) => { if (e.key === 'registration:updated') onUpdate(); };
-    window.addEventListener('storage', onStorage);
-    window.addEventListener('registration:updated', onUpdate as EventListener);
-    return () => {
-      window.removeEventListener('storage', onStorage);
-      window.removeEventListener('registration:updated', onUpdate as EventListener);
-    };
+    if (typeof globalThis !== 'undefined' && typeof (globalThis as any).addEventListener === 'function') {
+      (globalThis as any).addEventListener('storage', onStorage);
+      (globalThis as any).addEventListener('registration:updated', onUpdate as EventListener);
+      return () => {
+        (globalThis as any).removeEventListener('storage', onStorage);
+        (globalThis as any).removeEventListener('registration:updated', onUpdate as EventListener);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
