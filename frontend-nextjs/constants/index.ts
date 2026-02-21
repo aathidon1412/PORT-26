@@ -42,7 +42,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-3',
-    title: 'TWO MINDS, ONE CODE',
+    title: 'LINK CODE',
     category: 'technical',
     type: 'Technical Event',
     description: 'A blind coding challenge where one partner sees the code but can\'t type, and the other types but can\'t see the screen.',
@@ -89,7 +89,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'evt-6',
-    title: 'SEARCH FOR SHADES',
+    title: 'COLOR HUNT',
     category: 'non-technical',
     type: 'Non-Technical Event',
     description: 'An interactive scavenger hunt where teams race against time to capture real-world objects matching specific assigned colors.',
