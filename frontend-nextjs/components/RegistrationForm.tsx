@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 interface RegistrationFormProps {
   workshopId: string;
@@ -65,10 +66,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [screenshotPreview, setScreenshotPreview] = useState<string>('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -77,10 +74,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     const newErrors: FormErrors = {};
 
     if (!formData.firstName.trim()) newErrors.firstName = 'First Name is required';
-    if (!formData.lastName.trim())  newErrors.lastName  = 'Last Name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last Name is required';
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email.trim())              newErrors.email = 'Email is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!emailRegex.test(formData.email)) newErrors.email = 'Please enter a valid email';
 
     if (formData.confirmEmail !== formData.email) newErrors.confirmEmail = 'Emails do not match';
@@ -100,11 +97,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (!formData.paymentScreenshot)
       newErrors.paymentScreenshot = 'Payment screenshot is required';
 
-    if (!formData.collegeName.trim())           newErrors.collegeName           = 'College Name is required';
-    if (!formData.department.trim())            newErrors.department            = 'Department is required';
-    if (!formData.yearOfStudy)                  newErrors.yearOfStudy           = 'Year of Study is required';
+    if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
+    if (!formData.department.trim()) newErrors.department = 'Department is required';
+    if (!formData.yearOfStudy) newErrors.yearOfStudy = 'Year of Study is required';
     if (!formData.collegeRegisterNumber.trim()) newErrors.collegeRegisterNumber = 'College Register Number is required';
-    if (!formData.city.trim())                  newErrors.city                  = 'City is required';
+    if (!formData.city.trim()) newErrors.city = 'City is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -130,10 +127,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
       const data = await res.json();
       if (data.isDuplicate) {
-        setSubmitStatus({
-          type: 'error',
-          message: `This ${data.field} is already registered for this event.`,
-        });
+        toast.error(data.message || `This ${data.field} is already registered for this event.`);
         return false;
       }
       return true;
@@ -148,7 +142,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (!validateForm()) return;
 
     setLoading(true);
-    setSubmitStatus({ type: null, message: '' });
 
     try {
       const noDuplicate = await checkDuplicateRegistration(
@@ -167,19 +160,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName:             formData.firstName,
-          lastName:              formData.lastName,
-          email:                 formData.email,
-          contactNumber:         formData.contactNumber.replace(/\D/g, ''),
-          gender:                formData.gender,
-          paymentMode:           'UPI',
-          transactionId:         formData.transactionId.trim(),
-          paymentScreenshot:     formData.paymentScreenshot,
-          collegeName:           formData.collegeName,
-          department:            formData.department,
-          yearOfStudy:           formData.yearOfStudy,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          contactNumber: formData.contactNumber.replace(/\D/g, ''),
+          gender: formData.gender,
+          paymentMode: 'UPI',
+          transactionId: formData.transactionId.trim(),
+          paymentScreenshot: formData.paymentScreenshot,
+          collegeName: formData.collegeName,
+          department: formData.department,
+          yearOfStudy: formData.yearOfStudy,
           collegeRegisterNumber: formData.collegeRegisterNumber,
-          city:                  formData.city,
+          city: formData.city,
         }),
       });
 
@@ -190,22 +183,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       const data = await response.json();
 
       if (response.ok) {
-        setSubmitStatus({
-          type: 'success',
-          message: `Successfully registered for ${workshopName}!`,
-        });
+        toast.success(
+          `🎫 Registered for ${workshopName}! Your ticket will be emailed within 24 hours.`,
+          { duration: 7000 }
+        );
         setFormData(EMPTY_FORM);
         setScreenshotPreview('');
-        setTimeout(() => { onSuccess?.(); }, 2000);
+        setTimeout(() => { onSuccess?.(); }, 2500);
       } else {
-        setSubmitStatus({
-          type: 'error',
-          message: data.message || 'Registration failed. Please try again.',
-        });
+        toast.error(data.message || 'Registration failed. Please try again.');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      setSubmitStatus({ type: 'error', message: 'An error occurred. Please try again.' });
+      toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -245,8 +235,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // ── Shared input className ────────────────────────────────────────────────
   const inputCls = (field: string) =>
-    `w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 dark:bg-slate-800 dark:border-slate-700 dark:text-white ${
-      errors[field] ? 'border-red-500' : ''
+    `w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 dark:bg-slate-800 dark:border-slate-700 dark:text-white ${errors[field] ? 'border-red-500' : ''
     }`;
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -275,19 +264,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {submitStatus.type && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-lg font-medium ${
-                submitStatus.type === 'success'
-                  ? 'bg-green-100 text-green-800 border border-green-300'
-                  : 'bg-red-100 text-red-800 border border-red-300'
-              }`}
-            >
-              {submitStatus.message}
-            </motion.div>
-          )}
+
 
           {/* Row 1: First Name & Last Name */}
           <div className="grid md:grid-cols-2 gap-4">

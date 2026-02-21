@@ -1,6 +1,10 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { FullStackFusionRegistration } from '@/models/Registration';
-import { checkDuplicateRegistration, saveRegistration } from '@/lib/registrationUtils';
+import {
+  checkDay1Duplicate,
+  checkTransactionIdGlobalUnique,
+  saveRegistration,
+} from '@/lib/registrationUtils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,7 +14,7 @@ export async function GET(request: NextRequest) {
     if (!email || !phone) {
       return NextResponse.json({ message: 'Email and phone are required' }, { status: 400 });
     }
-    const result = await checkDuplicateRegistration(email, phone, FullStackFusionRegistration);
+    const result = await checkDay1Duplicate(email, phone);
     return NextResponse.json(result);
   } catch {
     return NextResponse.json({ message: 'Failed to check registration' }, { status: 500 });
@@ -26,10 +30,19 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const duplicateCheck = await checkDuplicateRegistration(body.email, body.contactNumber, FullStackFusionRegistration);
-    if (duplicateCheck.isDuplicate) {
-      return NextResponse.json(duplicateCheck, { status: 409 });
+
+    // Block if already registered for any Day 1 workshop
+    const day1Check = await checkDay1Duplicate(body.email, body.contactNumber);
+    if (day1Check.isDuplicate) {
+      return NextResponse.json(day1Check, { status: 409 });
     }
+
+    // Block if transaction ID already used anywhere
+    const txnCheck = await checkTransactionIdGlobalUnique(body.transactionId);
+    if (txnCheck.isDuplicate) {
+      return NextResponse.json(txnCheck, { status: 409 });
+    }
+
     const result = await saveRegistration({ ...body, paymentMode: 'UPI' }, FullStackFusionRegistration);
     return NextResponse.json(result, { status: result.success ? 201 : 400 });
   } catch (error) {

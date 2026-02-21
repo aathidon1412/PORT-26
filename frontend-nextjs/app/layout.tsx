@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import ToasterProvider from "@/components/ToasterProvider";
 import logo from "@/public/assets/imgs/logo.png";
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
+          <ToasterProvider />
           <Navbar />
           <main className="flex-grow">
             {children}
