@@ -4,11 +4,18 @@ import {
   checkDay1Duplicate,
   checkTransactionIdGlobalUnique,
   saveRegistration,
+  getRegistrationCount,
 } from '@/lib/registrationUtils';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+
+    if (searchParams.get('count') === 'true') {
+      const cnt = await getRegistrationCount(PromptToProductRegistration);
+      return NextResponse.json(cnt);
+    }
+
     const email = searchParams.get('email');
     const phone = searchParams.get('phone');
     if (!email || !phone) {
@@ -31,13 +38,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Block if already registered for any Day 1 workshop
     const day1Check = await checkDay1Duplicate(body.email, body.contactNumber);
     if (day1Check.isDuplicate) {
       return NextResponse.json(day1Check, { status: 409 });
     }
 
-    // Block if transaction ID already used anywhere
     const txnCheck = await checkTransactionIdGlobalUnique(body.transactionId);
     if (txnCheck.isDuplicate) {
       return NextResponse.json(txnCheck, { status: 409 });

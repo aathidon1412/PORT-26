@@ -58,7 +58,7 @@ export default function Tickets() {
           Get Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Tickets</span>
         </h1>
         <p className="text-slate-400 text-sm max-w-md mx-auto">
-          Choose workshops or the PORT Pass to access Day 2 events
+          Choose workshops or the Event Pass to access Day 2 events
         </p>
       </motion.div>
 
@@ -72,7 +72,7 @@ export default function Tickets() {
         <div className="flex bg-slate-900/80 backdrop-blur-sm p-1.5 rounded-full border border-white/10 transition-colors duration-300">
           {[
             { id: 'workshops', label: 'Workshops — Day 1' },
-            { id: 'portpass', label: 'Port Pass — Day 2' },
+            { id: 'portpass', label: 'Event Pass — Day 2' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -187,7 +187,7 @@ export default function Tickets() {
               transition={{ delay: 0.1 }}
               className="text-center mb-8"
             >
-              <h2 className="text-2xl font-bold text-white mb-2">PORT PASS</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">Event Pass</h2>
               <p className="text-slate-400">
                 Get exclusive access to all Day 2 events
               </p>
@@ -228,9 +228,9 @@ export default function Tickets() {
 
               <button
                 onClick={handlePortPassClick}
-                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-violet-600 to-indigo-700 hover:from-violet-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
-                Register for PORT Pass
+                Register for Event Pass
               </button>
             </motion.div>
           </motion.div>

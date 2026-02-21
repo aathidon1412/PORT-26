@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Filter, Search, X, Users, Sparkles, Ticket } from 'lucide-react';
 import { EVENTS } from '@/constants';
@@ -30,7 +30,7 @@ const Events: React.FC = () => {
   return (
     <div className="min-h-screen pb-12 pt-24">
       {/* Animated Pricing Banner - Sticky */}
-      <div className="sticky top-[4.5rem] lg:top-[5.5rem] z-40 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-amber-500 text-white py-2 shadow-lg">
+      <div className="sticky top-18 lg:top-22 z-40 bg-linear-to-r from-violet-600 via-fuchsia-600 to-amber-500 text-white py-2 shadow-lg">
         <div className="w-full flex items-center justify-start overflow-hidden">
           <motion.div
             animate={{ x: ['0%', '-50%'] }}
@@ -57,7 +57,7 @@ const Events: React.FC = () => {
       </div>
 
       {/* Header */}
-      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} pb-16 pt-12 border-b ${colors.border} transition-colors duration-300 relative overflow-hidden`}>
+      <div className={`${theme === 'light' ? 'bg-linear-to-b from-white to-slate-50' : 'bg-linear-to-b from-slate-900 to-slate-950'} pb-16 pt-12 border-b ${colors.border} transition-colors duration-300 relative overflow-hidden`}>
 
 
         <div className="max-w-8xl mx-auto px-4 text-center mt-8">
@@ -76,11 +76,11 @@ const Events: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className={`text-5xl md:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 transition-colors duration-300`}
           >
-            Event <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-300">Schedule</span>
+            Event <span className="text-transparent bg-clip-text bg-linear-to-r from-violet-400 to-amber-300">Schedule</span>
           </motion.h1>
           <p className={`${colors.textTertiary} max-w-2xl mx-auto text-lg transition-colors duration-300`}>
             Explore a diverse range of technical challenges and cultural spectacles. <br />
-            <span className={`font-semibold ${theme === 'light' ? 'text-violet-700' : 'text-violet-400'}`}>Pay ₹350 and attend any event on the day!</span>
+            <span className={`font-semibold ${theme === 'light' ? 'text-violet-600' : 'text-violet-400'}`}>Pay ₹350 and attend any event on the day!</span>
           </p>
 
           <motion.div
@@ -91,7 +91,7 @@ const Events: React.FC = () => {
           >
             <button
               onClick={() => setShowRegModal(true)}
-              className={`px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ${theme === 'light' ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-violet-500/30' : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-violet-900/40'}`}
+              className={`px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ${theme === 'light' ? 'bg-linear-to-r from-violet-600 to-fuchsia-600 text-white shadow-violet-500/30' : 'bg-linear-to-r from-violet-500 to-fuchsia-500 text-white shadow-violet-900/40'}`}
             >
               Register Now
             </button>
@@ -103,7 +103,7 @@ const Events: React.FC = () => {
         {/* Filters */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
           {/* Tabs */}
-          <div className={`flex p-1 ${theme === 'light' ? 'bg-slate-200' : 'bg-white/5'} rounded-xl border ${colors.border} transition-colors duration-300`}>
+          <div className={`flex p-1 ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-white/5'} rounded-xl border ${colors.border} transition-colors duration-300`}>
             {['all', 'technical', 'non-technical'].map((tab) => (
               <button
                 key={tab}
@@ -167,16 +167,16 @@ const Events: React.FC = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 flex-grow flex flex-col">
+                  <div className="p-6 grow flex flex-col">
                     <div className="mb-4">
-                      <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} mb-2 ${theme === 'light' ? 'group-hover:text-amber-700' : 'group-hover:text-amber-400'} transition-colors`}>{event.title}</h3>
+                      <h3 className={`text-xl font-serif font-bold ${colors.textPrimary} mb-2 ${theme === 'light' ? 'group-hover:text-amber-600' : 'group-hover:text-amber-400'} transition-colors`}>{event.title}</h3>
                       <p className={`${colors.textTertiary} text-sm leading-relaxed line-clamp-2`}>
                         {event.description}
                       </p>
                       {event.detailedDescription && (
                         <button
                           onClick={(e) => { e.stopPropagation(); setSelectedEvent(event); }}
-                          className={`mt-2 text-xs font-semibold tracking-wide ${theme === 'light' ? 'text-violet-600 hover:text-amber-700' : 'text-violet-500 hover:text-amber-300'} transition-colors`}
+                          className={`mt-2 text-xs font-semibold tracking-wide ${theme === 'light' ? 'text-violet-600 hover:text-amber-600' : 'text-violet-500 hover:text-amber-300'} transition-colors`}
                         >
                           + Read more
                         </button>
@@ -267,7 +267,7 @@ const Events: React.FC = () => {
                     className="w-full h-full object-cover"
                     containerClassName="w-full h-full"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-4 left-6 right-6">
                     <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 ${selectedEvent.category === 'technical' ? 'bg-blue-600/90 text-white' : 'bg-pink-600/90 text-white'
                       }`}>
@@ -320,11 +320,11 @@ const Events: React.FC = () => {
                             return (
                               <li key={idx} className={`flex flex-col sm:flex-row sm:items-start justify-between gap-y-2 gap-x-4 ${colors.textTertiary} text-sm pb-3 border-b ${theme === 'light' ? 'border-slate-100' : 'border-white/5'} last:border-0 last:pb-0`}>
                                 <div className="flex items-start gap-3">
-                                  <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${theme === 'light' ? 'bg-violet-500' : 'bg-violet-400'}`} />
+                                  <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${theme === 'light' ? 'bg-violet-500' : 'bg-violet-400'}`} />
                                   <span className={`font-medium leading-relaxed ${theme === 'light' ? 'text-slate-800' : 'text-slate-200'}`}>{topic}</span>
                                 </div>
                                 {domain && (
-                                  <span className={`flex-shrink-0 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md border ${getBadgeColor(domain)} ml-auto sm:ml-0 self-start sm:self-center`}>
+                                  <span className={`shrink-0 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md border ${getBadgeColor(domain)} ml-auto sm:ml-0 self-start sm:self-center`}>
                                     {domain}
                                   </span>
                                 )}
@@ -369,7 +369,7 @@ const Events: React.FC = () => {
       <RegistrationModal
         isOpen={showRegModal}
         onClose={() => setShowRegModal(false)}
-        ticketTab="events"
+        ticketTab="port-pass"
       />
     </div>
   );

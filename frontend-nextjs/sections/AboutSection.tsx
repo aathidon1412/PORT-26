@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Cpu, Award, Zap, Users, Wrench, X } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import Image from 'next/image';
 import ImageWithSkeleton from '@/components/ImageWithSkeleton';
 
 const CATEGORY_BADGES = [
@@ -39,7 +40,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="lg:pr-8"
             >
-              <h4 className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
+              <h4 className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
                 Who We Are
               </h4>
               <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 leading-tight transition-colors duration-300`}>
@@ -60,7 +61,7 @@ const AboutSection: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className={`relative h-[400px] lg:h-[500px] w-full ${theme === 'light' ? 'bg-slate-100/60 border-slate-300' : 'bg-slate-900/40 border-white/10'} rounded-[2rem] border backdrop-blur-sm overflow-hidden flex items-center justify-center group transition-colors duration-300`}
+              className={`relative h-[400px] lg:h-[500px] w-full ${theme === 'light' ? 'bg-white/80 border-slate-200' : 'bg-slate-900/40 border-white/10'} rounded-[2rem] border backdrop-blur-sm overflow-hidden flex items-center justify-center group transition-colors duration-300`}
             >
               {/* Grid Background */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -70,7 +71,7 @@ const AboutSection: React.FC = () => {
               <div className="absolute w-64 h-64 bg-violet-500/20 rounded-full blur-[80px] animate-pulse delay-75" />
 
               {/* Central Content */}
-              <div className={`relative z-10 text-center p-8 backdrop-blur-sm rounded-3xl border ${theme === 'light' ? 'border-slate-200 bg-white/50' : 'border-white/5 bg-slate-950/30'} shadow-2xl transition-colors duration-300`}>
+              <div className={`relative z-10 text-center p-8 backdrop-blur-sm rounded-3xl border ${theme === 'light' ? 'border-slate-200/60 bg-white/80' : 'border-white/5 bg-slate-950/30'} shadow-2xl transition-colors duration-300`}>
                 <div className={`text-7xl font-serif font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-b ${theme === 'light' ? 'from-slate-900 to-slate-600' : 'from-white to-slate-400'}`}>
                   25<span className={`text-4xl align-top ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`}>+</span>
                 </div>
@@ -116,12 +117,13 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className={`relative h-[400px] lg:h-[500px] w-full rounded-[2rem] border overflow-hidden ${theme === 'light' ? 'border-slate-300 bg-slate-100/60' : 'border-white/10 bg-slate-900/40'} backdrop-blur-sm transition-colors duration-300 flex items-center justify-center`}>
-                <ImageWithSkeleton
-                  src="/assets/imgs/logo.png"
+              <div className={`relative h-[400px] lg:h-[500px] w-full rounded-[2rem] border overflow-hidden ${theme === 'light' ? 'border-slate-200 bg-white' : 'border-white/10 bg-slate-900/40'} backdrop-blur-sm transition-colors duration-300 flex items-center justify-center`}>
+                <Image
+                  src="/assets/imgs/logo1.jpeg"
                   alt="PORT'26 Logo"
-                  className="w-full h-full object-contain p-4"
-                  containerClassName="w-full h-full p-4"
+                  width={480}
+                  height={480}
+                  className="object-contain p-4"
                 />
               </div>
             </motion.div>
@@ -134,7 +136,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="lg:pl-4"
             >
-              <h4 className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
+              <h4 className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
                 About the Event
               </h4>
               <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 leading-tight transition-colors duration-300`}>
@@ -152,7 +154,7 @@ const AboutSection: React.FC = () => {
                 <button
                   onClick={() => setShowBrochure(true)}
                   className={`inline-flex items-center gap-1 mx-4 mb-8 font-semibold text-sm transition-colors duration-300 ${theme === 'light'
-                    ? 'text-amber-700 hover:text-amber-800'
+                    ? 'text-amber-600 hover:text-amber-700'
                     : 'text-amber-400 hover:text-amber-300'
                     }`}
                 >
@@ -168,9 +170,9 @@ const AboutSection: React.FC = () => {
                   <motion.div
                     key={badge.label}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-full border backdrop-blur-sm transition-colors duration-300 ${theme === 'light'
-                      ? 'bg-white border-slate-200 shadow-sm hover:shadow-md'
-                      : 'bg-slate-800/60 border-white/10 hover:border-white/20'
+                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-full border backdrop-blur-sm transition-all duration-300 ${theme === 'light'
+                      ? 'bg-white border-slate-200 hover:border-violet-400 shadow-sm hover:shadow-md'
+                      : 'bg-slate-800/60 border-white/10 hover:border-violet-500/50'
                       }`}
                   >
                     <div className={`p-1.5 rounded-lg bg-gradient-to-br ${badge.gradient}`}>
@@ -210,7 +212,7 @@ const AboutSection: React.FC = () => {
 
               <div className="p-4 flex items-center justify-center overflow-auto">
                 <ImageWithSkeleton
-                  src="/assets/imgs/brouchure.jpeg"
+                  src="/assets/imgs/brouchure_port.png"
                   alt="PORT'26 Brochure"
                   className="max-h-[80vh] w-auto max-w-full object-contain"
                   containerClassName="w-full flex items-center justify-center"

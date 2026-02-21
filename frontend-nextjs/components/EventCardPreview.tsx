@@ -27,7 +27,7 @@ const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => {
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           containerClassName="absolute inset-0 w-full h-full"
         />
-        <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'light' ? 'from-white via-white/40' : 'from-slate-950 via-slate-950/40'} to-transparent opacity-90`} />
+        <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'light' ? 'from-slate-50 via-slate-50/50' : 'from-slate-950 via-slate-950/40'} to-transparent opacity-95`} />
 
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <div className={`inline-block px-3 py-1 ${event.category === 'technical'
@@ -36,7 +36,7 @@ const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => {
             } text-xs font-bold rounded-full mb-3 uppercase`}>
             {event.category}
           </div>
-          <h3 className={`text-2xl font-serif font-bold ${theme === 'light' ? 'text-slate-900 group-hover:text-amber-700' : 'text-white group-hover:text-amber-400'} mb-2 leading-tight transition-colors`}>
+          <h3 className={`text-2xl font-serif font-bold ${theme === 'light' ? 'text-slate-900 group-hover:text-amber-600' : 'text-white group-hover:text-amber-400'} mb-2 leading-tight transition-colors`}>
             {event.title}
           </h3>
           <p className={`text-sm ${theme === 'light' ? 'text-slate-700' : 'text-slate-300'} mb-4 line-clamp-2`}>
@@ -44,12 +44,12 @@ const EventCardPreview: React.FC<EventCardPreviewProps> = ({ event }) => {
           </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Calendar size={16} className={theme === 'light' ? 'text-amber-700' : 'text-amber-400'} />
+              <Calendar size={16} className={theme === 'light' ? 'text-amber-600' : 'text-amber-400'} />
               <span className={`text-sm ${theme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}>
                 {event.date}
               </span>
             </div>
-            <ArrowRight size={20} className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} group-hover:translate-x-1 transition-transform`} />
+            <ArrowRight size={20} className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} group-hover:translate-x-1 transition-transform`} />
           </div>
         </div>
       </motion.div>

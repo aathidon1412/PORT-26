@@ -83,8 +83,8 @@ export const WORKSHOPS = [
 
 export const PORT_PASS = {
   id: 'port-pass',
-  title: 'PORT PASS - DAY 2 EVENT',
-  description: 'Access all Day 2 events with the PORT Pass. Enjoy unlimited access to technical and non-technical events.',
+  title: 'Event Pass - DAY 2 EVENT',
+  description: 'Access all Day 2 events with the Event Pass. Enjoy unlimited access to technical and non-technical events.',
   date: '06-03-2026',
   price: 350,
 };

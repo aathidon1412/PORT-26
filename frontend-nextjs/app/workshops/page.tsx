@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { WORKSHOPS } from '@/constants';
@@ -12,11 +12,57 @@ import ImageWithSkeleton from '@/components/ImageWithSkeleton';
 const Workshops: React.FC = () => {
   const { theme, colors } = useTheme();
   const [showRegModal, setShowRegModal] = useState(false);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const TOTAL_SEATS = 120;
+
+  const fetchCounts = async () => {
+    try {
+      const map: Record<string, number> = {};
+      await Promise.all(WORKSHOPS.map(async (w) => {
+        try {
+          const res = await fetch(`/api/workshops/${w.id}?count=true`);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data && typeof data.count === 'number') map[w.id] = data.count;
+        } catch (e) { /* ignore */ }
+      }));
+      setCounts(map);
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchCounts();
+    const t = setInterval(fetchCounts, 15000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // Listen for registration updates via BroadcastChannel or storage event
+    const onUpdate = () => fetchCounts();
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      const bc = new BroadcastChannel('registrations');
+      bc.onmessage = onUpdate;
+      return () => bc.close();
+    }
+    const onStorage = (e: StorageEvent) => { if (e.key === 'registration:updated') onUpdate(); };
+    if (typeof globalThis !== 'undefined' && typeof (globalThis as any).addEventListener === 'function') {
+      (globalThis as any).addEventListener('storage', onStorage);
+      (globalThis as any).addEventListener('registration:updated', onUpdate as EventListener);
+      return () => {
+        (globalThis as any).removeEventListener('storage', onStorage);
+        (globalThis as any).removeEventListener('registration:updated', onUpdate as EventListener);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen pb-12 mt-16">
       {/* Hero (match Events page header design) */}
-      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} py-16 border-b ${colors.border} transition-colors duration-300`}>
+      <div className={`${theme === 'light' ? 'bg-gradient-to-b from-white to-slate-50' : 'bg-gradient-to-b from-slate-900 to-slate-950'} py-16 border-b ${colors.border} transition-colors duration-300`}>
         <div className="max-w-8xl mx-auto px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -96,10 +142,11 @@ const Workshops: React.FC = () => {
                 </div>
 
                 <div className={`mt-auto flex flex-col sm:flex-row items-center justify-between gap-6 border-t ${colors.border} pt-8`}>
-                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${theme === 'light' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`}>
-                    <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
-                    Spots Available
-                  </div>
+                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${theme === 'light' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-green-500/10 text-green-400 border border-green-500/20'}`}>
+                      <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
+                      Spots Available
+                      <span className="ml-3 text-sm text-slate-600 dark:text-slate-300">{counts[workshop.id] === undefined ? 'Loading…' : `${Math.max(0, TOTAL_SEATS - counts[workshop.id])} / ${TOTAL_SEATS} remaining`}</span>
+                    </div>
                   <button onClick={() => setShowRegModal(true)} className={`w-full sm:w-auto px-8 py-3 ${theme === 'light' ? 'bg-slate-900 hover:bg-amber-700' : 'bg-white hover:bg-amber-400'} ${theme === 'light' ? 'text-white' : 'text-slate-900'} font-bold rounded-lg transition-colors text-center`}>
                     Register Now
                   </button>
@@ -113,8 +160,18 @@ const Workshops: React.FC = () => {
       <RegistrationModal
         isOpen={showRegModal}
         onClose={() => setShowRegModal(false)}
-        ticketTab="workshop"
+        ticketTab="workshops"
       />
+
+      <script suppressHydrationWarning>
+        {`(function(){
+          try{if('BroadcastChannel' in window){
+            var bc=new BroadcastChannel('registrations');
+            bc.onmessage=function(){window.dispatchEvent(new Event('registration:updated'))}
+          } else { window.addEventListener('storage', function(e){ if(e.key==='registration:updated') window.dispatchEvent(new Event('registration:updated')) }) }
+          }catch(e){}
+        })()`}
+      </script>
     </div>
   );
 };

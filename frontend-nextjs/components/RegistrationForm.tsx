@@ -1,8 +1,9 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { CreditCard, Paperclip } from 'lucide-react';
 
 interface RegistrationFormProps {
   workshopId: string;
@@ -19,7 +20,7 @@ interface FormData {
   contactNumber: string;
   gender: string;
   transactionId: string;
-  paymentScreenshot: string; // base64 data-URL
+  paymentScreenshot: string;
   collegeName: string;
   department: string;
   yearOfStudy: string;
@@ -31,7 +32,6 @@ interface FormErrors {
   [key: string]: string;
 }
 
-// Map workshop IDs to API endpoints
 const workshopIdToEndpoint: Record<string, string> = {
   'ws-1': 'hackproofing',
   'ws-2': 'prompt-to-product',
@@ -72,14 +72,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   // ── Validation ────────────────────────────────────────────────────────────
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-
     if (!formData.firstName.trim()) newErrors.firstName = 'First Name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last Name is required';
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!emailRegex.test(formData.email)) newErrors.email = 'Please enter a valid email';
-
     if (formData.confirmEmail !== formData.email) newErrors.confirmEmail = 'Emails do not match';
 
     const phoneRegex = /^[0-9]{10}$/;
@@ -89,18 +87,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       newErrors.contactNumber = 'Please enter a valid 10-digit phone number';
 
     if (!formData.gender) newErrors.gender = 'Gender is required';
-
-    // Transaction ID
-    if (!formData.transactionId.trim())
-      newErrors.transactionId = 'Transaction ID is required';
-
-    if (!formData.paymentScreenshot)
-      newErrors.paymentScreenshot = 'Payment screenshot is required';
-
+    if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
+    if (!formData.paymentScreenshot) newErrors.paymentScreenshot = 'Payment screenshot is required';
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
     if (!formData.department.trim()) newErrors.department = 'Department is required';
     if (!formData.yearOfStudy) newErrors.yearOfStudy = 'Year of Study is required';
-    if (!formData.collegeRegisterNumber.trim()) newErrors.collegeRegisterNumber = 'College Register Number is required';
+    if (!formData.collegeRegisterNumber.trim())
+      newErrors.collegeRegisterNumber = 'College Register Number is required';
     if (!formData.city.trim()) newErrors.city = 'City is required';
 
     setErrors(newErrors);
@@ -118,13 +111,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         workshopId === 'port-pass'
           ? '/api/port-pass'
           : `/api/workshops/${apiEndpoint}`;
-
       const res = await fetch(`${endpoint}?email=${email}&phone=${phone}`);
       if (!res.ok) return true;
-
       const contentType = res.headers.get('content-type');
       if (!contentType?.includes('application/json')) return true;
-
       const data = await res.json();
       if (data.isDuplicate) {
         toast.error(data.message || `This ${data.field} is already registered for this event.`);
@@ -141,6 +131,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     e.preventDefault();
     if (!validateForm()) return;
 
+    const toastId = toast.loading('Processing your registration...');
     setLoading(true);
 
     try {
@@ -148,7 +139,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         formData.email,
         formData.contactNumber.replace(/\D/g, '')
       );
-      if (!noDuplicate) { setLoading(false); return; }
+      if (!noDuplicate) { toast.dismiss(toastId); setLoading(false); return; }
 
       const apiEndpoint = workshopIdToEndpoint[workshopId] || workshopId;
       const endpoint =
@@ -185,17 +176,22 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       if (response.ok) {
         toast.success(
           `🎫 Registered for ${workshopName}! Your ticket will be emailed within 24 hours.`,
-          { duration: 7000 }
+          { id: toastId, duration: 7000 }
         );
         setFormData(EMPTY_FORM);
         setScreenshotPreview('');
+        try {
+          const bc = typeof window !== 'undefined' && 'BroadcastChannel' in window
+            ? new BroadcastChannel('registrations') : null;
+          bc?.postMessage({ workshopId, action: 'registered' });
+        } catch { /* ignore */ }
         setTimeout(() => { onSuccess?.(); }, 2500);
       } else {
-        toast.error(data.message || 'Registration failed. Please try again.');
+        toast.error(data.message || 'Registration failed. Please try again.', { id: toastId });
       }
     } catch (error) {
       console.error('Registration error:', error);
-      toast.error('An unexpected error occurred. Please try again.');
+      toast.error('An unexpected error occurred. Please try again.', { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -213,7 +209,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (!file.type.startsWith('image/')) {
       setErrors((prev) => ({ ...prev, paymentScreenshot: 'Please upload an image file' }));
       return;
@@ -222,7 +217,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       setErrors((prev) => ({ ...prev, paymentScreenshot: 'Image must be smaller than 5 MB' }));
       return;
     }
-
     const reader = new FileReader();
     reader.onload = (ev) => {
       const dataUrl = ev.target?.result as string;
@@ -240,31 +234,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
-      onClick={onClose}
-    >
-      <motion.div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl my-8 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]"
-      >
-        {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-6 text-white flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{workshopName}</h2>
-          <button
-            onClick={onClose}
-            className="text-white hover:bg-white/20 rounded-full p-2 transition"
-          >
-            ✕
-          </button>
-        </div>
+    <div className="w-full max-w-3xl mx-auto">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-6 text-white rounded-t-2xl">
+        <h2 className="text-2xl font-bold">{workshopName}</h2>
+      </div>
 
+      <div className="bg-white dark:bg-slate-900 rounded-b-2xl shadow-xl">
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-
 
           {/* Row 1: First Name & Last Name */}
           <div className="grid md:grid-cols-2 gap-4">
@@ -331,10 +309,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             </div>
           </div>
 
-          {/* Row 4: UPI Payment (UPI only) */}
+          {/* Row 4: UPI Payment */}
           <div className="rounded-xl border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/30 p-4 space-y-4">
             <p className="text-sm font-semibold text-violet-700 dark:text-violet-300 flex items-center gap-2">
-              <span>💳</span> Payment — UPI Only
+              <CreditCard className="w-4 h-4" /> Payment — UPI Only
             </p>
 
             {/* Transaction ID */}
@@ -356,9 +334,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className={`cursor-pointer flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg py-6 transition
-                  ${errors.paymentScreenshot ? 'border-red-500' : 'border-violet-300 dark:border-violet-700'}
-                  hover:border-violet-500 dark:hover:border-violet-400
-                  bg-white dark:bg-slate-800`}
+                    ${errors.paymentScreenshot ? 'border-red-500' : 'border-violet-300 dark:border-violet-700'}
+                    hover:border-violet-500 dark:hover:border-violet-400
+                    bg-white dark:bg-slate-800`}
               >
                 {screenshotPreview ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -366,7 +344,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     className="max-h-40 rounded-lg object-contain" />
                 ) : (
                   <>
-                    <span className="text-3xl">📎</span>
+                    <Paperclip className="w-8 h-8 text-slate-400" />
                     <span className="text-sm text-slate-500 dark:text-slate-400">
                       Click to upload payment screenshot
                     </span>
@@ -469,17 +447,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             >
               {loading ? 'Registering...' : 'Register Now'}
             </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-300 dark:bg-slate-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-600 transition"
-            >
-              Cancel
-            </button>
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-300 dark:bg-slate-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-600 transition"
+              >
+                Back
+              </button>
+            )}
           </div>
         </form>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 

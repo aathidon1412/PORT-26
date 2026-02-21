@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="space-y-4">
             <span className={`text-2xl font-serif font-bold ${colors.textPrimary} tracking-wide transition-colors duration-300`}>
-              PORT<span className={theme === 'light' ? 'text-amber-600' : 'text-amber-400'}>.</span>
+              PORT<span className={theme === 'light' ? 'text-amber-600' : 'text-amber-400'}>2026</span>
             </span>
             <p className={`${colors.textTertiary} text-sm leading-relaxed transition-colors duration-300`}>
               Crafting extraordinary experiences where technology meets artistry. Join us for the grandest celebration of innovation.

@@ -7,20 +7,26 @@ import {
   PortPassRegistration,
 } from '@/models/Registration';
 
-// All Day 1 workshop models
-const DAY1_MODELS = [
-  HackproofingRegistration,
-  PromptToProductRegistration,
-  FullStackFusionRegistration,
-  LearnHowToThinkRegistration,
+// Named collections for readable error messages and seat management
+const WORKSHOP_COLLECTIONS = [
+  { model: HackproofingRegistration, eventName: 'Hackproofing the Future' },
+  { model: PromptToProductRegistration, eventName: 'Prompt to Product' },
+  { model: FullStackFusionRegistration, eventName: 'Full Stack Fusion' },
+  { model: LearnHowToThinkRegistration, eventName: 'Learn How to Think' },
 ];
 
-// All models (Day 1 + Day 2)
-const ALL_MODELS = [...DAY1_MODELS, PortPassRegistration];
+const ALL_COLLECTIONS = [
+  ...WORKSHOP_COLLECTIONS,
+  { model: PortPassRegistration, eventName: 'Port Pass' },
+];
+
+// Flat model arrays for iteration
+const DAY1_MODELS = WORKSHOP_COLLECTIONS.map(c => c.model);
+const ALL_MODELS = ALL_COLLECTIONS.map(c => c.model);
 
 /**
  * Check if email or phone is already registered in a SINGLE collection.
- * Used for port-pass (Day 2) — same email/phone allowed if only in Day 1.
+ * Used for port-pass (Day 2) — same email/phone is allowed if only in Day 1.
  */
 export async function checkDuplicateRegistration(
   email: string,
@@ -62,7 +68,7 @@ export async function checkDay1Duplicate(
   try {
     await connectToDatabase();
 
-    for (const model of DAY1_MODELS) {
+    for (const { model, eventName } of WORKSHOP_COLLECTIONS) {
       const existing = await model.findOne({
         $or: [{ email }, { contactNumber }],
       });
@@ -70,10 +76,11 @@ export async function checkDay1Duplicate(
       if (existing) {
         const duplicateField =
           existing.email === email ? 'email' : 'phone number';
+        const fieldLabel = duplicateField === 'email' ? 'Email' : 'Phone number';
         return {
           isDuplicate: true,
           field: duplicateField,
-          message: `This ${duplicateField} is already registered for a Day 1 workshop. Only one workshop per person is allowed.`,
+          message: `${fieldLabel} is already registered for "${eventName}". Only one Day 1 workshop per person is allowed.`,
         };
       }
     }
@@ -87,19 +94,19 @@ export async function checkDay1Duplicate(
 
 /**
  * Check if a transaction ID is already used in ANY collection (all 5).
- * Transaction IDs must be globally unique.
+ * Transaction IDs must be globally unique across all events.
  */
 export async function checkTransactionIdGlobalUnique(transactionId: string) {
   try {
     await connectToDatabase();
 
-    for (const model of ALL_MODELS) {
+    for (const { model, eventName } of ALL_COLLECTIONS) {
       const existing = await model.findOne({ transactionId });
       if (existing) {
         return {
           isDuplicate: true,
           field: 'transactionId',
-          message: 'This transaction ID has already been used. Please check your transaction ID.',
+          message: `This transaction ID is already used for "${eventName}". Each transaction ID can only be used once.`,
         };
       }
     }
@@ -113,10 +120,34 @@ export async function checkTransactionIdGlobalUnique(transactionId: string) {
 
 /**
  * Save a registration to the database.
+ * For workshops, enforces a seat limit of 120 via an atomic seat_counters collection.
  */
 export async function saveRegistration(data: any, model: any) {
+  let reserved = false;
+  let seatKey: string | undefined;
+
   try {
     await connectToDatabase();
+
+    // Enforce seat limit for workshop models
+    const workshopEntry = WORKSHOP_COLLECTIONS.find(c => c.model === model);
+    if (workshopEntry) {
+      seatKey = model.modelName || model.collectionName || model.name;
+      const mongoose = (await import('mongoose')).default;
+      const seatCollection = mongoose.connection.collection('seat_counters');
+
+      const res = await seatCollection.findOneAndUpdate(
+        { key: seatKey, $or: [{ reserved: { $lt: 120 } }, { reserved: { $exists: false } }] },
+        { $inc: { reserved: 1 }, $setOnInsert: { key: seatKey, capacity: 120, reserved: 0 } },
+        { upsert: true, returnDocument: 'after' }
+      );
+
+      if (!res || !res.value) {
+        return { success: false, message: `"${workshopEntry.eventName}" is fully booked. No seats remaining.` };
+      }
+
+      reserved = true;
+    }
 
     const registration = new model(data);
     await registration.save();
@@ -129,8 +160,17 @@ export async function saveRegistration(data: any, model: any) {
   } catch (error: any) {
     console.error('Error saving registration:', error);
 
+    // Best-effort seat release if save failed
+    try {
+      if (reserved && seatKey) {
+        const mongoose = (await import('mongoose')).default;
+        const seatCollection = mongoose.connection.collection('seat_counters');
+        await seatCollection.updateOne({ key: seatKey }, { $inc: { reserved: -1 } });
+      }
+    } catch { /* ignore */ }
+
     if (error.code === 11000) {
-      const field = Object.keys(error.keyValue)[0];
+      const field = Object.keys(error.keyValue || {})[0];
       const friendlyField =
         field === 'email' ? 'email' :
           field === 'contactNumber' ? 'phone number' :
@@ -146,5 +186,19 @@ export async function saveRegistration(data: any, model: any) {
       success: false,
       message: error.message || 'Registration failed',
     };
+  }
+}
+
+/**
+ * Get the current registration count for a given model collection.
+ */
+export async function getRegistrationCount(model: any) {
+  try {
+    await connectToDatabase();
+    const count = await model.countDocuments();
+    return { success: true, count };
+  } catch (error) {
+    console.error('Error getting registration count:', error);
+    return { success: false, message: 'Failed to get count' };
   }
 }

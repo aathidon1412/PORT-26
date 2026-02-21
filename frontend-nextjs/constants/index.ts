@@ -287,7 +287,7 @@ export const COORDINATORS: Coordinator[] = [
 // Port Pass - Single ticket for all events
 export const PORT_PASS = {
   id: 'port-pass',
-  title: 'PORT PASS - ALL EVENTS ACCESS',
+  title: 'Event Pass - ALL EVENTS ACCESS',
   description: 'Single ticket to attend ALL events at PORT 2026. Unlimited event access with one registration.',
   price: 350,
   benefits: [

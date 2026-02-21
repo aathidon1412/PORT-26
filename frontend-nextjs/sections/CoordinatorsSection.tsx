@@ -15,7 +15,7 @@ const CoordinatorsSection: React.FC = () => {
   const otherFaculty = faculty.slice(1);
 
   return (
-    <section className={`py-32 ${theme === 'light' ? 'bg-gradient-to-b from-slate-50 via-slate-100 to-slate-50' : 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950'} relative overflow-hidden transition-colors duration-300`}>
+    <section className={`py-32 ${theme === 'light' ? 'bg-gradient-to-b from-white via-slate-50 to-white' : 'bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950'} relative overflow-hidden transition-colors duration-300`}>
       {/* Decorative Elements */}
       <div className={`absolute top-0 left-1/4 w-96 h-96 ${theme === 'light' ? 'bg-violet-500/5' : 'bg-violet-600/10'} rounded-full blur-[120px] pointer-events-none`} />
       <div className={`absolute bottom-0 right-1/4 w-96 h-96 ${theme === 'light' ? 'bg-amber-400/5' : 'bg-amber-500/10'} rounded-full blur-[120px] pointer-events-none`} />
@@ -31,9 +31,9 @@ const CoordinatorsSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <div className={`inline-flex items-center gap-2 px-4 py-2 ${theme === 'light' ? 'bg-slate-200/80 border-slate-300' : 'bg-white/5 border-white/10'} border rounded-full mb-6 transition-colors duration-300`}>
-            <Sparkles className={`w-4 h-4 ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`} />
-            <span className={`${theme === 'light' ? 'text-amber-700' : 'text-amber-400'} text-sm font-medium tracking-wide`}>Our Team</span>
+          <div className={`inline-flex items-center gap-2 px-4 py-2 ${theme === 'light' ? 'bg-violet-50 border-violet-200' : 'bg-white/5 border-white/10'} border rounded-full mb-6 transition-colors duration-300`}>
+            <Sparkles className={`w-4 h-4 ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`} />
+            <span className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} text-sm font-medium tracking-wide`}>Our Team</span>
           </div>
           <h2 className={`text-5xl md:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 transition-colors duration-300`}>
             Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-amber-400">Touch</span>
@@ -68,14 +68,14 @@ const CoordinatorsSection: React.FC = () => {
               {/* Card Glow */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-3xl opacity-0 group-hover:opacity-15 blur-xl transition-all duration-500" />
 
-              <div className={`relative ${theme === 'light' ? 'bg-white/95 border-slate-200 hover:border-violet-300' : 'bg-white/6 border-white/10 hover:border-violet-500/30'} backdrop-blur-sm border rounded-3xl p-6 text-center transition-all duration-300`}>
+              <div className={`relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-white/6 border-white/10 hover:border-violet-500/30'} backdrop-blur-sm border rounded-3xl p-6 text-center transition-all duration-300`}>
                 <div className="flex items-center justify-center mb-3">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold ${theme === 'light' ? 'bg-violet-100 text-violet-700' : 'bg-violet-500/15 text-violet-400'} transition-colors duration-300`}>
                     {lead.name.charAt(0)}
                   </div>
                 </div>
                 <h4 className={`text-xl font-bold ${colors.textPrimary} transition-colors duration-300`}>{lead.name}</h4>
-                <p className={`text-sm ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>{lead.role}</p>
+                <p className={`text-sm ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`}>{lead.role}</p>
               </div>
             </motion.div>
           )}
@@ -93,14 +93,14 @@ const CoordinatorsSection: React.FC = () => {
                 {/* Card Glow */}
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-2xl opacity-0 group-hover:opacity-15 blur-xl transition-all duration-500" />
 
-                <div className={`relative ${theme === 'light' ? 'bg-white/90 border-slate-200 hover:border-violet-300' : 'bg-white/5 border-white/10 hover:border-violet-500/30'} backdrop-blur-sm border rounded-2xl p-5 transition-all duration-300`}>
+                <div className={`relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-white/5 border-white/10 hover:border-violet-500/30'} backdrop-blur-sm border rounded-2xl p-5 transition-all duration-300`}>
                   <div className="flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${theme === 'light' ? 'bg-violet-100 text-violet-700' : 'bg-violet-500/15 text-violet-400'} transition-colors duration-300`}>
                       {member.name.charAt(0)}
                     </div>
                     <div>
                       <h4 className={`font-bold ${colors.textPrimary} transition-colors duration-300`}>{member.name}</h4>
-                      <p className={`text-sm ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>{member.role}</p>
+                      <p className={`text-sm ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`}>{member.role}</p>
                     </div>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const CoordinatorsSection: React.FC = () => {
                 {/* Card Glow */}
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-violet-500 rounded-2xl opacity-0 group-hover:opacity-15 blur-xl transition-all duration-500" />
 
-                <div className={`relative ${theme === 'light' ? 'bg-white/90 border-slate-200 hover:border-amber-300' : 'bg-white/5 border-white/10 hover:border-amber-500/30'} backdrop-blur-sm border rounded-2xl p-6 transition-all duration-300`}>
+                <div className={`relative ${theme === 'light' ? 'bg-white border-slate-200 hover:border-amber-400' : 'bg-white/5 border-white/10 hover:border-amber-500/30'} backdrop-blur-sm border rounded-2xl p-6 transition-all duration-300`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className={`w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold ${theme === 'light' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/15 text-amber-400'} transition-colors duration-300`}>
@@ -142,7 +142,7 @@ const CoordinatorsSection: React.FC = () => {
                       </div>
                       <div>
                         <h4 className={`text-lg font-bold ${colors.textPrimary} transition-colors duration-300`}>{member.name}</h4>
-                        <p className={`text-sm ${theme === 'light' ? 'text-amber-700' : 'text-amber-400'}`}>{member.role}</p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`}>{member.role}</p>
                       </div>
                     </div>
                   </div>
@@ -169,7 +169,7 @@ const CoordinatorsSection: React.FC = () => {
         >
           <p className={`${colors.textTertiary} text-sm transition-colors duration-300`}>
             Can't find what you're looking for? <br className="md:hidden" />
-            <a href="mailto:contact@port2026.com" className={`${theme === 'light' ? 'text-amber-700 hover:text-amber-800' : 'text-amber-400 hover:text-amber-300'} md:ml-2 underline underline-offset-4`}>
+            <a href="mailto:port.it@sonatech.ac.in" className={`${theme === 'light' ? 'text-amber-600 hover:text-amber-700' : 'text-amber-400 hover:text-amber-300'} md:ml-2 underline underline-offset-4`}>
               Send us an email
             </a>
           </p>

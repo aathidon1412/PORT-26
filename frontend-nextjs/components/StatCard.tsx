@@ -87,7 +87,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
       }}
       className={`relative group p-6 rounded-2xl ${
         theme === 'light' 
-          ? 'bg-slate-50 border border-slate-200 hover:border-violet-400' 
+          ? 'bg-white border border-slate-200 hover:border-violet-400 shadow-sm' 
           : 'bg-white/5 border border-white/10 hover:border-violet-500/50'
       } transition-all duration-300 overflow-hidden`}
     >

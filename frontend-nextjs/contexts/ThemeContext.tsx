@@ -28,12 +28,12 @@ interface ThemeContextType {
 }
 
 const lightThemeColors: ThemeColors = {
-  bgPrimary: 'bg-white',
-  bgSecondary: 'bg-slate-50',
+  bgPrimary: 'bg-slate-50',
+  bgSecondary: 'bg-white',
   bgTertiary: 'bg-slate-100',
   textPrimary: 'text-slate-900',
   textSecondary: 'text-slate-700',
-  textTertiary: 'text-slate-500',
+  textTertiary: 'text-slate-600',
   accent: 'text-amber-600',
   accentHover: 'hover:text-amber-700',
   border: 'border-slate-200',
@@ -41,7 +41,7 @@ const lightThemeColors: ThemeColors = {
   gradientTo: 'to-indigo-500',
   cardBg: 'bg-white',
   cardBgHover: 'hover:bg-slate-50',
-  overlay: 'bg-slate-900/60',
+  overlay: 'bg-slate-900/70',
 };
 
 const darkThemeColors: ThemeColors = {

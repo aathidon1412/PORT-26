@@ -22,11 +22,11 @@ const HeroSection: React.FC = () => {
           className="w-full h-full object-cover opacity-20"
           containerClassName="w-full h-full"
         />
-        <div className={`absolute inset-0 bg-gradient-to-b ${theme === 'light' ? 'from-white/30 via-white/70 to-white' : 'from-slate-950/30 via-slate-950/70 to-slate-950'}`} />
+        <div className={`absolute inset-0 bg-gradient-to-b${theme === 'light' ? 'from-white/30 via-white/70 to-white' : 'from-slate-950/30 via-slate-950/70 to-slate-950'}`} />
       </motion.div>
 
       {/* Particles Animation - above background */}
-      <div className="absolute inset-0 z-[1]">
+      <div className="absolute inset-0z-[1]">
         <Particles
           particleCount={800}
           particleSpread={10}
@@ -55,11 +55,11 @@ const HeroSection: React.FC = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-84 h-84 md:w-96 md:h-96 lg:w-[32rem] lg:h-[32rem]"
+              className="w-84 h-84 md:w-96 md:h-96 lg:w-lg lg:h-128"
             >
               <ImageWithSkeleton
                 src={logo}
-                alt="PORT 26' Logo"
+                alt="PORT '26 Logo"
                 className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]"
                 containerClassName="w-full h-full"
               />

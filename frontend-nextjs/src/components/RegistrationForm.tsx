@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { X, CreditCard, Paperclip } from 'lucide-react';
 
 interface RegistrationFormProps {
   workshopId: string;
@@ -69,6 +70,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     type: 'success' | 'error' | null;
     message: string;
   }>({ type: null, message: '' });
+  const [currentCount, setCurrentCount] = useState<number | null>(null);
+  const TOTAL_SEATS = 120;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -196,6 +199,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         });
         setFormData(EMPTY_FORM);
         setScreenshotPreview('');
+        // refresh seat count immediately after successful registration
+        fetchCount();
         setTimeout(() => { onSuccess?.(); }, 2000);
       } else {
         setSubmitStatus({
@@ -210,6 +215,28 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       setLoading(false);
     }
   };
+
+  // fetch current registration count for this workshop
+  const fetchCount = async () => {
+    try {
+      const apiEndpoint = workshopIdToEndpoint[workshopId] || workshopId;
+      if (workshopId === 'port-pass') return; // not a workshop
+      const res = await fetch(`/api/workshops/${apiEndpoint}?count=true`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && typeof data.count === 'number') setCurrentCount(data.count);
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchCount();
+    // poll once every 15 seconds to keep realtime-ish without adding websockets
+    const t = setInterval(() => { fetchCount(); }, 15000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workshopId]);
 
   // ── Input handlers ────────────────────────────────────────────────────────
   const handleInputChange = (
@@ -289,6 +316,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             </motion.div>
           )}
 
+          {/* Seat info */}
+          {workshopId !== 'port-pass' && (
+            <div className="text-sm text-slate-600 dark:text-slate-300 mb-2">
+              <strong>Total Seats:</strong> {TOTAL_SEATS} —{' '}
+              <strong>Remaining Seats:</strong>{' '}
+              {currentCount === null ? 'Loading…' : Math.max(0, TOTAL_SEATS - currentCount)}
+              {currentCount !== null && currentCount >= TOTAL_SEATS && (
+                <div className="mt-1 text-red-600 font-semibold">Registrations Closed – Workshop Full</div>
+              )}
+            </div>
+          )}
+
           {/* Row 1: First Name & Last Name */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -357,7 +396,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 4: UPI Payment (UPI only) */}
           <div className="rounded-xl border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/30 p-4 space-y-4">
             <p className="text-sm font-semibold text-violet-700 dark:text-violet-300 flex items-center gap-2">
-              <span>💳</span> Payment — UPI Only
+              <CreditCard className="w-4 h-4" /> Payment — UPI Only
             </p>
 
             {/* Transaction ID */}
@@ -389,7 +428,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     className="max-h-40 rounded-lg object-contain" />
                 ) : (
                   <>
-                    <span className="text-3xl">📎</span>
+                    <Paperclip className="text-3xl w-8 h-8" />
                     <span className="text-sm text-slate-500 dark:text-slate-400">
                       Click to upload payment screenshot
                     </span>
@@ -487,7 +526,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           <div className="flex gap-3 pt-4">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (currentCount !== null && currentCount >= TOTAL_SEATS)}
               className="flex-1 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:from-violet-700 hover:to-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Registering...' : 'Register Now'}

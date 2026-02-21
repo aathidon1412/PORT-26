@@ -4,11 +4,19 @@ import {
   checkDay1Duplicate,
   checkTransactionIdGlobalUnique,
   saveRegistration,
+  getRegistrationCount,
 } from '@/lib/registrationUtils';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+
+    // Return registration count if requested
+    if (searchParams.get('count') === 'true') {
+      const cnt = await getRegistrationCount(HackproofingRegistration);
+      return NextResponse.json(cnt);
+    }
+
     const email = searchParams.get('email');
     const phone = searchParams.get('phone');
     if (!email || !phone) {
