@@ -1,10 +1,10 @@
 ﻿'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import confetti from 'canvas-confetti';
-import { CreditCard, Paperclip } from 'lucide-react';
+import { CreditCard, Paperclip, CheckCircle2, XCircle, Loader2, AlertCircle } from 'lucide-react';
 
 interface RegistrationFormProps {
   workshopId: string;
@@ -63,12 +63,66 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onSuccess,
   onClose,
 }) => {
+  type VerifyStatus = 'idle' | 'verifying' | 'verified' | 'mismatch' | 'error';
+
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
   const [screenshotPreview, setScreenshotPreview] = useState<string>('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
+  const [verifyStatus, setVerifyStatus] = useState<VerifyStatus>('idle');
+  const [verifyMessage, setVerifyMessage] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Payment verification ──────────────────────────────────────────────────
+  const verifyPayment = useCallback(async (imageBase64: string, txId: string) => {
+    if (!imageBase64 || !txId.trim()) {
+      setVerifyStatus('idle');
+      setVerifyMessage('');
+      return;
+    }
+    setVerifyStatus('verifying');
+    setVerifyMessage('');
+    try {
+      const res = await fetch('/api/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64, transactionId: txId.trim() }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setVerifyStatus('error');
+        setVerifyMessage(json.message || 'Verification service unavailable.');
+        return;
+      }
+      if (json.verified) {
+        setVerifyStatus('verified');
+        setVerifyMessage('Transaction ID matches the screenshot.');
+      } else {
+        setVerifyStatus('mismatch');
+        setVerifyMessage(
+          'Transaction ID does not match what was found in the screenshot. Please double-check.'
+        );
+      }
+    } catch {
+      setVerifyStatus('error');
+      setVerifyMessage('Could not reach the verification service. Proceeding without OCR check.');
+    }
+  }, []);
+
+  // Re-verify whenever transactionId or screenshot changes
+  // Use a short debounce so we don't fire on every keypress
+  useEffect(() => {
+    if (!formData.paymentScreenshot || !formData.transactionId.trim()) {
+      setVerifyStatus('idle');
+      setVerifyMessage('');
+      return;
+    }
+    const timer = setTimeout(() => {
+      verifyPayment(formData.paymentScreenshot, formData.transactionId);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [formData.transactionId, formData.paymentScreenshot, verifyPayment]);
 
   // ── Validation ────────────────────────────────────────────────────────────
   const validateForm = (): boolean => {
@@ -131,6 +185,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
+
+    // Warn but do not block if the OCR check found a mismatch
+    if (verifyStatus === 'mismatch') {
+      const proceed = window.confirm(
+        'The Transaction ID you entered does not appear to match what was detected in your screenshot.\n\nAre you sure you want to proceed?'
+      );
+      if (!proceed) return;
+    }
 
     const toastId = toast.loading('Processing your registration...');
     setLoading(true);
@@ -379,9 +441,40 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               <label className="block text-sm font-medium mb-2 text-white">
                 Transaction ID <span className="text-red-500">*</span>
               </label>
-              <input type="text" name="transactionId" value={formData.transactionId}
-                onChange={handleInputChange} className={inputCls('transactionId')}
-                placeholder="e.g. TXN123456789" autoComplete="off" />
+              <div className="relative flex items-center">
+                <input type="text" name="transactionId" value={formData.transactionId}
+                  onChange={handleInputChange} className={`${inputCls('transactionId')} pr-10`}
+                  placeholder="e.g. TXN123456789" autoComplete="off" />
+                {/* Verification badge */}
+                {verifyStatus === 'verifying' && (
+                  <Loader2 className="absolute right-3 w-5 h-5 text-violet-400 animate-spin" />
+                )}
+                {verifyStatus === 'verified' && (
+                  <CheckCircle2 className="absolute right-3 w-5 h-5 text-green-400" />
+                )}
+                {verifyStatus === 'mismatch' && (
+                  <XCircle className="absolute right-3 w-5 h-5 text-red-400" />
+                )}
+                {verifyStatus === 'error' && (
+                  <AlertCircle className="absolute right-3 w-5 h-5 text-yellow-400" />
+                )}
+              </div>
+              {/* Verification status message */}
+              {verifyStatus === 'verified' && (
+                <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> {verifyMessage}
+                </p>
+              )}
+              {verifyStatus === 'mismatch' && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <XCircle className="w-3 h-3" /> {verifyMessage}
+                </p>
+              )}
+              {verifyStatus === 'error' && (
+                <p className="text-yellow-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> {verifyMessage}
+                </p>
+              )}
               {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
             </div>
 
@@ -429,6 +522,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   onClick={() => {
                     setScreenshotPreview('');
                     setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
+                    setVerifyStatus('idle');
+                    setVerifyMessage('');
                     if (fileInputRef.current) fileInputRef.current.value = '';
                   }}
                   className="mt-1 text-xs text-red-500 hover:text-red-700"
