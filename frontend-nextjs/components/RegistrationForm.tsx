@@ -198,7 +198,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <strong className="text-violet-600 dark:text-violet-400">
                   {workshopName}
                 </strong>
-                . Your ticket will be emailed within 24 hours.
+                . Your ticket will be emailed within 24 hours. Please check your spam folder as well.
               </p>
               <button
                 onClick={() => toast.dismiss(t.id)}
