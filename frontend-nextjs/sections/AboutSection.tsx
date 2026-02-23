@@ -14,7 +14,7 @@ const CATEGORY_BADGES = [
 ];
 
 const AboutSection: React.FC = () => {
-  const { theme, colors } = useTheme();
+  const { colors } = useTheme();
   const [showBrochure, setShowBrochure] = useState(false);
 
   useEffect(() => {
@@ -28,8 +28,8 @@ const AboutSection: React.FC = () => {
       {/* ─── DEPARTMENT SECTION (existing) ─── */}
       <section className={`relative max-w-8xl lg:px-10 py-24 ${colors.bgPrimary} overflow-hidden transition-colors duration-300`}>
         {/* Abstract Background Elements */}
-        <div className={`absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b ${theme === 'light' ? 'from-violet-500/5' : 'from-violet-600/10'} to-transparent rounded-full blur-[120px] pointer-events-none`} />
-        <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-t ${theme === 'light' ? 'from-blue-500/5' : 'from-blue-600/10'} to-transparent rounded-full blur-[100px] pointer-events-none`} />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-b from-violet-600/10 to-transparent rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-t from-blue-600/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
         <div className="w-full max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -40,7 +40,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="lg:pr-8"
             >
-              <h4 className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
+              <h4 className="text-amber-400 font-bold tracking-widest uppercase text-xs md:text-sm mb-4">
                 Who We Are
               </h4>
               <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 leading-tight transition-colors duration-300`}>
@@ -61,7 +61,7 @@ const AboutSection: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className={`relative h-[400px] lg:h-[500px] w-full ${theme === 'light' ? 'bg-white/80 border-slate-200' : 'bg-slate-900/40 border-white/10'} rounded-[2rem] border backdrop-blur-sm overflow-hidden flex items-center justify-center group transition-colors duration-300`}
+              className="relative h-[400px] lg:h-[500px] w-full bg-slate-900/40 border-white/10 rounded-[2rem] border backdrop-blur-sm overflow-hidden flex items-center justify-center group transition-colors duration-300"
             >
               {/* Grid Background */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -71,9 +71,9 @@ const AboutSection: React.FC = () => {
               <div className="absolute w-64 h-64 bg-violet-500/20 rounded-full blur-[80px] animate-pulse delay-75" />
 
               {/* Central Content */}
-              <div className={`relative z-10 text-center p-8 backdrop-blur-sm rounded-3xl border ${theme === 'light' ? 'border-slate-200/60 bg-white/80' : 'border-white/5 bg-slate-950/30'} shadow-2xl transition-colors duration-300`}>
-                <div className={`text-7xl font-serif font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-b ${theme === 'light' ? 'from-slate-900 to-slate-600' : 'from-white to-slate-400'}`}>
-                  25<span className={`text-4xl align-top ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'}`}>+</span>
+              <div className="relative z-10 text-center p-8 backdrop-blur-sm rounded-3xl border border-white/5 bg-slate-950/30 shadow-2xl transition-colors duration-300">
+                <div className="text-7xl font-serif font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+                  25<span className="text-4xl align-top text-amber-400">+</span>
                 </div>
                 <div className={`${colors.textTertiary} uppercase tracking-[0.2em] text-xs font-bold transition-colors duration-300`}>
                   Years of Excellence
@@ -89,10 +89,10 @@ const AboutSection: React.FC = () => {
               </div>
 
               {/* Floating Icons */}
-              <div className={`absolute top-12 right-12 p-4 ${theme === 'light' ? 'bg-white/80 border-slate-200' : 'bg-slate-800/50 border-white/10'} backdrop-blur-md rounded-2xl border animate-float shadow-lg transition-colors duration-300`}>
-                <Cpu className={`${theme === 'light' ? 'text-cyan-600' : 'text-cyan-400'} w-6 h-6`} />
+              <div className="absolute top-12 right-12 p-4 bg-slate-800/50 border-white/10 backdrop-blur-md rounded-2xl border animate-float shadow-lg transition-colors duration-300">
+                <Cpu className="text-cyan-400 w-6 h-6" />
               </div>
-              <div className={`absolute bottom-16 left-12 p-4 ${theme === 'light' ? 'bg-white/80 border-slate-200' : 'bg-slate-800/50 border-white/10'} backdrop-blur-md rounded-2xl border animate-float shadow-lg transition-colors duration-300`} style={{ animationDelay: '2s' }}>
+              <div className="absolute bottom-16 left-12 p-4 bg-slate-800/50 border-white/10 backdrop-blur-md rounded-2xl border animate-float shadow-lg transition-colors duration-300" style={{ animationDelay: '2s' }}>
                 <Award className="text-violet-400 w-6 h-6" />
               </div>
             </motion.div>
@@ -103,8 +103,8 @@ const AboutSection: React.FC = () => {
       {/* ─── ABOUT PORT'26 SECTION ─── */}
       <section className={`relative max-w-8xl lg:px-10 py-24 ${colors.bgPrimary} overflow-hidden transition-colors duration-300`}>
         {/* Background Accents */}
-        <div className={`absolute top-0 left-1/3 w-[500px] h-[500px] bg-gradient-to-br ${theme === 'light' ? 'from-amber-500/5' : 'from-amber-600/10'} to-transparent rounded-full blur-[120px] pointer-events-none`} />
-        <div className={`absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl ${theme === 'light' ? 'from-cyan-500/5' : 'from-cyan-600/10'} to-transparent rounded-full blur-[100px] pointer-events-none`} />
+        <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-gradient-to-br from-amber-600/10 to-transparent rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tl from-cyan-600/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
         <div className="w-full max-w-[95%] xl:max-w-[1600px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
@@ -117,7 +117,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className={`relative h-[400px] lg:h-[500px] w-full rounded-[2rem] border overflow-hidden ${theme === 'light' ? 'border-slate-200 bg-white' : 'border-white/10 bg-slate-900/40'} backdrop-blur-sm transition-colors duration-300 flex items-center justify-center`}>
+              <div className="relative h-[400px] lg:h-[500px] w-full rounded-[2rem] border overflow-hidden border-white/10 bg-slate-900/40 backdrop-blur-sm transition-colors duration-300 flex items-center justify-center">
                 <Image
                   src="/assets/imgs/logo1.jpeg"
                   alt="PORT'26 Logo"
@@ -136,7 +136,7 @@ const AboutSection: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="lg:pl-4"
             >
-              <h4 className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} font-bold tracking-widest uppercase text-xs md:text-sm mb-4`}>
+              <h4 className="text-amber-400 font-bold tracking-widest uppercase text-xs md:text-sm mb-4">
                 About the Event
               </h4>
               <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold ${colors.textPrimary} mb-6 leading-tight transition-colors duration-300`}>
@@ -153,10 +153,7 @@ const AboutSection: React.FC = () => {
                 The symposium features a diverse lineup spanning Technical events that test problem-solving prowess, Non-Technical events that spark creativity and teamwork, and hands-on Workshops led by industry experts. From AI-driven hackathons to fun-filled gaming showdowns, PORT'26 offers something for every tech enthusiast — all powered by the passion and energy of current students.
                 <button
                   onClick={() => setShowBrochure(true)}
-                  className={`inline-flex items-center gap-1 mx-4 mb-8 font-semibold text-sm transition-colors duration-300 ${theme === 'light'
-                    ? 'text-amber-600 hover:text-amber-700'
-                    : 'text-amber-400 hover:text-amber-300'
-                    }`}
+                  className="inline-flex items-center gap-1 mx-4 mb-8 font-semibold text-sm transition-colors duration-300 text-amber-400 hover:text-amber-300"
                 >
                   View Brochure →
                 </button>
@@ -170,10 +167,7 @@ const AboutSection: React.FC = () => {
                   <motion.div
                     key={badge.label}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className={`flex items-center gap-2.5 px-5 py-2.5 rounded-full border backdrop-blur-sm transition-all duration-300 ${theme === 'light'
-                      ? 'bg-white border-slate-200 hover:border-violet-400 shadow-sm hover:shadow-md'
-                      : 'bg-slate-800/60 border-white/10 hover:border-violet-500/50'
-                      }`}
+                    className="flex items-center gap-2.5 px-5 py-2.5 rounded-full border backdrop-blur-sm transition-all duration-300 bg-slate-800/60 border-white/10 hover:border-violet-500/50"
                   >
                     <div className={`p-1.5 rounded-lg bg-gradient-to-br ${badge.gradient}`}>
                       <badge.icon className="w-3.5 h-3.5 text-white" />
@@ -201,11 +195,11 @@ const AboutSection: React.FC = () => {
             className="relative z-50 max-w-[95%] max-h-[95%] mx-auto p-4 flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className={`relative w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden border shadow-2xl ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/10'}`}>
+            <div className="relative w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden border shadow-2xl bg-slate-900 border-white/10">
               <button
                 aria-label="Close brochure"
                 onClick={() => setShowBrochure(false)}
-                className={`absolute top-3 right-3 z-50 p-2 rounded-full ${theme === 'light' ? 'bg-white/90' : 'bg-slate-800/80'} shadow`}
+                className="absolute top-3 right-3 z-50 p-2 rounded-full bg-slate-800/80 shadow"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -227,4 +221,3 @@ const AboutSection: React.FC = () => {
 };
 
 export default AboutSection;
-

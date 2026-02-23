@@ -34,7 +34,7 @@ function AnimatedCounter({ from, to, duration = 2 }: { from: number; to: number;
 const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountdown = false, targetDate }) => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isInView, setIsInView] = useState(false);
-  const { theme } = useTheme();
+  const { colors } = useTheme();
 
   useEffect(() => {
     if (isCountdown && targetDate) {
@@ -85,20 +85,14 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
         y: -5,
         transition: { duration: 0.3 }
       }}
-      className={`relative group p-6 rounded-2xl ${
-        theme === 'light' 
-          ? 'bg-white border border-slate-200 hover:border-violet-400 shadow-sm' 
-          : 'bg-white/5 border border-white/10 hover:border-violet-500/50'
-      } transition-all duration-300 overflow-hidden`}
+      className="relative group p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-violet-500/50 transition-all duration-300 overflow-hidden"
     >
       {/* Animated gradient background */}
       <motion.div
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className={`absolute inset-0 bg-gradient-to-br ${
-          theme === 'light' ? 'from-violet-500/10' : 'from-violet-600/20'
-        } to-transparent rounded-2xl`}
+        className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-transparent rounded-2xl"
       />
 
       {/* Shimmer effect on hover */}
@@ -106,9 +100,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
         initial={{ x: '-100%' }}
         whileHover={{ x: '100%' }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className={`absolute inset-0 bg-gradient-to-r from-transparent ${
-          theme === 'light' ? 'via-slate-300/20' : 'via-white/10'
-        } to-transparent`}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
       />
 
       <div className="relative z-10 flex flex-col items-center text-center">
@@ -127,11 +119,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
             rotate: 5,
             transition: { duration: 0.3 }
           }}
-          className={`p-3 rounded-xl mb-4 ${
-            theme === 'light' 
-              ? 'bg-violet-100 text-violet-700' 
-              : 'bg-violet-900/30 text-violet-300'
-          }`}
+          className="p-3 rounded-xl mb-4 bg-violet-900/30 text-violet-300"
         >
           {icon}
         </motion.div>
@@ -146,15 +134,15 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
                 className="flex flex-col"
               >
                 <motion.span
-                  whileHover={{ color: theme === 'light' ? '#1e293b' : '#ffffff' }}
+                  whileHover={{ color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className={`text-2xl md:text-3xl font-serif font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.days}
                 </motion.span>
-                <span className={`text-[10px] uppercase tracking-wider ${theme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}>Days</span>
+                <span className="text-[10px] uppercase tracking-wider text-slate-400">Days</span>
               </motion.div>
-              <span className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-400' : 'text-slate-600'}`}>:</span>
+              <span className="text-3xl font-bold text-slate-600">:</span>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -162,15 +150,15 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
                 className="flex flex-col"
               >
                 <motion.span
-                  whileHover={{ color: theme === 'light' ? '#1e293b' : '#ffffff' }}
+                  whileHover={{ color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className={`text-2xl md:text-3xl font-serif font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.hours.toString().padStart(2, '0')}
                 </motion.span>
-                <span className={`text-[10px] uppercase tracking-wider ${theme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}>Hrs</span>
+                <span className="text-[10px] uppercase tracking-wider text-slate-400">Hrs</span>
               </motion.div>
-              <span className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-400' : 'text-slate-600'}`}>:</span>
+              <span className="text-3xl font-bold text-slate-600">:</span>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -178,19 +166,19 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
                 className="flex flex-col"
               >
                 <motion.span
-                  whileHover={{ color: theme === 'light' ? '#1e293b' : '#ffffff' }}
+                  whileHover={{ color: '#ffffff' }}
                   transition={{ duration: 0.3 }}
-                  className={`text-2xl md:text-3xl font-serif font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}
+                  className="text-2xl md:text-3xl font-serif font-bold text-white"
                 >
                   {timeLeft.minutes.toString().padStart(2, '0')}
                 </motion.span>
-                <span className={`text-[10px] uppercase tracking-wider ${theme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}>Min</span>
+                <span className="text-[10px] uppercase tracking-wider text-slate-400">Min</span>
               </motion.div>
             </div>
           </div>
         ) : (
           <motion.h3
-            className={`text-3xl md:text-4xl font-serif font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}
+            className="text-3xl md:text-4xl font-serif font-bold mb-2 text-white"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -213,7 +201,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, delay, isCountd
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: delay + 0.4 }}
-          className={`text-sm font-medium uppercase tracking-wider ${theme === 'light' ? 'text-slate-600' : 'text-slate-400'}`}
+          className="text-sm font-medium uppercase tracking-wider text-slate-400"
         >
           {label}
         </motion.p>

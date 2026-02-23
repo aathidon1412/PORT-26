@@ -184,18 +184,18 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5 }}
               className={`${t.visible ? 'animate-enter' : 'animate-leave'
-                } max-w-sm w-full bg-white dark:bg-slate-900 shadow-2xl rounded-2xl pointer-events-auto border border-violet-200 dark:border-violet-800 p-8 text-center relative overflow-hidden mt-[25vh]`}
+                } max-w-sm w-full bg-slate-900 shadow-2xl rounded-2xl pointer-events-auto border border-violet-800 p-8 text-center relative overflow-hidden mt-[25vh]`}
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-violet-600 to-indigo-600" />
-              <div className="mx-auto flex flex-col items-center justify-center h-20 w-20 rounded-full bg-violet-100 dark:bg-violet-900/30 mb-6 text-4xl shadow-inner border border-violet-200 dark:border-violet-800">
+              <div className="mx-auto flex flex-col items-center justify-center h-20 w-20 rounded-full bg-violet-900/30 mb-6 text-4xl shadow-inner border border-violet-800">
                 🎉
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-2xl font-bold text-white mb-2">
                 Registration Successful!
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-8">
+              <p className="text-sm text-gray-300 mb-8">
                 You are officially registered for{' '}
-                <strong className="text-violet-600 dark:text-violet-400">
+                <strong className="text-violet-400">
                   {workshopName}
                 </strong>
                 . Your ticket will be emailed within 24 hours. Please check your spam folder as well.
@@ -288,7 +288,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // ── Shared input className ────────────────────────────────────────────────
   const inputCls = (field: string) =>
-    `w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 dark:bg-slate-800 dark:border-slate-700 dark:text-white ${errors[field] ? 'border-red-500' : ''
+    `w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 bg-slate-800 border-slate-700 text-white ${errors[field] ? 'border-red-500' : ''
     }`;
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -299,14 +299,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         <h2 className="text-2xl font-bold">{workshopName}</h2>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-b-2xl shadow-xl">
+      <div className="bg-slate-900 rounded-b-2xl shadow-xl">
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
 
           {/* Row 1: First Name & Last Name */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 First Name <span className="text-red-500">*</span>
               </label>
               <input type="text" name="firstName" value={formData.firstName}
@@ -314,7 +314,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Last Name <span className="text-red-500">*</span>
               </label>
               <input type="text" name="lastName" value={formData.lastName}
@@ -326,7 +326,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 2: Email & Confirm Email */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Email <span className="text-red-500">*</span>
               </label>
               <input type="email" name="email" value={formData.email}
@@ -334,7 +334,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Confirm Email <span className="text-red-500">*</span>
               </label>
               <input type="email" name="confirmEmail" value={formData.confirmEmail}
@@ -346,7 +346,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 3: Contact Number & Gender */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Contact Number <span className="text-red-500">*</span>
               </label>
               <input type="tel" name="contactNumber" value={formData.contactNumber}
@@ -354,7 +354,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               {errors.contactNumber && <p className="text-red-500 text-sm mt-1">{errors.contactNumber}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Gender <span className="text-red-500">*</span>
               </label>
               <select name="gender" value={formData.gender}
@@ -369,14 +369,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           </div>
 
           {/* Row 4: UPI Payment */}
-          <div className="rounded-xl border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/30 p-4 space-y-4">
-            <p className="text-sm font-semibold text-violet-700 dark:text-violet-300 flex items-center gap-2">
+          <div className="rounded-xl border border-violet-800 bg-violet-950/30 p-4 space-y-4">
+            <p className="text-sm font-semibold text-violet-300 flex items-center gap-2">
               <CreditCard className="w-4 h-4" /> Payment — UPI Only
             </p>
 
             {/* Transaction ID */}
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Transaction ID <span className="text-red-500">*</span>
               </label>
               <input type="text" name="transactionId" value={formData.transactionId}
@@ -387,15 +387,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
             {/* Payment Screenshot */}
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Payment Screenshot <span className="text-red-500">*</span>
               </label>
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className={`cursor-pointer flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg py-6 transition
-                    ${errors.paymentScreenshot ? 'border-red-500' : 'border-violet-300 dark:border-violet-700'}
-                    hover:border-violet-500 dark:hover:border-violet-400
-                    bg-white dark:bg-slate-800`}
+                    ${errors.paymentScreenshot ? 'border-red-500' : 'border-violet-700'}
+                    hover:border-violet-400
+                    bg-slate-800`}
               >
                 {screenshotPreview ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -404,10 +404,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 ) : (
                   <>
                     <Paperclip className="w-8 h-8 text-slate-400" />
-                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                    <span className="text-sm text-slate-400">
                       Click to upload payment screenshot
                     </span>
-                    <span className="text-xs text-slate-400 dark:text-slate-500">
+                    <span className="text-xs text-slate-500">
                       PNG, JPG, WEBP — max 5 MB
                     </span>
                   </>
@@ -442,7 +442,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 5: College Name & Department */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 College Name <span className="text-red-500">*</span>
               </label>
               <input type="text" name="collegeName" value={formData.collegeName}
@@ -450,7 +450,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               {errors.collegeName && <p className="text-red-500 text-sm mt-1">{errors.collegeName}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Department <span className="text-red-500">*</span>
               </label>
               <input type="text" name="department" value={formData.department}
@@ -462,7 +462,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 6: Year of Study & Register Number */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 Year of Study <span className="text-red-500">*</span>
               </label>
               <select name="yearOfStudy" value={formData.yearOfStudy}
@@ -476,7 +476,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               {errors.yearOfStudy && <p className="text-red-500 text-sm mt-1">{errors.yearOfStudy}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 dark:text-white">
+              <label className="block text-sm font-medium mb-2 text-white">
                 College Register Number <span className="text-red-500">*</span>
               </label>
               <input type="text" name="collegeRegisterNumber" value={formData.collegeRegisterNumber}
@@ -489,7 +489,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
           {/* Row 7: City */}
           <div>
-            <label className="block text-sm font-medium mb-2 dark:text-white">
+            <label className="block text-sm font-medium mb-2 text-white">
               City <span className="text-red-500">*</span>
             </label>
             <input type="text" name="city" value={formData.city}
@@ -510,7 +510,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 bg-gray-300 dark:bg-slate-700 text-gray-800 dark:text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-400 dark:hover:bg-slate-600 transition"
+                className="flex-1 bg-slate-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-slate-600 transition"
               >
                 Back
               </button>

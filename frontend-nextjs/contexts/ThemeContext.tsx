@@ -1,8 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-type Theme = 'light' | 'dark';
+import React, { createContext, useContext, ReactNode } from 'react';
 
 interface ThemeColors {
   bgPrimary: string;
@@ -22,27 +20,8 @@ interface ThemeColors {
 }
 
 interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
   colors: ThemeColors;
 }
-
-const lightThemeColors: ThemeColors = {
-  bgPrimary: 'bg-slate-50',
-  bgSecondary: 'bg-white',
-  bgTertiary: 'bg-slate-100',
-  textPrimary: 'text-slate-900',
-  textSecondary: 'text-slate-700',
-  textTertiary: 'text-slate-600',
-  accent: 'text-amber-600',
-  accentHover: 'hover:text-amber-700',
-  border: 'border-slate-200',
-  gradientFrom: 'from-violet-500',
-  gradientTo: 'to-indigo-500',
-  cardBg: 'bg-white',
-  cardBgHover: 'hover:bg-slate-50',
-  overlay: 'bg-slate-900/70',
-};
 
 const darkThemeColors: ThemeColors = {
   bgPrimary: 'bg-slate-950',
@@ -64,36 +43,8 @@ const darkThemeColors: ThemeColors = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem('theme') as Theme | null;
-    if (saved) {
-      setTheme(saved);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem('theme', theme);
-      if (theme === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-      }
-    }
-  }, [theme, mounted]);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
-
-  const colors = theme === 'light' ? lightThemeColors : darkThemeColors;
-
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, colors }}>
+    <ThemeContext.Provider value={{ colors: darkThemeColors }}>
       {children}
     </ThemeContext.Provider>
   );

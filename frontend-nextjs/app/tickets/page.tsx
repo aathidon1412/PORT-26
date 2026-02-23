@@ -13,7 +13,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 type TabType = 'workshops' | 'port-pass';
 
 function TicketsContent() {
-  const { theme, colors } = useTheme();
+  const { colors } = useTheme();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabType>('workshops');
   const [selectedWorkshop, setSelectedWorkshop] = useState<string | null>(null);
@@ -101,12 +101,12 @@ function TicketsContent() {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'light' ? 'bg-linear-to-br from-slate-50 via-white to-slate-50' : 'bg-linear-to-br from-slate-950 via-slate-900 to-slate-950'} pt-32 pb-24 px-4 overflow-x-hidden transition-colors duration-300`}>
+    <div className={`min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 pt-32 pb-24 px-4 overflow-x-hidden transition-colors duration-300`}>
       {/* Animated background elements */}
       <div className="pointer-events-none absolute inset-0">
-        <div className={`absolute top-20 left-1/4 w-72 h-72 ${theme === 'light' ? 'bg-violet-500/10' : 'bg-violet-600/15'} rounded-full blur-[100px] animate-pulse`} />
-        <div className={`absolute bottom-20 right-1/4 w-60 h-60 ${theme === 'light' ? 'bg-indigo-400/10' : 'bg-indigo-500/10'} rounded-full blur-[100px] animate-pulse`} style={{ animationDelay: '1s' }} />
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 ${theme === 'light' ? 'bg-amber-400/5' : 'bg-amber-500/5'} rounded-full blur-[120px]`} />
+        <div className={`absolute top-20 left-1/4 w-72 h-72 bg-violet-600/15 rounded-full blur-[100px] animate-pulse`} />
+        <div className={`absolute bottom-20 right-1/4 w-60 h-60 bg-indigo-500/10 rounded-full blur-[100px] animate-pulse`} style={{ animationDelay: '1s' }} />
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px]`} />
       </div>
 
       {/* Heading */}
@@ -121,7 +121,7 @@ function TicketsContent() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className={`text-xs uppercase tracking-[0.3em] ${theme === 'light' ? 'text-violet-600' : 'text-violet-400'} mb-3`}
+            className={`text-xs uppercase tracking-[0.3em] text-violet-400 mb-3`}
           >
             🎫 Secure Your Spot
           </motion.p>
@@ -138,7 +138,7 @@ function TicketsContent() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className={`relative w-40 h-40 md:w-48 md:h-48 rounded-2xl border overflow-hidden ${theme === 'light' ? 'border-slate-200 shadow-lg' : 'border-white/10 shadow-xl shadow-violet-900/20'} transition-colors`}
+          className={`relative w-40 h-40 md:w-48 md:h-48 rounded-2xl border overflow-hidden border-white/10 shadow-xl shadow-violet-900/20 transition-colors`}
         >
           <Image
             src={qrImg}
@@ -157,7 +157,7 @@ function TicketsContent() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="relative flex justify-center gap-3 mb-12"
         >
-          <div className={`flex ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900/80 border-white/10'} backdrop-blur-sm p-1.5 rounded-full border transition-colors duration-300`}>
+          <div className={`flex bg-slate-900/80 border-white/10 backdrop-blur-sm p-1.5 rounded-full border transition-colors duration-300`}>
             {[
               { id: 'workshops', label: 'Workshops — Day 1' },
               { id: 'port-pass', label: 'Event Pass — Day 2' },
@@ -177,7 +177,7 @@ function TicketsContent() {
                 <span
                   className={`relative z-10 ${activeTab === tab.id
                     ? 'text-white'
-                    : `${colors.textTertiary} ${theme === 'light' ? 'hover:text-slate-900' : 'hover:text-slate-200'}`
+                    : `${colors.textTertiary} hover:text-slate-200`
                     }`}
                 >
                   {tab.label}
@@ -252,11 +252,11 @@ function TicketsContent() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
                       onClick={() => handleWorkshopClick(workshop.id)}
-                      className={`group cursor-pointer ${theme === 'light' ? 'bg-white border-slate-200 hover:border-violet-400' : 'bg-linear-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 border-white/10 hover:border-violet-500/50'} border rounded-xl p-6 transition-all duration-300 transform hover:scale-105`}
+                      className={`group cursor-pointer bg-linear-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 border-white/10 hover:border-violet-500/50 border rounded-xl p-6 transition-all duration-300 transform hover:scale-105`}
                     >
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="flex-1">
-                          <div className={`inline-block px-3 py-1 ${theme === 'light' ? 'bg-violet-100 text-violet-700' : 'bg-violet-600/30 text-violet-400'} text-xs font-semibold rounded-full mb-2 transition-colors`}>
+                          <div className={`inline-block px-3 py-1 bg-violet-600/30 text-violet-400 text-xs font-semibold rounded-full mb-2 transition-colors`}>
                             {workshop.domain}
                           </div>
                           <h3 className={`text-xl font-bold ${colors.textPrimary} mb-2 transition-colors`}>
@@ -275,7 +275,7 @@ function TicketsContent() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className={`text-2xl font-bold ${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} mb-1 transition-colors`}>
+                          <div className={`text-2xl font-bold text-amber-400 mb-1 transition-colors`}>
                             ₹{workshop.price}
                           </div>
                           <button
@@ -319,9 +319,9 @@ function TicketsContent() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className={`${theme === 'light' ? 'bg-linear-to-br from-violet-100 to-indigo-100 border-violet-300' : 'bg-linear-to-br from-violet-900/50 to-indigo-900/50 border-violet-500/30'} border rounded-2xl p-8 text-center transition-colors`}
+                  className={`bg-linear-to-br from-violet-900/50 to-indigo-900/50 border-violet-500/30 border rounded-2xl p-8 text-center transition-colors`}
                 >
-                  <div className={`inline-block px-4 py-2 ${theme === 'light' ? 'bg-amber-200 text-amber-800' : 'bg-amber-500/30 text-amber-400'} text-sm font-semibold rounded-full mb-4 transition-colors`}>
+                  <div className={`inline-block px-4 py-2 bg-amber-500/30 text-amber-400 text-sm font-semibold rounded-full mb-4 transition-colors`}>
                     Exclusive Access
                   </div>
                   <h3 className={`text-3xl font-bold ${colors.textPrimary} mb-4 transition-colors`}>
@@ -332,17 +332,17 @@ function TicketsContent() {
                   </p>
 
                   <div className="grid md:grid-cols-3 gap-4 mb-8">
-                    <div className={`${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-slate-800/50'} rounded-lg p-4 transition-colors`}>
+                    <div className={`bg-slate-800/50 rounded-lg p-4 transition-colors`}>
                       <div className={`${colors.textTertiary} text-sm mb-2`}>Access Days</div>
                       <div className={`${colors.textPrimary} font-bold transition-colors`}>Full Day - 06-03-2026</div>
                     </div>
-                    <div className={`${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-slate-800/50'} rounded-lg p-4 transition-colors`}>
+                    <div className={`bg-slate-800/50 rounded-lg p-4 transition-colors`}>
                       <div className={`${colors.textTertiary} text-sm mb-2`}>Events Included</div>
                       <div className={`${colors.textPrimary} font-bold transition-colors`}>All Day 2 Events</div>
                     </div>
-                    <div className={`${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-slate-800/50'} rounded-lg p-4 transition-colors`}>
+                    <div className={`bg-slate-800/50 rounded-lg p-4 transition-colors`}>
                       <div className={`${colors.textTertiary} text-sm mb-2`}>Price</div>
-                      <div className={`${theme === 'light' ? 'text-amber-600' : 'text-amber-400'} font-bold text-2xl transition-colors`}>
+                      <div className={`text-amber-400 font-bold text-2xl transition-colors`}>
                         ₹{PORT_PASS.price}
                       </div>
                     </div>

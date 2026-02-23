@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon, Instagram } from 'lucide-react';
+import { Menu, X, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
 import RegistrationModal from './RegistrationModal';
@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { theme, toggleTheme, colors } = useTheme();
+  const { colors } = useTheme();
 
   const [activeHash, setActiveHash] = useState('');
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
             className="w-10 h-10 lg:w-14 lg:h-14 object-contain transition-all duration-300"
           />
           <span className={`text-xl lg:text-2xl font-serif font-bold ${colors.textPrimary} tracking-wide transition-colors duration-300`}>
-            PORT <span className={theme === 'light' ? 'text-amber-600' : 'text-amber-400'}>'26</span>
+            PORT <span className="text-amber-400">'26</span>
           </span>
         </Link>
 
@@ -111,53 +111,39 @@ const Navbar: React.FC = () => {
                   }
                 }}
                 className={`relative text-sm uppercase tracking-widest font-medium transition-colors duration-300 ${isLinkActive(link.path)
-                  ? theme === 'light' ? 'text-amber-600' : 'text-amber-400'
-                  : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
+                  ? 'text-amber-400'
+                  : `${colors.textSecondary} hover:text-amber-400`
                   }`}
               >
                 {link.name}
                 {((pathname === link.path && !link.path.includes('#') && activeHash !== '#contact') || (link.name === 'Contact' && activeHash === '#contact')) && (
-                  <motion.div layoutId="underline" className={`absolute -bottom-1 left-0 right-0 h-0.5 ${theme === 'light' ? 'bg-amber-600' : 'bg-amber-400'}`} />
+                  <motion.div layoutId="underline" className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400" />
                 )}
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Instagram, Theme Toggle & Get Tickets - Right */}
+        {/* Instagram & Get Tickets - Right */}
         <div className="hidden lg:flex items-center space-x-4">
           <a
             href="https://www.instagram.com/sona_it_ads_page/"
             target="_blank"
             rel="noopener noreferrer"
-            className={`flex items-center gap-2 ${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'} transition-colors duration-300`}
+            className={`flex items-center gap-2 ${colors.textSecondary} hover:text-amber-400 transition-colors duration-300`}
           >
             <Instagram className="w-5 h-5" />
           </a>
           <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-full ${colors.bgSecondary} ${colors.textPrimary} hover:scale-110 transition-all duration-300 shadow-md`}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-          </button>
-          <button 
             onClick={() => setShowRegistrationModal(true)}
-            className={`px-6 py-2 bg-linear-to-r from-violet-600 to-indigo-600 text-white font-medium rounded-full shadow-lg ${theme === 'light' ? 'shadow-violet-500/50 hover:shadow-violet-500/80' : 'shadow-violet-900/50 hover:shadow-violet-900/80'} hover:scale-105 transition-all duration-300 text-sm`}
+            className="px-6 py-2 bg-linear-to-r from-violet-600 to-indigo-600 text-white font-medium rounded-full shadow-lg shadow-violet-900/50 hover:shadow-violet-900/80 hover:scale-105 transition-all duration-300 text-sm"
           >
             Get Tickets
           </button>
         </div>
 
-        {/* Mobile Toggle & Theme */}
+        {/* Mobile Toggle */}
         <div className="lg:hidden flex items-center space-x-2">
-          <button
-            onClick={toggleTheme}
-            className={`p-2 rounded-full ${colors.bgSecondary} ${colors.textPrimary} transition-all duration-300`}
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-          </button>
           <button onClick={() => setIsOpen(!isOpen)} className={`${colors.textPrimary} p-2`}>
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -206,8 +192,8 @@ const Navbar: React.FC = () => {
                       }
                     }}
                     className={`block px-3 py-4 text-base font-medium transition-colors duration-300 border-b ${colors.border} ${isLinkActive(link.path)
-                      ? theme === 'light' ? 'text-amber-600' : 'text-amber-400'
-                      : `${colors.textSecondary} ${theme === 'light' ? 'hover:text-amber-600' : 'hover:text-amber-400'}`
+                      ? 'text-amber-400'
+                      : `${colors.textSecondary} hover:text-amber-400`
                       }`}
                   >
                     {link.name}
