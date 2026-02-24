@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createWorker } from 'tesseract.js';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Force Node.js runtime (not Edge) — Tesseract needs Node APIs + WASM.
@@ -8,6 +10,33 @@ import { createWorker } from 'tesseract.js';
  */
 export const runtime = 'nodejs';
 export const maxDuration = 60;
+
+/**
+ * Resolve the langPath for Tesseract at runtime.
+ *
+ * Strategy (most-reliable → least-reliable):
+ *  1. Copy eng.traineddata from the bundled project files to /tmp (writable
+ *     on Vercel) and point Tesseract there.  This avoids any network call and
+ *     is fast on every invocation after the first copy.
+ *  2. Fall back to the projectnaptha CDN if the bundled file is not found
+ *     (keeps the function working in other environments like Railway / Render).
+ */
+function resolveLangPath(): string {
+  const CDN = 'https://tessdata.projectnaptha.com/4.0.0';
+  try {
+    const src = path.join(process.cwd(), 'eng.traineddata');
+    if (!fs.existsSync(src)) return CDN;
+    const dst = '/tmp/eng.traineddata';
+    // Copy once per cold start; reuse on warm invocations.
+    if (!fs.existsSync(dst)) {
+      fs.copyFileSync(src, dst);
+    }
+    return '/tmp';
+  } catch {
+    // /tmp may not be writable in some environments — fall back to CDN.
+    return CDN;
+  }
+}
 
 /** The exact account holder name that must appear in the payment screenshot. */
 const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
@@ -92,12 +121,13 @@ export async function POST(request: NextRequest) {
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
     // Run OCR
-    // ⚠️  On Vercel the filesystem is read-only and the default local path for
-    // traineddata does not exist.  Pointing langPath at the projectnaptha CDN
-    // makes Tesseract fetch the data over HTTPS instead, which works in every
-    // serverless environment including Vercel and Railway.
+    // Use local /tmp copy of eng.traineddata (copied from the bundled project
+    // file on cold start) so no network round-trip is needed on Vercel.
+    // resolveLangPath() falls back to the projectnaptha CDN if the local file
+    // is absent (alternative deployment environments).
+    const langPath = resolveLangPath();
     const worker = await createWorker('eng', 1, {
-      langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+      langPath,
       logger: () => {},
       errorHandler: () => {},
     });
