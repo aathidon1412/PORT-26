@@ -298,6 +298,6 @@ export const PORT_PASS = {
   ]
 };
 
-// External booking links (Townscript)
-export const EVENTS_TOWNSCRIPT_URL = 'https://www.townscript.com/v2/widget/port-2026/booking/team';
-export const WORKSHOPS_TOWNSCRIPT_URL = 'https://www.townscript.com/v2/widget/workshop-of-port-2026/booking/tickets';
+// External booking links
+export const EVENTS_REGISTRATION_URL = '';
+export const WORKSHOPS_REGISTRATION_URL = '';

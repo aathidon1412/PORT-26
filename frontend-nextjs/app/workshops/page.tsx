@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, CheckCircle2 } from 'lucide-react';
 import { WORKSHOPS } from '@/constants';
-import { WORKSHOPS_TOWNSCRIPT_URL } from '@/constants';
 import { useTheme } from '@/contexts/ThemeContext';
 import RegistrationModal from '@/components/RegistrationModal';
 import ImageWithSkeleton from '@/components/ImageWithSkeleton';

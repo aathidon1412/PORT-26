@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createWorker } from 'tesseract.js';
 
+/** The exact account holder name that must appear in the payment screenshot. */
+const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
+
 /** Candidate pattern: alphanumeric runs of 8–30 chars that commonly appear as
  *  Transaction IDs / UTR numbers / reference numbers in Indian payment screenshots. */
 const TX_PATTERN = /[A-Z0-9]{8,30}/gi;
@@ -36,7 +39,6 @@ function extractCandidates(text: string): string[] {
   for (const re of LABEL_REGEXES) {
     const m = re.exec(text);
     if (m) {
-      // capture group index: some have 2 groups (label word + value), some 1
       add(m[m.length - 1]);
     }
   }
@@ -46,6 +48,20 @@ function extractCandidates(text: string): string[] {
   for (const m of allMatches) add(m[0]);
 
   return results;
+}
+
+/**
+ * Check whether the required account holder name appears in the OCR text.
+ * Normalises whitespace and does a case-insensitive check to tolerate minor
+ * OCR artefacts (extra spaces, line breaks between words, etc.).
+ */
+function checkAccountName(text: string): boolean {
+  const normalised = text.replace(/\s+/g, ' ').toUpperCase();
+  // Exact match after normalisation
+  if (normalised.includes(REQUIRED_ACCOUNT_NAME)) return true;
+  // Fuzzy: allow each word to appear anywhere (handles line-split OCR output)
+  const parts = REQUIRED_ACCOUNT_NAME.split(' ');
+  return parts.every((p) => normalised.includes(p));
 }
 
 export async function POST(request: NextRequest) {
@@ -69,7 +85,6 @@ export async function POST(request: NextRequest) {
 
     // Run OCR
     const worker = await createWorker('eng', 1, {
-      // Suppress verbose logging
       logger: () => {},
       errorHandler: () => {},
     });
@@ -77,17 +92,36 @@ export async function POST(request: NextRequest) {
     const { data: { text } } = await worker.recognize(imageBuffer);
     await worker.terminate();
 
+    // ── Account name check ──────────────────────────────────────────────────
+    const accountNameFound = checkAccountName(text);
+
+    if (!accountNameFound) {
+      return NextResponse.json({
+        success: true,
+        verified: false,
+        accountNameMissing: true,
+        message: `The account holder name "RAJAGOPAL RAMARAO" was not detected in your screenshot. Please upload a screenshot from the correct UPI account.`,
+        candidates: [],
+        ocrText: text,
+      });
+    }
+
+    // ── Transaction ID check ────────────────────────────────────────────────
     const candidates = extractCandidates(text);
     const normalise = (s: string) => s.toUpperCase().trim();
     const entered = normalise(transactionId);
-
     const matched = candidates.some((c) => normalise(c) === entered);
 
     return NextResponse.json({
       success: true,
       verified: matched,
-      candidates, // useful for debugging / UI hints
+      accountNameFound: true,
+      accountNameMissing: false,
+      candidates,
       ocrText: text,
+      message: matched
+        ? 'Transaction ID matches the screenshot.'
+        : 'Transaction ID does not match what was found in the screenshot. Please double-check.',
     });
   } catch (error) {
     console.error('Payment verification error:', error);
