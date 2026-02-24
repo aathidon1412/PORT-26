@@ -114,17 +114,22 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     }
     setVerifyStatus('verifying');
     setVerifyMessage('');
+    // Client-side timeout: abort if the server takes > 55 s (Vercel Pro cap is 60 s)
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 55_000);
     try {
       const res = await fetch('/api/verify-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64, transactionId: txId.trim() }),
+        signal: controller.signal,
       });
+      clearTimeout(timer);
       const json = await res.json();
       if (!res.ok) {
         setVerifyStatus('error');
-        setVerifyMessage(json.message || 'Verification service unavailable.');
-        toast.error(json.message || 'Verification service unavailable.');
+        setVerifyMessage(json.message || 'Verification service unavailable. Please re-upload your screenshot and try again.');
+        toast.error(json.message || 'Verification failed — please re-upload your screenshot.', { duration: 6000 });
         return;
       }
       if (json.accountNameMissing) {
@@ -150,9 +155,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         );
         toast.error('Transaction ID mismatch — please re-enter the correct ID.', { duration: 5000 });
       }
-    } catch {
+    } catch (err: unknown) {
+      clearTimeout(timer);
+      const isAbort = err instanceof Error && err.name === 'AbortError';
       setVerifyStatus('error');
-      setVerifyMessage('Could not reach the verification service. Proceeding without OCR check.');
+      setVerifyMessage(
+        isAbort
+          ? 'Verification timed out. Please remove the screenshot, re-upload it, and try again.'
+          : 'Could not reach the verification service. Please remove the screenshot, re-upload it, and try again.'
+      );
+      toast.error(
+        isAbort ? 'Screenshot verification timed out — please re-upload.' : 'Verification service unavailable — please re-upload your screenshot.',
+        { duration: 7000 }
+      );
     }
   }, []);
 
@@ -269,6 +284,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (verifyStatus === 'verifying') {
       toast.error('Verifying your payment screenshot… please wait until it completes.', { duration: 4000 });
       fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // OCR service errored — block submission, ask user to re-upload
+    if (verifyStatus === 'error') {
+      toast.error(
+        'Screenshot verification failed. Please remove the screenshot, re-upload a clear image, and wait for verification to complete.',
+        { duration: 7000 }
+      );
+      fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 

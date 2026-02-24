@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createWorker } from 'tesseract.js';
 
+/**
+ * Force Node.js runtime (not Edge) — Tesseract needs Node APIs + WASM.
+ * maxDuration tells Vercel to allow up to 60 s for this function.
+ * (Requires Vercel Pro plan; Hobby is capped at 10 s)
+ */
+export const runtime = 'nodejs';
+export const maxDuration = 60;
+
 /** The exact account holder name that must appear in the payment screenshot. */
 const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
 
@@ -84,7 +92,12 @@ export async function POST(request: NextRequest) {
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
     // Run OCR
+    // ⚠️  On Vercel the filesystem is read-only and the default local path for
+    // traineddata does not exist.  Pointing langPath at the projectnaptha CDN
+    // makes Tesseract fetch the data over HTTPS instead, which works in every
+    // serverless environment including Vercel and Railway.
     const worker = await createWorker('eng', 1, {
+      langPath: 'https://tessdata.projectnaptha.com/4.0.0',
       logger: () => {},
       errorHandler: () => {},
     });
