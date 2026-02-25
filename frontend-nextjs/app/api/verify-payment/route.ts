@@ -55,6 +55,9 @@ async function getWorker(): Promise<Worker> {
       const langPath = resolveLangPath();
       const w = await createWorker('eng', 1, {
         langPath,
+        // cachePath keeps model files in /tmp so they survive warm-container
+        // reuse on Vercel without being re-copied from the bundle each time.
+        cachePath: '/tmp',
         logger: () => {},
         errorHandler: () => {},
       });
