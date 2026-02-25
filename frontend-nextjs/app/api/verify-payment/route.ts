@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createWorker, Worker } from 'tesseract.js';
-import fs from 'fs';
-import path from 'path';
+import { createWorker } from 'tesseract.js';
 
 /**
  * Force Node.js runtime (not Edge) — Tesseract needs Node APIs + WASM.
@@ -10,68 +8,10 @@ import path from 'path';
  */
 export const runtime = 'nodejs';
 export const maxDuration = 60;
-
-/**
- * Resolve the langPath for Tesseract at runtime.
- *
- * Strategy (most-reliable → least-reliable):
- *  1. Copy eng.traineddata from the bundled project files to /tmp (writable
- *     on Vercel) and point Tesseract there.  This avoids any network call and
- *     is fast on every invocation after the first copy.
- *  2. Fall back to the projectnaptha CDN if the bundled file is not found
- *     (keeps the function working in other environments like Railway / Render).
- */
-function resolveLangPath(): string {
-  const CDN = 'https://tessdata.projectnaptha.com/4.0.0';
-  try {
-    const src = path.join(process.cwd(), 'eng.traineddata');
-    if (!fs.existsSync(src)) return CDN;
-    const dst = '/tmp/eng.traineddata';
-    // Copy once per cold start; reuse on warm invocations.
-    if (!fs.existsSync(dst)) {
-      fs.copyFileSync(src, dst);
-    }
-    return '/tmp';
-  } catch {
-    // /tmp may not be writable in some environments — fall back to CDN.
-    return CDN;
-  }
-}
+export const dynamic = 'force-dynamic';
 
 /** The exact account holder name that must appear in the payment screenshot. */
 const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
-
-// ── Cached Tesseract worker ─────────────────────────────────────────────────
-// Re-use a single worker across warm Vercel invocations to avoid the ~2-4 s
-// WASM/model-load overhead on every request.
-let cachedWorker: Worker | null = null;
-let workerInitPromise: Promise<Worker> | null = null;
-
-async function getWorker(): Promise<Worker> {
-  if (cachedWorker) return cachedWorker;
-  // Deduplicate concurrent cold-start calls
-  if (!workerInitPromise) {
-    workerInitPromise = (async () => {
-      const langPath = resolveLangPath();
-      const w = await createWorker('eng', 1, {
-        langPath,
-        // cachePath keeps model files in /tmp so they survive warm-container
-        // reuse on Vercel without being re-copied from the bundle each time.
-        cachePath: '/tmp',
-        logger: () => {},
-        errorHandler: () => {},
-      });
-      cachedWorker = w;
-      return w;
-    })().catch((err) => {
-      // Reset so the next request retries initialisation
-      workerInitPromise = null;
-      throw err;
-    });
-  }
-  return workerInitPromise;
-}
-// ────────────────────────────────────────────────────────────────────────────
 
 
 /** Candidate pattern: alphanumeric runs of 8–30 chars that commonly appear as
@@ -135,6 +75,8 @@ function checkAccountName(text: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  let worker = null;
+  
   try {
     const body = await request.json();
     const { imageBase64, transactionId } = body as {
@@ -153,26 +95,15 @@ export async function POST(request: NextRequest) {
     const base64Data = imageBase64.replace(/^data:image\/[a-z]+;base64,/i, '');
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    // Run OCR
-    // Use the cached worker (warm invocations skip the ~2-4 s WASM init).
-    // resolveLangPath() copies eng.traineddata from the bundled project file
-    // to /tmp on the first cold start, then reuses the /tmp copy on subsequent
-    // warm invocations — no network round-trip needed on Vercel.
-    let worker: Worker;
-    try {
-      worker = await getWorker();
-    } catch {
-      // If worker init itself fails, reset so next request retries fresh
-      cachedWorker = null;
-      workerInitPromise = null;
-      return NextResponse.json(
-        { success: false, message: 'OCR engine failed to initialise. Please try again.' },
-        { status: 500 }
-      );
-    }
+    // Create worker with explicit CDN paths to avoid bundling issues on Vercel
+    worker = await createWorker('eng', 1, {
+      workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/worker.min.js',
+      langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+      corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5/tesseract-core.wasm.js',
+      logger: () => {},
+    });
 
     const { data: { text } } = await worker.recognize(imageBuffer);
-    // Do NOT terminate — keep the worker alive for reuse across warm invocations.
 
     // ── Account name check ──────────────────────────────────────────────────
     const accountNameFound = checkAccountName(text);
@@ -191,8 +122,7 @@ export async function POST(request: NextRequest) {
     // ── Transaction ID check ────────────────────────────────────────────────
     // '__PREFLIGHT__' is a sentinel value sent when the screenshot is uploaded
     // before the user has finished typing the Transaction ID. In this case we
-    // skip the ID match and just confirm the account name is correct so the
-    // Tesseract worker is already warm when the real verification runs.
+    // skip the ID match and just confirm the account name is correct.
     const candidates = extractCandidates(text);
     const normalise = (s: string) => s.toUpperCase().trim();
     const entered = normalise(transactionId!);
@@ -224,14 +154,15 @@ export async function POST(request: NextRequest) {
         : 'Transaction ID does not match what was found in the screenshot. Please double-check.',
     });
   } catch (error) {
-    // If the error came from worker.recognize(), invalidate the cached worker
-    // so the next request gets a fresh one instead of a broken instance.
-    cachedWorker = null;
-    workerInitPromise = null;
     console.error('Payment verification error:', error);
     return NextResponse.json(
       { success: false, message: 'Verification failed. Please try again.' },
       { status: 500 }
     );
+  } finally {
+    // Always terminate the worker to free resources
+    if (worker) {
+      await worker.terminate();
+    }
   }
 }
