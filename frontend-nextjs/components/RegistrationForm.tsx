@@ -113,6 +113,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState<VerifyStatus>('idle');
+  const [isPhonePePayment, setIsPhonePePayment] = useState(false);
   const [verifyMessage, setVerifyMessage] = useState<string>('');
   // Stores the raw OCR text extracted in the browser — sent to the API instead of the image.
   const [ocrText, setOcrText] = useState<string>('');
@@ -176,22 +177,23 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         toast.error('Account holder name "RAJAGOPAL RAMARAO" not found in screenshot.', { duration: 5000 });
         return;
       }
+      // Track whether this is a PhonePe screenshot so the UI can hint accordingly
+      if (json.isPhonePe !== undefined) setIsPhonePePayment(!!json.isPhonePe);
+
       // Preflight: account name is good but no txId to match yet — stay idle
       if (json.preflight) {
         setVerifyStatus('idle');
-        setVerifyMessage('');
+        setVerifyMessage(json.isPhonePe ? 'PhonePe screenshot detected — enter your UTR number below.' : '');
         return;
       }
       if (json.verified) {
         setVerifyStatus('verified');
-        setVerifyMessage('Transaction ID matches the screenshot ✓');
-        toast.success('Transaction ID verified successfully!', { duration: 3000 });
+        setVerifyMessage(json.message || (json.isPhonePe ? 'UTR number matches the screenshot ✓' : 'Transaction ID matches the screenshot ✓'));
+        toast.success(json.isPhonePe ? 'UTR number verified successfully!' : 'Transaction ID verified successfully!', { duration: 3000 });
       } else {
         setVerifyStatus('mismatch');
-        setVerifyMessage(
-          'Transaction ID does not match what was found in the screenshot. Please double-check.'
-        );
-        toast.error('Transaction ID mismatch — please re-enter the correct ID.', { duration: 5000 });
+        setVerifyMessage(json.message || (json.isPhonePe ? 'UTR number does not match. Please double-check.' : 'Transaction ID does not match what was found in the screenshot. Please double-check.'));
+        toast.error(json.isPhonePe ? 'UTR number mismatch — please re-enter the correct UTR.' : 'Transaction ID mismatch — please re-enter the correct ID.', { duration: 5000 });
       }
     } catch (err: unknown) {
       clearTimeout(timer);
@@ -842,13 +844,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             {/* Transaction ID */}
             <div ref={fieldRefs.transactionId as React.RefObject<HTMLDivElement>}>
               <label className="block text-sm font-medium mb-2 text-white">
-                Transaction ID <span className="text-red-500">*</span>
+                Transaction ID / UTR Number <span className="text-red-500">*</span>
               </label>
+              <p className="text-xs text-violet-300 mb-2">
+                📱 <strong>PhonePe users:</strong> enter the <strong>UTR number</strong> shown in your payment receipt, not the transaction ID.
+              </p>
               <div className="relative flex items-center">
                 <input
                   type="text" name="transactionId" value={formData.transactionId}
                   onChange={handleInputChange} className={`${inputCls('transactionId')} pr-10`}
-                  placeholder="e.g. TXN123456789" autoComplete="off" />
+                  placeholder="e.g. TXN123456789 or 12-digit UTR for PhonePe" autoComplete="off" />
                 {/* Verification badge */}
                 {verifyStatus === 'verifying' && (
                   <Loader2 className="absolute right-3 w-5 h-5 text-violet-400 animate-spin" />
@@ -884,6 +889,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   <AlertCircle className="w-3 h-3" /> {verifyMessage}
                 </p>
               )}
+              {/* PhonePe UTR hint — shown once the server detects a PhonePe screenshot */}
+              {isPhonePePayment && verifyStatus !== 'verified' && (
+                <p className="text-violet-300 text-xs mt-1.5 flex items-center gap-1.5 bg-violet-900/30 rounded px-2 py-1 border border-violet-700">
+                  📱 <strong>PhonePe detected</strong> — please enter your <strong>UTR number</strong> (12-digit number from the receipt) as the Transaction ID.
+                </p>
+              )}
               {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
             </div>
 
@@ -898,6 +909,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <span>
                   Ensure the <strong>Transaction ID (Txn ID)</strong> is clearly visible in the uploaded screenshot, and the account holder name must be{' '}
                   <strong>RAJAGOPAL RAMARAO</strong>.
+                  {' '}If you paid via <strong>PhonePe</strong>, upload the PhonePe receipt screenshot and enter the <strong>UTR number</strong> (the 12-digit number) as the Transaction ID.
                 </span>
               </div>
               <div
@@ -941,6 +953,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
                     setVerifyStatus('idle');
                     setVerifyMessage('');
+                    setIsPhonePePayment(false);
+                    setOcrText('');
                     if (fileInputRef.current) fileInputRef.current.value = '';
                   }}
                   className="mt-1 text-xs text-red-500 hover:text-red-700"

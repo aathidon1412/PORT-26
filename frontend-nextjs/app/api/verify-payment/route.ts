@@ -19,13 +19,21 @@ const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
  *  Transaction IDs / UTR numbers / reference numbers in Indian payment screenshots. */
 const TX_PATTERN = /[A-Z0-9]{8,30}/gi;
 
+/** UTR number on PhonePe screenshots — typically 12 decimal digits. */
+const PHONEPE_UTR_PATTERN = /(?:utr|utr\s*no\.?|utr\s*number)[:\s#]*([\d]{10,15})/i;
+
+/** Detect whether the OCR text originated from a PhonePe screenshot. */
+function isPhonePeScreenshot(text: string): boolean {
+  return /phonepe|phone\s*pe/i.test(text);
+}
+
 /**
  * Known label keywords that appear *before* a transaction ID in payment UIs.
  * We extract the first large alphanumeric token after each label.
  */
 const LABEL_REGEXES = [
   /transaction\s*id[:\s#]*([\w\-]{6,30})/i,
-  /utr\s*(no|number|#)?[:\s]*([\w\-]{6,30})/i,
+  /utr\s*(no\.?|number|#)?[:\s]*([\w\-]{6,30})/i,
   /reference\s*(id|no|number)?[:\s#]*([\w\-]{6,30})/i,
   /ref\s*(id|no|number)?[:\s#]*([\w\-]{6,30})/i,
   /order\s*(id|no)?[:\s#]*([\w\-]{6,30})/i,
@@ -45,6 +53,12 @@ function extractCandidates(text: string): string[] {
     const n = v.toUpperCase().trim();
     if (n && !seen.has(n)) { seen.add(n); results.push(n); }
   };
+
+  // Priority 0 — PhonePe UTR number: pull this out first so it ranks highest
+  if (isPhonePeScreenshot(text)) {
+    const utrMatch = PHONEPE_UTR_PATTERN.exec(text);
+    if (utrMatch) add(utrMatch[1]);
+  }
 
   // Priority 1 — value immediately following a known label
   for (const re of LABEL_REGEXES) {
@@ -111,6 +125,8 @@ export async function POST(request: NextRequest) {
     const normalise = (s: string) => s.toUpperCase().trim();
     const entered = normalise(transactionId);
 
+    const phonePe = isPhonePeScreenshot(ocrText);
+
     if (entered === '__PREFLIGHT__') {
       return NextResponse.json({
         success: true,
@@ -118,22 +134,28 @@ export async function POST(request: NextRequest) {
         preflight: true,
         accountNameFound: true,
         accountNameMissing: false,
+        isPhonePe: phonePe,
         candidates,
-        message: 'Account holder name verified. Enter your Transaction ID to complete verification.',
+        message: phonePe
+          ? 'PhonePe screenshot detected. Enter your UTR number as the Transaction ID.'
+          : 'Account holder name verified. Enter your Transaction ID to complete verification.',
       });
     }
 
     const matched = candidates.some((c) => normalise(c) === entered);
+
+    const idLabel = phonePe ? 'UTR number' : 'Transaction ID';
 
     return NextResponse.json({
       success: true,
       verified: matched,
       accountNameFound: true,
       accountNameMissing: false,
+      isPhonePe: phonePe,
       candidates,
       message: matched
-        ? 'Transaction ID matches the screenshot.'
-        : 'Transaction ID does not match what was found in the screenshot. Please double-check.',
+        ? `${idLabel} matches the screenshot.`
+        : `${idLabel} does not match what was found in the screenshot. Please double-check.`,
     });
   } catch (error) {
     console.error('Payment verification error:', error);
