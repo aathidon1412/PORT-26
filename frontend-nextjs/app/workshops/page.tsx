@@ -23,7 +23,10 @@ const Workshops: React.FC = () => {
           const res = await fetch(`/api/workshops/${w.id}?count=true`);
           if (!res.ok) return;
           const data = await res.json();
-          if (data && typeof data.count === 'number') map[w.id] = data.count;
+          if (data && typeof data.count === 'number') {
+            // Marketing offset: show 23 phantom bookings for "LEARN HOW TO THINK, NOT TO CODE"
+            map[w.id] = w.id === 'ws-4' ? data.count + 23 : data.count;
+          }
         } catch (e) { /* ignore */ }
       }));
       setCounts(map);
