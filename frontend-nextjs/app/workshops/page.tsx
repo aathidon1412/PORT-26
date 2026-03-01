@@ -24,8 +24,7 @@ const Workshops: React.FC = () => {
           if (!res.ok) return;
           const data = await res.json();
           if (data && typeof data.count === 'number') {
-            // Marketing offset: show 23 phantom bookings for "LEARN HOW TO THINK, NOT TO CODE"
-            map[w.id] = w.id === 'ws-4' ? data.count + 23 : data.count;
+            map[w.id] = data.count;
           }
         } catch (e) { /* ignore */ }
       }));
