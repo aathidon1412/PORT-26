@@ -24,15 +24,11 @@ const Workshops: React.FC = () => {
           if (!res.ok) return;
           const data = await res.json();
           if (data && typeof data.count === 'number') {
-<<<<<<< HEAD
             // Marketing offset: show 23 phantom bookings for "LEARN HOW TO THINK, NOT TO CODE"
             // Apply offset for both legacy id 'ws-4' and alternate id 'learn-how-to-think',
             // and also match by title to be robust across data sources.
             const isTargetWorkshop = w.id === 'ws-4' || w.id === 'learn-how-to-think' || (w.title && w.title.toLowerCase().includes('learn how to think'));
             map[w.id] = isTargetWorkshop ? data.count + 23 : data.count;
-=======
-            map[w.id] = data.count;
->>>>>>> 1a8ff0e18e7b81ed2e9b714f043166a79ddf657c
           }
         } catch (e) { /* ignore */ }
       }));
