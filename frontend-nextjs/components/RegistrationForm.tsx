@@ -244,7 +244,27 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
     if (!formData.gender) newErrors.gender = 'Gender is required';
     if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
-    if (!formData.paymentScreenshot) newErrors.paymentScreenshot = 'Payment screenshot is required';
+    
+    // Enhanced screenshot validation
+    if (!formData.paymentScreenshot) {
+      newErrors.paymentScreenshot = 'Payment screenshot is required';
+    } else if (!ocrText || ocrText.trim().length === 0) {
+      newErrors.paymentScreenshot = 'Screenshot appears blank or unreadable. Please upload a clear screenshot.';
+    } else if (verifyStatus !== 'verified') {
+      // Screenshot uploaded but not verified
+      if (verifyStatus === 'accountNameMissing') {
+        newErrors.paymentScreenshot = 'Screenshot must contain account holder name "RAJAGOPAL RAMARAO"';
+      } else if (verifyStatus === 'mismatch') {
+        newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
+      } else if (verifyStatus === 'error') {
+        newErrors.paymentScreenshot = 'Screenshot verification failed. Please re-upload a clear image.';
+      } else if (verifyStatus === 'verifying') {
+        newErrors.paymentScreenshot = 'Please wait for screenshot verification to complete';
+      } else {
+        newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
+      }
+    }
+    
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
     if (!formData.department.trim()) newErrors.department = 'Department is required';
     if (!formData.yearOfStudy) newErrors.yearOfStudy = 'Year of Study is required';
@@ -304,54 +324,63 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (!validateForm()) return;
 
     // ── Hard blocks based on OCR verification state ────────────────────────
-    // If both screenshot and txId are filled but OCR hasn't started yet,
-    // kick it off now and tell the user to wait.
-    if (
-      verifyStatus === 'idle' &&
-      ocrText &&
-      formData.transactionId.trim()
-    ) {
-      verifyPayment(ocrText, formData.transactionId);
-      toast.error('Verification just started — please wait a moment and try again.', { duration: 5000 });
-      fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
-    // Still verifying (OCR in progress) — do not allow submission
-    if (verifyStatus === 'verifying') {
-      toast.error('Verifying your payment screenshot… please wait until it completes.', { duration: 4000 });
-      fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
-    // OCR service errored — block submission, ask user to re-upload
-    if (verifyStatus === 'error') {
-      toast.error(
-        'Screenshot verification failed. Please remove the screenshot, re-upload a clear image, and wait for verification to complete.',
-        { duration: 7000 }
-      );
+    // Ensure screenshot is uploaded and contains readable text
+    if (!formData.paymentScreenshot || !ocrText || ocrText.trim().length === 0) {
+      toast.error('Please upload a valid payment screenshot with readable text.', { duration: 5000 });
       fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
-    // Block submission if account name is missing in screenshot
-    if (verifyStatus === 'accountNameMissing') {
-      toast.error(
-        'The account holder name "RAJAGOPAL RAMARAO" was not found in the screenshot. Please upload the correct payment screenshot.',
-        { duration: 6000 }
-      );
-      fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
+    // Strictly require verification status to be 'verified' - no exceptions
+    if (verifyStatus !== 'verified') {
+      if (verifyStatus === 'idle' && formData.transactionId.trim()) {
+        verifyPayment(ocrText, formData.transactionId);
+        toast.error('Verification just started — please wait a moment and try again.', { duration: 5000 });
+        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
-    // Strictly block submission if Transaction ID doesn't match — no override allowed
-    if (verifyStatus === 'mismatch') {
-      toast.error(
-        'Transaction ID does not match the screenshot. Please enter the correct Transaction ID shown in your payment screenshot.',
-        { duration: 6000 }
-      );
-      fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      (fieldRefs.transactionId?.current as HTMLElement | null)?.focus?.();
+      // Still verifying (OCR in progress) — do not allow submission
+      if (verifyStatus === 'verifying') {
+        toast.error('Verifying your payment screenshot… please wait until it completes.', { duration: 4000 });
+        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // OCR service errored — block submission, ask user to re-upload
+      if (verifyStatus === 'error') {
+        toast.error(
+          'Screenshot verification failed. Please remove the screenshot, re-upload a clear image, and wait for verification to complete.',
+          { duration: 7000 }
+        );
+        fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Block submission if account name is missing in screenshot
+      if (verifyStatus === 'accountNameMissing') {
+        toast.error(
+          'The account holder name "RAJAGOPAL RAMARAO" was not found in the screenshot. Please upload the correct payment screenshot.',
+          { duration: 6000 }
+        );
+        fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Strictly block submission if Transaction ID doesn't match — no override allowed
+      if (verifyStatus === 'mismatch') {
+        toast.error(
+          'Transaction ID does not match the screenshot. Please enter the correct Transaction ID shown in your payment screenshot.',
+          { duration: 6000 }
+        );
+        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (fieldRefs.transactionId?.current as HTMLElement | null)?.focus?.();
+        return;
+      }
+
+      // Catch-all for any other non-verified state
+      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "RAJAGOPAL RAMARAO" and the transaction ID.', { duration: 6000 });
+      fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
