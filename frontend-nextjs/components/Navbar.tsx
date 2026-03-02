@@ -127,7 +127,7 @@ const Navbar: React.FC = () => {
         {/* Instagram & Get Tickets - Right */}
         <div className="hidden lg:flex items-center space-x-4">
           <a
-            href="https://www.instagram.com/sona_it_ads_page/"
+            href="https://www.instagram.com/sct__it?igsh=MTdxaWVxM252djE4NQ=="
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-2 ${colors.textSecondary} hover:text-amber-400 transition-colors duration-300`}

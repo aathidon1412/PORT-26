@@ -50,9 +50,9 @@ const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/sona_it_ads_page/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 hover:text-amber-400 transition-colors duration-300">
+                <a href="https://www.instagram.com/sct__it?igsh=MTdxaWVxM252djE4NQ==" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 hover:text-amber-400 transition-colors duration-300">
                   <Instagram className="w-5 h-5 text-violet-500 shrink-0" />
-                  <span>@sona_it_ads_page</span>
+                  <span>@sct__it</span>
                 </a>
               </li>
               <li className="flex items-center space-x-3">

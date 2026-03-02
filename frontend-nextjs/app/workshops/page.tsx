@@ -23,7 +23,9 @@ const Workshops: React.FC = () => {
           const res = await fetch(`/api/workshops/${w.id}?count=true`);
           if (!res.ok) return;
           const data = await res.json();
-          if (data && typeof data.count === 'number') map[w.id] = data.count;
+          if (data && typeof data.count === 'number') {
+            map[w.id] = data.count;
+          }
         } catch (e) { /* ignore */ }
       }));
       setCounts(map);
