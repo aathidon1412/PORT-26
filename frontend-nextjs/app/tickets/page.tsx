@@ -6,7 +6,7 @@ import Image from 'next/image';
 import RegistrationForm from '@/components/RegistrationForm';
 import { useSearchParams } from 'next/navigation';
 
-const qrImg = '/assets/imgs/kpSir350qr.jpeg';
+const qrImg = '/assets/imgs/dineshsirqr.jpeg';
 import { WORKSHOPS, PORT_PASS } from '@/constants';
 import { useTheme } from '@/contexts/ThemeContext';
 
