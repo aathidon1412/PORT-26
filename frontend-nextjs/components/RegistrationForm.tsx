@@ -8,11 +8,11 @@ import { CreditCard, Paperclip, CheckCircle2, XCircle, Loader2, AlertCircle, Che
 
 // ── UPI App carousel data ────────────────────────────────────────────────────
 const UPI_APPS = [
-  { name: 'Amazon Pay',        image: '/assets/imgs/amazonpay.jpg.png' },
-  { name: 'PhonePe',           image: '/assets/imgs/phonepe.jpg.png'   },
-  { name: 'Google Pay (GPay)', image: '/assets/imgs/gpay.jpg.jpeg'     },
-  { name: 'Navi Pay',          image: '/assets/imgs/navipay.jpg.png'   },
-  { name: 'BHIM',              image: '/assets/imgs/bhim.jpg.jpeg'     },
+  { name: 'Amazon Pay', image: '/assets/imgs/amazonpay.jpg.png' },
+  { name: 'PhonePe', image: '/assets/imgs/phonepe.jpg.png' },
+  { name: 'Google Pay (GPay)', image: '/assets/imgs/gpay.jpg.jpeg' },
+  { name: 'Navi Pay', image: '/assets/imgs/navipay.jpg.png' },
+  { name: 'BHIM', image: '/assets/imgs/bhim.jpg.jpeg' },
 ];
 
 interface RegistrationFormProps {
@@ -126,19 +126,19 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // ── Field refs for scroll-to-error ───────────────────────────────────────
   const fieldRefs: Record<string, React.RefObject<HTMLElement | null>> = {
-    firstName:            useRef<HTMLElement>(null),
-    lastName:             useRef<HTMLElement>(null),
-    email:                useRef<HTMLElement>(null),
-    confirmEmail:         useRef<HTMLElement>(null),
-    contactNumber:        useRef<HTMLElement>(null),
-    gender:               useRef<HTMLElement>(null),
-    transactionId:        useRef<HTMLElement>(null),
-    paymentScreenshot:    useRef<HTMLElement>(null),
-    collegeName:          useRef<HTMLElement>(null),
-    department:           useRef<HTMLElement>(null),
-    yearOfStudy:          useRef<HTMLElement>(null),
-    collegeRegisterNumber:useRef<HTMLElement>(null),
-    city:                 useRef<HTMLElement>(null),
+    firstName: useRef<HTMLElement>(null),
+    lastName: useRef<HTMLElement>(null),
+    email: useRef<HTMLElement>(null),
+    confirmEmail: useRef<HTMLElement>(null),
+    contactNumber: useRef<HTMLElement>(null),
+    gender: useRef<HTMLElement>(null),
+    transactionId: useRef<HTMLElement>(null),
+    paymentScreenshot: useRef<HTMLElement>(null),
+    collegeName: useRef<HTMLElement>(null),
+    department: useRef<HTMLElement>(null),
+    yearOfStudy: useRef<HTMLElement>(null),
+    collegeRegisterNumber: useRef<HTMLElement>(null),
+    city: useRef<HTMLElement>(null),
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -174,7 +174,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       if (json.accountNameMissing) {
         setVerifyStatus('accountNameMissing');
         setVerifyMessage(json.message || 'Account holder name does not match.');
-        toast.error('Account holder name "RAJAGOPAL RAMARAO" not found in screenshot.', { duration: 5000 });
+        toast.error('Account holder name "DINESHKUMAR P" not found in screenshot.', { duration: 5000 });
         return;
       }
       // Track whether this is a PhonePe screenshot so the UI can hint accordingly
@@ -222,7 +222,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       verifyPayment(ocrText, formData.transactionId);
     }, 300);
     return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.transactionId]);
 
   // ── Validation (with scroll-to-first-error) ───────────────────────────────
@@ -244,7 +244,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
     if (!formData.gender) newErrors.gender = 'Gender is required';
     if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
-    
+
     // Enhanced screenshot validation
     if (!formData.paymentScreenshot) {
       newErrors.paymentScreenshot = 'Payment screenshot is required';
@@ -253,7 +253,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     } else if (verifyStatus !== 'verified') {
       // Screenshot uploaded but not verified
       if (verifyStatus === 'accountNameMissing') {
-        newErrors.paymentScreenshot = 'Screenshot must contain account holder name "RAJAGOPAL RAMARAO"';
+        newErrors.paymentScreenshot = 'Screenshot must contain account holder name "DINESHKUMAR P"';
       } else if (verifyStatus === 'mismatch') {
         newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
       } else if (verifyStatus === 'error') {
@@ -264,7 +264,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
       }
     }
-    
+
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
     if (!formData.department.trim()) newErrors.department = 'Department is required';
     if (!formData.yearOfStudy) newErrors.yearOfStudy = 'Year of Study is required';
@@ -360,7 +360,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       // Block submission if account name is missing in screenshot
       if (verifyStatus === 'accountNameMissing') {
         toast.error(
-          'The account holder name "RAJAGOPAL RAMARAO" was not found in the screenshot. Please upload the correct payment screenshot.',
+          'The account holder name "DINESHKUMAR P" was not found in the screenshot. Please upload the correct payment screenshot.',
           { duration: 6000 }
         );
         fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -379,7 +379,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       }
 
       // Catch-all for any other non-verified state
-      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "RAJAGOPAL RAMARAO" and the transaction ID.', { duration: 6000 });
+      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "DINESHKUMAR P" and the transaction ID.', { duration: 6000 });
       fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
@@ -544,7 +544,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           const cw = Math.round(w * scale);
           const ch = Math.round(h * scale);
           const canvas = document.createElement('canvas');
-          canvas.width  = cw;
+          canvas.width = cw;
           canvas.height = ch;
           const ctx = canvas.getContext('2d')!;
           ctx.drawImage(img, 0, 0, cw, ch);
@@ -749,11 +749,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                       key={i}
                       onClick={() => carouselGoTo(i)}
                       title={app.name}
-                      className={`rounded-full transition-all duration-300 ${
-                        i === carouselIdx
+                      className={`rounded-full transition-all duration-300 ${i === carouselIdx
                           ? 'w-6 h-2.5 bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]'
                           : 'w-2.5 h-2.5 bg-slate-600 hover:bg-slate-400'
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>
@@ -937,7 +936,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
                 <span>
                   Ensure the <strong>Transaction ID (Txn ID)</strong> is clearly visible in the uploaded screenshot, and the account holder name must be{' '}
-                  <strong>RAJAGOPAL RAMARAO</strong>.
+                  <strong>DINESHKUMAR P</strong>.
                   {' '}If you paid via <strong>PhonePe</strong>, upload the PhonePe receipt screenshot and enter the <strong>UTR number</strong> (the 12-digit number) as the Transaction ID.
                 </span>
               </div>

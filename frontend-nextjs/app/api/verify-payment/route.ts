@@ -13,7 +13,7 @@ export const maxDuration = 10; // free-plan compatible — pure text matching
 export const dynamic = 'force-dynamic';
 
 /** The exact account holder name that must appear in the payment screenshot. */
-const REQUIRED_ACCOUNT_NAME = 'RAJAGOPAL RAMARAO';
+const REQUIRED_ACCOUNT_NAME = 'DINESHKUMAR P';
 
 /** Candidate pattern: alphanumeric runs of 8–30 chars that commonly appear as
  *  Transaction IDs / UTR numbers / reference numbers in Indian payment screenshots. */
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
         success: true,
         verified: false,
         accountNameMissing: true,
-        message: `The account holder name "RAJAGOPAL RAMARAO" was not detected in your screenshot. Please upload a screenshot from the correct UPI account.`,
+        message: `The account holder name "DINESHKUMAR P" was not detected in your screenshot. Please upload a screenshot from the correct UPI account.`,
         candidates: [],
       });
     }
