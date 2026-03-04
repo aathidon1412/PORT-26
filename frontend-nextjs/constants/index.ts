@@ -188,24 +188,7 @@ export const WORKSHOPS: Workshop[] = [
     spotsFilled: 0,
     image: '/assets/workshops/workshop_3.jpg'
   },
-  {
-    id: 'ws-4',
-    title: 'LEARN HOW TO THINK, NOT TO CODE',
-    domain: 'Problem Solving',
-    instructor: {
-      name: 'Gows Maithine A',
-      role: 'Workshop Organizer',
-      image: 'https://picsum.photos/seed/gows/200/200'
-    },
-    date: '05-03-2026',
-    duration: 'Full Day',
-    description: 'A guide from Programming Styles to Dynamic Programming that encourages students to stop memorizing solutions and start thinking like problem solvers. We break down how to analyze problems and craft efficient solutions step-by-step instead of jumping straight into syntax.',
-    learnings: ['The confidence to face unseen problems without panic', 'Going beyond syntax to understand how great programmers think', 'Analyzing problems, exploring different approaches, and crafting efficient solutions'],
-    price: 350,
-    spotsTotal: 50,
-    spotsFilled: 0,
-    image: '/assets/workshops/workshop_4.jpg'
-  }
+  
 ];
 
 export const COORDINATORS: Coordinator[] = [

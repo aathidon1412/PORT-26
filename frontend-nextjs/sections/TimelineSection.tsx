@@ -200,8 +200,7 @@ const TimelineSection: React.FC = () => {
   const workshopTrack: TimelineItem[] = [
     { time: '', title: 'HACKPROOFING THE FUTURE', desc: '' },
     { time: '', title: 'PROMPT TO PRODUCT', desc: '' },
-    { time: '', title: 'FULL STACK FUSION', desc: '' },
-    { time: '', title: 'LEARN HOW TO THINK, NOT TO CODE', desc: '' },
+    { time: '', title: 'FULL STACK FUSION', desc: '' }
   ];
 
   return (
