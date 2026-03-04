@@ -76,7 +76,8 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                   <span key="5" className="font-medium">Lunch and Refreshment will be provided.</span>,
                   <span key="6">Day 2: <strong className={colors.textPrimary}>One registration for all events</strong>.</span>,
                   <span key="7">Once payment is verified, the ticket will be emailed to the address you provided.{' '}<strong className="text-amber-400">Also check your Spam / Junk folder</strong> if you don\'t see it in your inbox.</span>,
-                  <span key="8">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"P ABINAYA"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
+                  <span key="8">Amount will not be refunded if the registration is cancelled.</span>,
+                  <span key="9">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"P ABINAYA"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
                 ].map((item, i) => (
                   <li key={i} className="flex gap-2">
                     <span className={`font-semibold ${colors.textPrimary} shrink-0 tabular-nums`}>{i + 1}.</span>
