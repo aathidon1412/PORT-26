@@ -76,7 +76,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                   <span key="5" className="font-medium">Lunch and Refreshment will be provided.</span>,
                   <span key="6">Day 2: <strong className={colors.textPrimary}>One registration for all events</strong>.</span>,
                   <span key="7">Once payment is verified, the ticket will be emailed to the address you provided.{' '}<strong className="text-amber-400">Also check your Spam / Junk folder</strong> if you don\'t see it in your inbox.</span>,
-                  <span key="8">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"DINESHKUMAR P"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
+                  <span key="8">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"P ABINAYA"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
                 ].map((item, i) => (
                   <li key={i} className="flex gap-2">
                     <span className={`font-semibold ${colors.textPrimary} shrink-0 tabular-nums`}>{i + 1}.</span>
@@ -90,7 +90,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                   <CreditCard className="w-3.5 h-3.5 shrink-0" />
                   <strong>Payment (UPI only):</strong>
                 </div>
-                Pay via UPI using the QR code on the registration page. Enter your <strong>Transaction ID</strong> and upload a <strong>payment screenshot</strong> showing the name <strong>DINESHKUMAR P</strong>. Ticket will be emailed after verification.
+                Pay via UPI using the QR code on the registration page. Enter your <strong>Transaction ID</strong> and upload a <strong>payment screenshot</strong> showing the name <strong>P ABINAYA</strong>. Ticket will be emailed after verification.
               </div>
 
               <label className={`flex items-center gap-2.5 mt-4 cursor-pointer select-none ${colors.textSecondary} text-sm`}>
@@ -105,8 +105,8 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                 onClick={handleOk}
                 disabled={!accepted}
                 className={`px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${accepted
-                    ? 'bg-amber-500 hover:bg-amber-400 text-slate-900 shadow-md hover:shadow-lg'
-                    : 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-900 shadow-md hover:shadow-lg'
+                  : 'bg-slate-700 text-slate-500 cursor-not-allowed'
                   }`}
               >
                 OK
