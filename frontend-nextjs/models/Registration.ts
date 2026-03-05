@@ -15,9 +15,9 @@ const commonFields = {
   },
   contactNumber: { type: String, required: true, trim: true, index: true },
   gender: { type: String, enum: ['Male', 'Female', 'Others'], required: true },
-  paymentMode: { type: String, enum: ['UPI'], default: 'UPI', required: true },
-  transactionId: { type: String, required: true, trim: true, unique: true },
-  paymentScreenshot: { type: String, required: true, trim: true },
+  paymentMode: { type: String, enum: ['Cash', 'Online'], default: 'Online', required: true },
+  transactionId: { type: String, trim: true, required: function(this: any) { return this.paymentMode === 'Online'; } },
+  paymentScreenshot: { type: String, trim: true, required: function(this: any) { return this.paymentMode === 'Online'; } },
   collegeName: { type: String, required: true, trim: true },
   department: { type: String, required: true, trim: true },
   yearOfStudy: { type: String, enum: ['1', '2', '3', '4'], required: true },
@@ -50,6 +50,13 @@ const portPassSchema = new mongoose.Schema(
   { ...commonFields, eventType: { type: String, default: 'Port Pass' } },
   { collection: 'portpassregistrations' }
 );
+
+// Add partial unique index for transactionId only when paymentMode is Online
+hackproofingSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+promptToProductSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+fullStackFusionSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+learnHowToThinkSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+portPassSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
 
 export const HackproofingRegistration =
   mongoose.models.HackproofingRegistration ||

@@ -1,6 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
 import { FullStackFusionRegistration } from '@/models/Registration';
-import { checkDuplicateRegistration, saveRegistration } from '@/lib/registrationUtils';
+import { checkDuplicateRegistration, saveRegistration, checkTransactionIdGlobalUnique } from '@/lib/registrationUtils';
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,17 +20,33 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    if (!body.transactionId || !body.paymentScreenshot) {
-      return NextResponse.json(
-        { message: 'Transaction ID and payment screenshot are required', success: false },
-        { status: 400 }
-      );
+    const allowedModes = ['Cash', 'Online'];
+    const paymentMode = body.paymentMode;
+    if (!paymentMode || !allowedModes.includes(paymentMode)) {
+      return NextResponse.json({ message: 'Invalid or missing paymentMode', success: false }, { status: 400 });
+    }
+    if (paymentMode === 'Online') {
+      if (!body.transactionId || !body.paymentScreenshot) {
+        return NextResponse.json(
+          { message: 'Transaction ID and payment screenshot are required for Online payments', success: false },
+          { status: 400 }
+        );
+      }
+    } else {
+      delete body.transactionId;
+      delete body.paymentScreenshot;
     }
     const duplicateCheck = await checkDuplicateRegistration(body.email, body.contactNumber, FullStackFusionRegistration);
     if (duplicateCheck.isDuplicate) {
       return NextResponse.json(duplicateCheck, { status: 409 });
     }
-    const result = await saveRegistration({ ...body, paymentMode: 'UPI' }, FullStackFusionRegistration);
+    if (paymentMode === 'Online') {
+      const txnCheck = await checkTransactionIdGlobalUnique(body.transactionId);
+      if (txnCheck.isDuplicate) return NextResponse.json(txnCheck, { status: 409 });
+    }
+
+    const payload = { ...body, paymentMode };
+    const result = await saveRegistration(payload, FullStackFusionRegistration);
     return NextResponse.json(result, { status: result.success ? 201 : 400 });
   } catch (error) {
     console.error('Registration error:', error);

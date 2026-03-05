@@ -29,6 +29,7 @@ interface FormData {
   confirmEmail: string;
   contactNumber: string;
   gender: string;
+  paymentMode: string;
   transactionId: string;
   paymentScreenshot: string;
   collegeName: string;
@@ -57,6 +58,7 @@ const EMPTY_FORM: FormData = {
   confirmEmail: '',
   contactNumber: '',
   gender: '',
+  paymentMode: 'Online',
   transactionId: '',
   paymentScreenshot: '',
   collegeName: '',
@@ -243,7 +245,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       newErrors.contactNumber = 'Please enter a valid 10-digit phone number';
 
     if (!formData.gender) newErrors.gender = 'Gender is required';
-    if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
+    // Conditionally require transaction fields only for Online payments
+    if (formData.paymentMode === 'Online') {
+      if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
 
     // Enhanced screenshot validation
     if (!formData.paymentScreenshot) {
@@ -263,6 +267,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       } else {
         newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
       }
+    }
     }
 
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
@@ -324,35 +329,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (!validateForm()) return;
 
     // ── Hard blocks based on OCR verification state ────────────────────────
-    // Ensure screenshot is uploaded and contains readable text
-    if (!formData.paymentScreenshot || !ocrText || ocrText.trim().length === 0) {
-      toast.error('Please upload a valid payment screenshot with readable text.', { duration: 5000 });
-      fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-
-    // Strictly require verification status to be 'verified' - no exceptions
-    if (verifyStatus !== 'verified') {
-      if (verifyStatus === 'idle' && formData.transactionId.trim()) {
-        verifyPayment(ocrText, formData.transactionId);
-        toast.error('Verification just started — please wait a moment and try again.', { duration: 5000 });
-        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-
-      // Still verifying (OCR in progress) — do not allow submission
-      if (verifyStatus === 'verifying') {
-        toast.error('Verifying your payment screenshot… please wait until it completes.', { duration: 4000 });
-        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
-
-      // OCR service errored — block submission, ask user to re-upload
-      if (verifyStatus === 'error') {
-        toast.error(
-          'Screenshot verification failed. Please remove the screenshot, re-upload a clear image, and wait for verification to complete.',
-          { duration: 7000 }
-        );
+    // If Online payment, ensure screenshot is uploaded and verified
+    if (formData.paymentMode === 'Online') {
+      if (!formData.paymentScreenshot || !ocrText || ocrText.trim().length === 0) {
+        toast.error('Please upload a valid payment screenshot with readable text.', { duration: 5000 });
         fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
@@ -409,9 +389,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           email: formData.email,
           contactNumber: formData.contactNumber.replace(/\D/g, ''),
           gender: formData.gender,
-          paymentMode: 'UPI',
-          transactionId: formData.transactionId.trim(),
-          paymentScreenshot: formData.paymentScreenshot,
+          paymentMode: formData.paymentMode,
+          // Only include transaction fields when Online
+          ...(formData.paymentMode === 'Online'
+            ? { transactionId: formData.transactionId.trim(), paymentScreenshot: formData.paymentScreenshot }
+            : {}),
           collegeName: formData.collegeName,
           department: formData.department,
           yearOfStudy: formData.yearOfStudy,
@@ -513,6 +495,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    // If switching payment mode, clear transaction fields when switching to Cash
+    if (name === 'paymentMode') {
+      if (value === 'Cash') {
+        setFormData((prev) => ({ ...prev, paymentMode: 'Cash', transactionId: '', paymentScreenshot: '' }));
+        setScreenshotPreview('');
+        setVerifyStatus('idle');
+        setVerifyMessage('');
+        setOcrText('');
+        setIsPhonePePayment(false);
+        setErrors((prev) => ({ ...prev, transactionId: '', paymentScreenshot: '' }));
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+      // switching to Online
+      setFormData((prev) => ({ ...prev, paymentMode: value }));
+      if (errors.paymentMode) setErrors((prev) => ({ ...prev, paymentMode: '' }));
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
   };
@@ -856,9 +857,35 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           {/* Row 4: UPI Payment */}
           <div className="rounded-xl border border-violet-800 bg-violet-950/30 p-4 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-sm font-semibold text-violet-300 flex items-center gap-2">
-                <CreditCard className="w-4 h-4" /> Payment — UPI Only
-              </p>
+              <div className="flex items-center gap-4">
+                <p className="text-sm font-semibold text-violet-300 flex items-center gap-2">
+                  <CreditCard className="w-4 h-4" /> Payment
+                </p>
+                <div className="flex items-center gap-3">
+                  <label className="inline-flex items-center text-sm text-slate-300">
+                    <input
+                      type="radio"
+                      name="paymentMode"
+                      value="Online"
+                      checked={formData.paymentMode === 'Online'}
+                      onChange={handleInputChange}
+                      className="mr-2"
+                    />
+                    Online
+                  </label>
+                  <label className="inline-flex items-center text-sm text-slate-300">
+                    <input
+                      type="radio"
+                      name="paymentMode"
+                      value="Cash"
+                      checked={formData.paymentMode === 'Cash'}
+                      onChange={handleInputChange}
+                      className="mr-2"
+                    />
+                    Cash
+                  </label>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => { setCarouselIdx(0); setCarouselOpen(true); }}
@@ -869,8 +896,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               </button>
             </div>
 
-            {/* Transaction ID */}
-            <div ref={fieldRefs.transactionId as React.RefObject<HTMLDivElement>}>
+            {/* Transaction ID (shown only for Online payments) */}
+            {formData.paymentMode === 'Online' && (
+              <div ref={fieldRefs.transactionId as React.RefObject<HTMLDivElement>}>
               <label className="block text-sm font-medium mb-2 text-white">
                 Transaction ID / UTR Number <span className="text-red-500">*</span>
               </label>
@@ -924,10 +952,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </p>
               )}
               {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
-            </div>
+              </div>
+            )}
 
-            {/* Payment Screenshot */}
-            <div ref={fieldRefs.paymentScreenshot as React.RefObject<HTMLDivElement>}>
+            {/* Payment Screenshot (shown only for Online payments) */}
+            {formData.paymentMode === 'Online' && (
+              <div ref={fieldRefs.paymentScreenshot as React.RefObject<HTMLDivElement>}>
               <label className="block text-sm font-medium mb-2 text-white">
                 Payment Screenshot <span className="text-red-500">*</span>
               </label>
@@ -990,7 +1020,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   Remove screenshot
                 </button>
               )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Row 5: College Name & Department */}
