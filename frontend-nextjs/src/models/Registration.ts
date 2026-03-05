@@ -32,9 +32,12 @@ const registrationSchemaDefaults = {
   },
   paymentMode: {
     type: String,
-    enum: ['UPI', 'Card', 'NetBanking', 'Cheque'],
+    enum: ['Cash', 'Online'],
+    default: 'Online',
     required: true,
   },
+  transactionId: { type: String, trim: true, required: function(this: any) { return this.paymentMode === 'Online'; } },
+  paymentScreenshot: { type: String, trim: true, required: function(this: any) { return this.paymentMode === 'Online'; } },
   collegeName: {
     type: String,
     required: true,
@@ -121,6 +124,12 @@ const portPassSchema = new mongoose.Schema({
 });
 
 portPassSchema.index({ email: 1, contactNumber: 1 }, { unique: true });
+// Partial unique indexes: only enforce uniqueness of transactionId for Online payments
+hackproofingSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+promptToProductSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+fullStackFusionSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+learnHowToThinkSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
+portPassSchema.index({ transactionId: 1 }, { unique: true, partialFilterExpression: { paymentMode: 'Online' } });
 
 // Export models - check if already exists before creating
 const HackproofingRegistration =
