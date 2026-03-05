@@ -6,7 +6,7 @@ import Image from 'next/image';
 import RegistrationForm from '@/components/RegistrationForm';
 import { useSearchParams } from 'next/navigation';
 
-const qrImg = '/assets/imgs/abinayamamqr.jpeg';
+const qrImg = '/assets/imgs/nivethamamqr.jpeg';
 import { WORKSHOPS, PORT_PASS } from '@/constants';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -254,8 +254,7 @@ function TicketsContent() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      onClick={() => handleWorkshopClick(workshop.id)}
-                      className={`group cursor-pointer bg-linear-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 border-white/10 hover:border-violet-500/50 border rounded-xl p-6 transition-all duration-300 transform hover:scale-105`}
+                      className={`group bg-linear-to-r from-slate-800 to-slate-700 border-white/10 border rounded-xl p-6 transition-all duration-300`}
                     >
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="flex-1">
@@ -282,11 +281,8 @@ function TicketsContent() {
                             ₹{workshop.price}
                           </div>
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleWorkshopClick(workshop.id);
-                            }}
-                            className="mt-2 bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                            disabled
+                            className="mt-2 bg-slate-700 text-slate-400 font-semibold py-2 px-6 rounded-lg cursor-not-allowed opacity-60"
                           >
                             Register
                           </button>

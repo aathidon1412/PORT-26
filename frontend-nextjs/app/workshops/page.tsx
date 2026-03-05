@@ -153,10 +153,10 @@ const Workshops: React.FC = () => {
                     Spots Available
                     <span className="ml-3 text-sm text-slate-300">{counts[workshop.id] === undefined ? 'Loading…' : `${Math.max(0, TOTAL_SEATS - counts[workshop.id])} / ${TOTAL_SEATS} remaining`}</span>
                   </div>
-                  <button onClick={() => {
-                    setSelectedWorkshopId(workshop.id);
-                    setShowRegModal(true);
-                  }} className={`w-full sm:w-auto px-8 py-3 bg-white hover:bg-amber-400 text-slate-900 font-bold rounded-lg transition-colors text-center`}>
+                  <button
+                    disabled
+                    className="w-full sm:w-auto px-8 py-3 bg-slate-700 text-slate-400 font-bold rounded-lg cursor-not-allowed opacity-60 text-center"
+                  >
                     Register Now
                   </button>
                 </div>

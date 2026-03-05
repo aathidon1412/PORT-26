@@ -87,11 +87,10 @@ export default function Tickets() {
                 />
               )}
               <span
-                className={`relative z-10 ${
-                  activeTab === tab.id
-                    ? 'text-white'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
+                className={`relative z-10 ${activeTab === tab.id
+                  ? 'text-white'
+                  : 'text-slate-400 hover:text-slate-200'
+                  }`}
               >
                 {tab.label}
               </span>
@@ -132,8 +131,8 @@ export default function Tickets() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  onClick={() => handleWorkshopClick(workshop.id)}
-                  className="group cursor-pointer bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 border border-white/10 hover:border-violet-500/50 rounded-xl p-6 transition-all duration-300 transform hover:scale-105"
+                  onClick={undefined}
+                  className="group bg-gradient-to-r from-slate-800 to-slate-700 border border-white/10 rounded-xl p-6 transition-all duration-300"
                 >
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex-1">
@@ -157,11 +156,8 @@ export default function Tickets() {
                         ₹{workshop.price}
                       </div>
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleWorkshopClick(workshop.id);
-                        }}
-                        className="mt-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                        disabled
+                        className="mt-2 bg-slate-700 text-slate-400 font-semibold py-2 px-6 rounded-lg cursor-not-allowed opacity-60"
                       >
                         Register
                       </button>
