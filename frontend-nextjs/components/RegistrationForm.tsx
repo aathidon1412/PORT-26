@@ -176,7 +176,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       if (json.accountNameMissing) {
         setVerifyStatus('accountNameMissing');
         setVerifyMessage(json.message || 'Account holder name does not match.');
-        toast.error('Account holder name "Nivedha Ravi" not found in screenshot.', { duration: 5000 });
+        toast.error('Account holder name "VAISHNAVI DALI A" not found in screenshot.', { duration: 5000 });
         return;
       }
       // Track whether this is a PhonePe screenshot so the UI can hint accordingly
@@ -249,25 +249,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (formData.paymentMode === 'Online') {
       if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
 
-    // Enhanced screenshot validation
-    if (!formData.paymentScreenshot) {
-      newErrors.paymentScreenshot = 'Payment screenshot is required';
-    } else if (!ocrText || ocrText.trim().length === 0) {
-      newErrors.paymentScreenshot = 'Screenshot appears blank or unreadable. Please upload a clear screenshot.';
-    } else if (verifyStatus !== 'verified') {
-      // Screenshot uploaded but not verified
-      if (verifyStatus === 'accountNameMissing') {
-        newErrors.paymentScreenshot = 'Screenshot must contain account holder name "Nivedha Ravi"';
-      } else if (verifyStatus === 'mismatch') {
-        newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
-      } else if (verifyStatus === 'error') {
-        newErrors.paymentScreenshot = 'Screenshot verification failed. Please re-upload a clear image.';
-      } else if (verifyStatus === 'verifying') {
-        newErrors.paymentScreenshot = 'Please wait for screenshot verification to complete';
-      } else {
-        newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
+      // Enhanced screenshot validation
+      if (!formData.paymentScreenshot) {
+        newErrors.paymentScreenshot = 'Payment screenshot is required';
+      } else if (!ocrText || ocrText.trim().length === 0) {
+        newErrors.paymentScreenshot = 'Screenshot appears blank or unreadable. Please upload a clear screenshot.';
+      } else if (verifyStatus !== 'verified') {
+        // Screenshot uploaded but not verified
+        if (verifyStatus === 'accountNameMissing') {
+          newErrors.paymentScreenshot = 'Screenshot must contain account holder name "VAISHNAVI DALI A"';
+        } else if (verifyStatus === 'mismatch') {
+          newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
+        } else if (verifyStatus === 'error') {
+          newErrors.paymentScreenshot = 'Screenshot verification failed. Please re-upload a clear image.';
+        } else if (verifyStatus === 'verifying') {
+          newErrors.paymentScreenshot = 'Please wait for screenshot verification to complete';
+        } else {
+          newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
+        }
       }
-    }
     }
 
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
@@ -340,7 +340,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       // Block submission if account name is missing in screenshot
       if (verifyStatus === 'accountNameMissing') {
         toast.error(
-          'The account holder name "Nivedha Ravi" was not found in the screenshot. Please upload the correct payment screenshot.',
+          'The account holder name "VAISHNAVI DALI A" was not found in the screenshot. Please upload the correct payment screenshot.',
           { duration: 6000 }
         );
         fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -359,7 +359,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       }
 
       // Catch-all for any other non-verified state
-      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "Nivedha Ravi" and the transaction ID.', { duration: 6000 });
+      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "VAISHNAVI DALI A" and the transaction ID.', { duration: 6000 });
       fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
@@ -899,127 +899,127 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             {/* Transaction ID (shown only for Online payments) */}
             {formData.paymentMode === 'Online' && (
               <div ref={fieldRefs.transactionId as React.RefObject<HTMLDivElement>}>
-              <label className="block text-sm font-medium mb-2 text-white">
-                Transaction ID / UTR Number <span className="text-red-500">*</span>
-              </label>
-              <p className="text-xs text-violet-300 mb-2">
-                📱 <strong>PhonePe users:</strong> enter the <strong>UTR number</strong> shown in your payment receipt, not the transaction ID.
-              </p>
-              <div className="relative flex items-center">
-                <input
-                  type="text" name="transactionId" value={formData.transactionId}
-                  onChange={handleInputChange} className={`${inputCls('transactionId')} pr-10`}
-                  placeholder="e.g. TXN123456789 or 12-digit UTR for PhonePe" autoComplete="off" />
-                {/* Verification badge */}
-                {verifyStatus === 'verifying' && (
-                  <Loader2 className="absolute right-3 w-5 h-5 text-violet-400 animate-spin" />
-                )}
+                <label className="block text-sm font-medium mb-2 text-white">
+                  Transaction ID / UTR Number <span className="text-red-500">*</span>
+                </label>
+                <p className="text-xs text-violet-300 mb-2">
+                  📱 <strong>PhonePe users:</strong> enter the <strong>UTR number</strong> shown in your payment receipt, not the transaction ID.
+                </p>
+                <div className="relative flex items-center">
+                  <input
+                    type="text" name="transactionId" value={formData.transactionId}
+                    onChange={handleInputChange} className={`${inputCls('transactionId')} pr-10`}
+                    placeholder="e.g. TXN123456789 or 12-digit UTR for PhonePe" autoComplete="off" />
+                  {/* Verification badge */}
+                  {verifyStatus === 'verifying' && (
+                    <Loader2 className="absolute right-3 w-5 h-5 text-violet-400 animate-spin" />
+                  )}
+                  {verifyStatus === 'verified' && (
+                    <CheckCircle2 className="absolute right-3 w-5 h-5 text-green-400" />
+                  )}
+                  {(verifyStatus === 'mismatch' || verifyStatus === 'accountNameMissing') && (
+                    <XCircle className="absolute right-3 w-5 h-5 text-red-400" />
+                  )}
+                  {verifyStatus === 'error' && (
+                    <AlertCircle className="absolute right-3 w-5 h-5 text-yellow-400" />
+                  )}
+                </div>
+                {/* Verification status message */}
                 {verifyStatus === 'verified' && (
-                  <CheckCircle2 className="absolute right-3 w-5 h-5 text-green-400" />
+                  <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> {verifyMessage}
+                  </p>
                 )}
-                {(verifyStatus === 'mismatch' || verifyStatus === 'accountNameMissing') && (
-                  <XCircle className="absolute right-3 w-5 h-5 text-red-400" />
+                {verifyStatus === 'mismatch' && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <XCircle className="w-3 h-3" /> {verifyMessage}
+                  </p>
+                )}
+                {verifyStatus === 'accountNameMissing' && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <XCircle className="w-3 h-3" /> {verifyMessage}
+                  </p>
                 )}
                 {verifyStatus === 'error' && (
-                  <AlertCircle className="absolute right-3 w-5 h-5 text-yellow-400" />
+                  <p className="text-yellow-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" /> {verifyMessage}
+                  </p>
                 )}
-              </div>
-              {/* Verification status message */}
-              {verifyStatus === 'verified' && (
-                <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" /> {verifyMessage}
-                </p>
-              )}
-              {verifyStatus === 'mismatch' && (
-                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                  <XCircle className="w-3 h-3" /> {verifyMessage}
-                </p>
-              )}
-              {verifyStatus === 'accountNameMissing' && (
-                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                  <XCircle className="w-3 h-3" /> {verifyMessage}
-                </p>
-              )}
-              {verifyStatus === 'error' && (
-                <p className="text-yellow-400 text-xs mt-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" /> {verifyMessage}
-                </p>
-              )}
-              {/* PhonePe UTR hint — shown once the server detects a PhonePe screenshot */}
-              {isPhonePePayment && verifyStatus !== 'verified' && (
-                <p className="text-violet-300 text-xs mt-1.5 flex items-center gap-1.5 bg-violet-900/30 rounded px-2 py-1 border border-violet-700">
-                  📱 <strong>PhonePe detected</strong> — please enter your <strong>UTR number</strong> (12-digit number from the receipt) as the Transaction ID.
-                </p>
-              )}
-              {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
+                {/* PhonePe UTR hint — shown once the server detects a PhonePe screenshot */}
+                {isPhonePePayment && verifyStatus !== 'verified' && (
+                  <p className="text-violet-300 text-xs mt-1.5 flex items-center gap-1.5 bg-violet-900/30 rounded px-2 py-1 border border-violet-700">
+                    📱 <strong>PhonePe detected</strong> — please enter your <strong>UTR number</strong> (12-digit number from the receipt) as the Transaction ID.
+                  </p>
+                )}
+                {errors.transactionId && <p className="text-red-500 text-sm mt-1">{errors.transactionId}</p>}
               </div>
             )}
 
             {/* Payment Screenshot (shown only for Online payments) */}
             {formData.paymentMode === 'Online' && (
               <div ref={fieldRefs.paymentScreenshot as React.RefObject<HTMLDivElement>}>
-              <label className="block text-sm font-medium mb-2 text-white">
-                Payment Screenshot <span className="text-red-500">*</span>
-              </label>
-              {/* Instruction note */}
-              <div className="flex items-start gap-2 mb-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs leading-relaxed">
-                <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <span>
-                  Ensure the <strong>Transaction ID (Txn ID)</strong> is clearly visible in the uploaded screenshot, and the account holder name must be{' '}
-                  <strong>Nivedha Ravi</strong>.
-                  {' '}If you paid via <strong>PhonePe</strong>, upload the PhonePe receipt screenshot and enter the <strong>UTR number</strong> (the 12-digit number) as the Transaction ID.
-                </span>
-              </div>
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className={`cursor-pointer flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg py-6 transition
+                <label className="block text-sm font-medium mb-2 text-white">
+                  Payment Screenshot <span className="text-red-500">*</span>
+                </label>
+                {/* Instruction note */}
+                <div className="flex items-start gap-2 mb-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs leading-relaxed">
+                  <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                  <span>
+                    Ensure the <strong>Transaction ID (Txn ID)</strong> is clearly visible in the uploaded screenshot, and the account holder name must be{' '}
+                    <strong>VAISHNAVI DALI A</strong>.
+                    {' '}If you paid via <strong>PhonePe</strong>, upload the PhonePe receipt screenshot and enter the <strong>UTR number</strong> (the 12-digit number) as the Transaction ID.
+                  </span>
+                </div>
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`cursor-pointer flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-lg py-6 transition
                     ${errors.paymentScreenshot ? 'border-red-500' : 'border-violet-700'}
                     hover:border-violet-400
                     bg-slate-800`}
-              >
-                {screenshotPreview ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={screenshotPreview} alt="Payment screenshot preview"
-                    className="max-h-40 rounded-lg object-contain" />
-                ) : (
-                  <>
-                    <Paperclip className="w-8 h-8 text-slate-400" />
-                    <span className="text-sm text-slate-400">
-                      Click to upload payment screenshot
-                    </span>
-                    <span className="text-xs text-slate-500">
-                      PNG, JPG, WEBP — max 5 MB
-                    </span>
-                  </>
-                )}
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-              {errors.paymentScreenshot && (
-                <p className="text-red-500 text-sm mt-1">{errors.paymentScreenshot}</p>
-              )}
-              {screenshotPreview && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setScreenshotPreview('');
-                    setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
-                    setVerifyStatus('idle');
-                    setVerifyMessage('');
-                    setIsPhonePePayment(false);
-                    setOcrText('');
-                    if (fileInputRef.current) fileInputRef.current.value = '';
-                  }}
-                  className="mt-1 text-xs text-red-500 hover:text-red-700"
                 >
-                  Remove screenshot
-                </button>
-              )}
+                  {screenshotPreview ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={screenshotPreview} alt="Payment screenshot preview"
+                      className="max-h-40 rounded-lg object-contain" />
+                  ) : (
+                    <>
+                      <Paperclip className="w-8 h-8 text-slate-400" />
+                      <span className="text-sm text-slate-400">
+                        Click to upload payment screenshot
+                      </span>
+                      <span className="text-xs text-slate-500">
+                        PNG, JPG, WEBP — max 5 MB
+                      </span>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+                {errors.paymentScreenshot && (
+                  <p className="text-red-500 text-sm mt-1">{errors.paymentScreenshot}</p>
+                )}
+                {screenshotPreview && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setScreenshotPreview('');
+                      setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
+                      setVerifyStatus('idle');
+                      setVerifyMessage('');
+                      setIsPhonePePayment(false);
+                      setOcrText('');
+                      if (fileInputRef.current) fileInputRef.current.value = '';
+                    }}
+                    className="mt-1 text-xs text-red-500 hover:text-red-700"
+                  >
+                    Remove screenshot
+                  </button>
+                )}
               </div>
             )}
           </div>

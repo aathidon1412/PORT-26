@@ -77,7 +77,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                   <span key="6">Day 2: <strong className={colors.textPrimary}>One registration for all events</strong>.</span>,
                   <span key="7">Once payment is verified, the ticket will be emailed to the address you provided.{' '}<strong className="text-amber-400">Also check your Spam / Junk folder</strong> if you don\'t see it in your inbox.</span>,
                   <span key="8">Amount will not be refunded if the registration is cancelled.</span>,
-                  <span key="9">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"Nivedha Ravi"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
+                  <span key="9">Account holder name in the screenshot must be{' '}<strong className={colors.textPrimary}>"VAISHNAVI DALI A"</strong> and the <strong className={colors.textPrimary}>Transaction ID</strong> must match the screenshot.</span>,
                 ].map((item, i) => (
                   <li key={i} className="flex gap-2">
                     <span className={`font-semibold ${colors.textPrimary} shrink-0 tabular-nums`}>{i + 1}.</span>
@@ -91,7 +91,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose, 
                   <CreditCard className="w-3.5 h-3.5 shrink-0" />
                   <strong>Payment (UPI only):</strong>
                 </div>
-                Pay via UPI using the QR code on the registration page. Enter your <strong>Transaction ID</strong> and upload a <strong>payment screenshot</strong> showing the name <strong>Nivedha Ravi</strong>. Ticket will be emailed after verification.
+                Pay via UPI using the QR code on the registration page. Enter your <strong>Transaction ID</strong> and upload a <strong>payment screenshot</strong> showing the name <strong>VAISHNAVI DALI A</strong>. Ticket will be emailed after verification.
               </div>
 
               <label className={`flex items-center gap-2.5 mt-4 cursor-pointer select-none ${colors.textSecondary} text-sm`}>
