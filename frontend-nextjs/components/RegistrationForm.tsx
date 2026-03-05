@@ -176,7 +176,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       if (json.accountNameMissing) {
         setVerifyStatus('accountNameMissing');
         setVerifyMessage(json.message || 'Account holder name does not match.');
-        toast.error('Account holder name "DINESHKUMAR P" not found in screenshot.', { duration: 5000 });
+        toast.error('Account holder name "P ABINAYA" not found in screenshot.', { duration: 5000 });
         return;
       }
       // Track whether this is a PhonePe screenshot so the UI can hint accordingly
@@ -249,24 +249,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     if (formData.paymentMode === 'Online') {
       if (!formData.transactionId.trim()) newErrors.transactionId = 'Transaction ID is required';
 
-      if (!formData.paymentScreenshot) {
-        newErrors.paymentScreenshot = 'Payment screenshot is required';
-      } else if (!ocrText || ocrText.trim().length === 0) {
-        newErrors.paymentScreenshot = 'Screenshot appears blank or unreadable. Please upload a clear screenshot.';
-      } else if (verifyStatus !== 'verified') {
-        // Screenshot uploaded but not verified
-        if (verifyStatus === 'accountNameMissing') {
-          newErrors.paymentScreenshot = 'Screenshot must contain account holder name "DINESHKUMAR P"';
-        } else if (verifyStatus === 'mismatch') {
-          newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
-        } else if (verifyStatus === 'error') {
-          newErrors.paymentScreenshot = 'Screenshot verification failed. Please re-upload a clear image.';
-        } else if (verifyStatus === 'verifying') {
-          newErrors.paymentScreenshot = 'Please wait for screenshot verification to complete';
-        } else {
-          newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
-        }
+    // Enhanced screenshot validation
+    if (!formData.paymentScreenshot) {
+      newErrors.paymentScreenshot = 'Payment screenshot is required';
+    } else if (!ocrText || ocrText.trim().length === 0) {
+      newErrors.paymentScreenshot = 'Screenshot appears blank or unreadable. Please upload a clear screenshot.';
+    } else if (verifyStatus !== 'verified') {
+      // Screenshot uploaded but not verified
+      if (verifyStatus === 'accountNameMissing') {
+        newErrors.paymentScreenshot = 'Screenshot must contain account holder name "P ABINAYA"';
+      } else if (verifyStatus === 'mismatch') {
+        newErrors.transactionId = 'Transaction ID must match the one shown in your screenshot';
+      } else if (verifyStatus === 'error') {
+        newErrors.paymentScreenshot = 'Screenshot verification failed. Please re-upload a clear image.';
+      } else if (verifyStatus === 'verifying') {
+        newErrors.paymentScreenshot = 'Please wait for screenshot verification to complete';
+      } else {
+        newErrors.paymentScreenshot = 'Screenshot must be verified before submission';
       }
+    }
     }
 
     if (!formData.collegeName.trim()) newErrors.collegeName = 'College Name is required';
@@ -336,53 +337,31 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         return;
       }
 
-      // Strictly require verification status to be 'verified' - no exceptions
-      if (verifyStatus !== 'verified') {
-        if (verifyStatus === 'idle' && formData.transactionId.trim()) {
-          verifyPayment(ocrText, formData.transactionId);
-          toast.error('Verification just started — please wait a moment and try again.', { duration: 5000 });
-          fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        if (verifyStatus === 'verifying') {
-          toast.error('Verifying your payment screenshot… please wait until it completes.', { duration: 4000 });
-          fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        if (verifyStatus === 'error') {
-          toast.error(
-            'Screenshot verification failed. Please remove the screenshot, re-upload a clear image, and wait for verification to complete.',
-            { duration: 7000 }
-          );
-          fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        if (verifyStatus === 'accountNameMissing') {
-          toast.error(
-            'The account holder name "DINESHKUMAR P" was not found in the screenshot. Please upload the correct payment screenshot.',
-            { duration: 6000 }
-          );
-          fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        if (verifyStatus === 'mismatch') {
-          toast.error(
-            'Transaction ID does not match the screenshot. Please enter the correct Transaction ID shown in your payment screenshot.',
-            { duration: 6000 }
-          );
-          fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          (fieldRefs.transactionId?.current as HTMLElement | null)?.focus?.();
-          return;
-        }
-
-        toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "DINESHKUMAR P" and the transaction ID.', { duration: 6000 });
+      // Block submission if account name is missing in screenshot
+      if (verifyStatus === 'accountNameMissing') {
+        toast.error(
+          'The account holder name "P ABINAYA" was not found in the screenshot. Please upload the correct payment screenshot.',
+          { duration: 6000 }
+        );
         fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
+
+      // Strictly block submission if Transaction ID doesn't match — no override allowed
+      if (verifyStatus === 'mismatch') {
+        toast.error(
+          'Transaction ID does not match the screenshot. Please enter the correct Transaction ID shown in your payment screenshot.',
+          { duration: 6000 }
+        );
+        fieldRefs.transactionId?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (fieldRefs.transactionId?.current as HTMLElement | null)?.focus?.();
+        return;
+      }
+
+      // Catch-all for any other non-verified state
+      toast.error('Payment screenshot must be verified before registration. Please ensure the screenshot contains the account holder name "P ABINAYA" and the transaction ID.', { duration: 6000 });
+      fieldRefs.paymentScreenshot?.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
     }
 
     const toastId = toast.loading('Processing your registration...');
@@ -772,8 +751,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                       onClick={() => carouselGoTo(i)}
                       title={app.name}
                       className={`rounded-full transition-all duration-300 ${i === carouselIdx
-                          ? 'w-6 h-2.5 bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]'
-                          : 'w-2.5 h-2.5 bg-slate-600 hover:bg-slate-400'
+                        ? 'w-6 h-2.5 bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]'
+                        : 'w-2.5 h-2.5 bg-slate-600 hover:bg-slate-400'
                         }`}
                     />
                   ))}
@@ -987,7 +966,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
                 <span>
                   Ensure the <strong>Transaction ID (Txn ID)</strong> is clearly visible in the uploaded screenshot, and the account holder name must be{' '}
-                  <strong>DINESHKUMAR P</strong>.
+                  <strong>P ABINAYA</strong>.
                   {' '}If you paid via <strong>PhonePe</strong>, upload the PhonePe receipt screenshot and enter the <strong>UTR number</strong> (the 12-digit number) as the Transaction ID.
                 </span>
               </div>

@@ -24,7 +24,7 @@ const StatsSection: React.FC = () => {
             isCountdown={true}
             targetDate={eventDate}
           />
-          <StatCard label="Day 1" value="4 Workshops" icon={<Users className="w-6 h-6" />} delay={0.1} />
+          <StatCard label="Day 1" value="3 Workshops" icon={<Users className="w-6 h-6" />} delay={0.1} />
           <StatCard label="Day 2" value="8 Events" icon={<Trophy className="w-6 h-6" />} delay={0.2} />
           <StatCard label="Prize Pool" value="₹ 25000" icon={<Award className="w-6 h-6" />} delay={0.3} />
         </div>
