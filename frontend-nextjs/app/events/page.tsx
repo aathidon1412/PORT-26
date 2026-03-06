@@ -88,10 +88,10 @@ const Events: React.FC = () => {
             className="mt-8"
           >
             <button
-              onClick={() => setShowRegModal(true)}
-              className={`px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 bg-linear-to-r from-violet-500 to-fuchsia-500 text-white shadow-violet-900/40`}
+              disabled
+              className="px-8 py-4 rounded-full font-bold text-lg bg-slate-700 text-slate-400 cursor-not-allowed opacity-60"
             >
-              Register Now
+              Registration Closed
             </button>
           </motion.div>
         </div>

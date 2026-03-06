@@ -348,10 +348,10 @@ function TicketsContent() {
                   </div>
 
                   <button
-                    onClick={handlePortPassClick}
-                    className="bg-linear-to-r from-violet-600 to-indigo-700 hover:from-violet-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    disabled
+                    className="bg-slate-700 text-slate-400 font-bold py-3 px-8 rounded-lg cursor-not-allowed opacity-60"
                   >
-                    Register for Event Pass
+                    Registration Closed
                   </button>
                 </motion.div>
               </motion.div>

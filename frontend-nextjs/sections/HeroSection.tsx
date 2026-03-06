@@ -71,8 +71,11 @@ const HeroSection: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={() => setShowModal(true)} className="w-full sm:w-auto px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 text-lg font-bold rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] transform hover:-translate-y-1">
-              Register Now
+            <button
+              disabled
+              className="w-full sm:w-auto px-6 py-3 bg-slate-700 text-slate-400 text-lg font-bold rounded-full cursor-not-allowed opacity-60"
+            >
+              Registration Closed
             </button>
             <a href="/events" className="w-full sm:w-auto px-6 py-3 bg-transparent border border-white/20 hover:border-white/50 text-white hover:bg-white/5 text-lg font-medium rounded-full transition-all duration-300 backdrop-blur-sm">
               Explore Events
