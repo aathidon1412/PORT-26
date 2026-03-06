@@ -267,9 +267,7 @@ function TicketsContent() {
                           <p className={`${colors.textTertiary} text-sm line-clamp-2`}>
                             {workshop.description}
                           </p>
-                          <div className="text-sm text-slate-400 mt-2">
-                            Remaining: {counts[workshop.id] === undefined ? 'Loading…' : Math.max(0, TOTAL_SEATS - counts[workshop.id])} / {TOTAL_SEATS}
-                          </div>
+
                           <div className={`mt-3 flex flex-wrap gap-4 text-xs ${colors.textTertiary}`}>
                             <span>📅 {workshop.date}</span>
                             <span>⏱️ {workshop.duration}</span>

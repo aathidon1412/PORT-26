@@ -147,12 +147,7 @@ const Workshops: React.FC = () => {
                   ))}
                 </div>
 
-                <div className={`mt-auto flex flex-col sm:flex-row items-center justify-between gap-6 border-t ${colors.border} pt-8`}>
-                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-500/10 text-green-400 border border-green-500/20`}>
-                    <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
-                    Spots Available
-                    <span className="ml-3 text-sm text-slate-300">{counts[workshop.id] === undefined ? 'Loading…' : `${Math.max(0, TOTAL_SEATS - counts[workshop.id])} / ${TOTAL_SEATS} remaining`}</span>
-                  </div>
+                <div className={`mt-auto flex flex-col sm:flex-row items-center justify-end gap-6 border-t ${colors.border} pt-8`}>
                   <button
                     disabled
                     className="w-full sm:w-auto px-8 py-3 bg-slate-700 text-slate-400 font-bold rounded-lg cursor-not-allowed opacity-60 text-center"
