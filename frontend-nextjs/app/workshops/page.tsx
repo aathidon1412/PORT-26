@@ -152,7 +152,7 @@ const Workshops: React.FC = () => {
                     disabled
                     className="w-full sm:w-auto px-8 py-3 bg-slate-700 text-slate-400 font-bold rounded-lg cursor-not-allowed opacity-60 text-center"
                   >
-                    Register Now
+                    Registration Closed
                   </button>
                 </div>
               </div>
